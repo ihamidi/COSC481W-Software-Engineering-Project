@@ -3,16 +3,22 @@
 <body>
 
 <h2>HTML Forms</h2>
-<button onclick="showTextBox()">Create</button>
+<button id="createButton" onclick="showTextBox()">Create</button>
+
 <button onclick="edit()">Edit</button>
 <form action="/action_page.php">
   <input type="submit" value="Submit">
+  <div></div>
 </form> 
 <input type="file" id="myFile">
 <script>
 function myFunction() {
   var x = document.getElementById("myFile");
   x.disabled = true;
+}
+function showTextBox() {
+	var textBox = document.createElement("update");
+	textBox.setAttribute("type","textBox");
 }
 </script>
 </body>
