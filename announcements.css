@@ -1,0 +1,14 @@
+body {
+  background-color: lightblue;
+}
+
+h1 {
+  color: red;
+  text-align: center;
+  font-family: "Lucida Console", Lucida, sans-serif;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
