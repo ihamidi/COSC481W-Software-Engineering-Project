@@ -1,0 +1,8 @@
+READ FIRST!
+
+To follow this tutorial you NEED to know HTML and CSS first!
+When we create a login system, the only thing we need to do in our HTML is to create a few basic HTML forms to allow the user to login, signup, and logout.
+
+If you don't know how to make a basic HTML form, I recommend going back to my HTML course on YouTube and get familiar with HTML first. You should know HTML before learning PHP.
+
+OKAY LET'S GET STARTED!
