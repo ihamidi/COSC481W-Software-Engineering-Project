@@ -5,25 +5,21 @@
   <link rel="stylesheet" href="announcements.css">
 </head>
 <body>
-<script src="photoUpload.js"></script>
+<script src="fileUploadButton.js"></script>
 
 <h2>Announcements</h2>
 <button onclick="showTextBox()">Create</button>
 <input type="text" id="update" value="Type Here!">
   <br><br>
   <button id='a' onclick="newPost()">Click Me!</button>
- 
+
+<script src="fileUploadButton.js"></script>
 <button onclick="edit()">Edit</button>
 <form action="/action_page.php">
   <input type="submit" value="Submit">
 </form>
 <input type="file" id="myFile">
 <script>
-function myFunction() {
-  var x = document.getElementById("myFile");
-  x.disabled = true;
-}
-
 <!--https://stackoverflow.com/questions/6407122/how-can-i-dynamically-add-a-paragraph-to-a-document-without-overwriting-everythi-->
    function newPost(){
     var comment = document.getElementById("update").value;
@@ -32,10 +28,6 @@ function myFunction() {
     document.getElementById("updateDiv").appendChild(newParagraph);
    }
 </script>
-<script src="photoUpload.js"></script>
-<button type="button" onclick="postImage()">Upload Photo</button>
-<div id="uploadPhoto">
-</div>
   <div id='updateDiv'></div> 
 </body>
 </html>

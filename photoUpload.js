@@ -5,3 +5,5 @@ function postImage() {
 	var src = document.getElementById("uploadPhoto");
 	src.appendChild(img);
 }
+
+
