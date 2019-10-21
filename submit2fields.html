@@ -9,6 +9,10 @@
 
 <h2>Announcements</h2>
 <button onclick="showTextBox()">Create</button>
+<input type="text" id="update" value="Type Here!">
+  <br><br>
+  <button id='a' onclick="newPost()">Click Me!</button>
+ 
 <button onclick="edit()">Edit</button>
 <form action="/action_page.php">
   <input type="submit" value="Submit">
@@ -19,11 +23,19 @@ function myFunction() {
   var x = document.getElementById("myFile");
   x.disabled = true;
 }
+
+<!--https://stackoverflow.com/questions/6407122/how-can-i-dynamically-add-a-paragraph-to-a-document-without-overwriting-everythi-->
+   function newPost(){
+    var comment = document.getElementById("update").value;
+    var newParagraph = document.createElement('p');
+    newParagraph.textContent = comment;
+    document.getElementById("updateDiv").appendChild(newParagraph);
+   }
 </script>
 <script src="photoUpload.js"></script>
 <button type="button" onclick="postImage()">Upload Photo</button>
 <div id="uploadPhoto">
 </div>
-
+  <div id='updateDiv'></div> 
 </body>
 </html>
