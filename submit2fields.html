@@ -5,25 +5,16 @@
   <link rel="stylesheet" href="announcements.css">
 </head>
 <body>
-<script src="photoUpload.js"></script>
+<script src="fileUploadButton.js"></script>
 
 <h2>Announcements</h2>
 <button onclick="showTextBox()">Create</button>
+<script src="photoUpload.js"></script>
 <button onclick="edit()">Edit</button>
 <form action="/action_page.php">
   <input type="submit" value="Submit">
 </form>
 <input type="file" id="myFile">
-<script>
-function myFunction() {
-  var x = document.getElementById("myFile");
-  x.disabled = true;
-}
-</script>
-<script src="photoUpload.js"></script>
-<button type="button" onclick="postImage()">Upload Photo</button>
-<div id="uploadPhoto">
-</div>
 
 </body>
 </html>
