@@ -28,7 +28,7 @@ function createAnnouncement(){
   var announcementBox = document.getElementById("announcementBox");
   var currentdate = new Date();
 
-  var datetime = "Last Sync: " + currentdate.getDate() + "/"
+  var datetime = currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
                 + currentdate.getFullYear() + " @ "
                 + currentdate.getHours()%12 + ":"
