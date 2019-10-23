@@ -13,35 +13,28 @@
 
 </head>
 <body>
-<script src="fileUploadButton.js"></script>
+
 
 <h2>Announcements</h2>
-<button onclick="showTextBox()">Create</button>
-<input type="text" id="update" value="Type Here!">
-  <br><br>
-  <button id='a' onclick="newPost()">Click Me!</button>
+<div id='newAnnouncement' class="container">
+  <button id='newAnnouncementButton' onclick="newAnnouncement()">Create Announcement</button>
+</div>
 
-<script src="fileUploadButton.js"></script>
-<button onclick="edit()">Edit</button>
-<form action="/action_page.php">
+<div id='announcementBox'>
+</div>
+
+<br></br>
+
+<!--<form action="/action_page.php">
   <input type="submit" value="Submit">
 </form>
-<input type="file" id="myFile">
-<script>
-<!--https://stackoverflow.com/questions/6407122/how-can-i-dynamically-add-a-paragraph-to-a-document-without-overwriting-everythi-->
-   function newPost(){
-    var comment = document.getElementById("update").value;
-    var newParagraph = document.createElement('p');
-    var announcements = document.getElementById("updateDiv");
-    newParagraph.textContent = comment;
-
-    announcements.insertBefore(newParagraph, announcements.childNodes[0]);
-   }
-</script>
-  <div id='updateDiv'></div>
-  <!-- These are bootstrap scripts that should be left at the bottom of the page. -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<input type="file" id="myFile">-->
+<div id='currentAnnouncements' class="container"></div>
+<script src="newAnnouncement.js"></script>
+<script src="fileUploadButton.js"></script>
+<!-- These are bootstrap scripts that should be left at the bottom of the page. -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
