@@ -12,7 +12,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/download', function(request, response) {
-	response.download(path.join(__dirname, './test.pdf'), function(error){
+	response.download(path.join(__dirname, '/test.pdf'), function(error){
         console.log(error);
     });
     response.end();
