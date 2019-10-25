@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Survey Creator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="announcements.css">
+  </head>
+  <body>
+    <h2 class="container">Survey Creator</h2>
+    <form id="newSurveyForm" onsubmit="return null" class="container">
+      <div class="">
+
+      </div>
+      <button class="btn" id='newSurveyButton' onclick="newSurvey()">New Survey</button>
+      <div class="form-group">
+        <label for="surveyType">Survey Type</label>
+        <select id="surveyType"class="form-control" placeholder="Survey Type">
+          <option value="student">Student</option>
+          <option value="parent">Parent</option>
+        </select>
+      </div>
+      <div id="questions">
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="newQuestionType">New Question</label class="form-control">
+        <select id="newQuestionType" class="form-control col">
+          <option disabled selected>Select Question Type...</option>
+          <option value="multipleChoice">Multiple Choice</option>
+          <option value="checkBox">Check Box</option>
+          <option value="dropDown">Drop Down</option>
+          <option value="shortAnswer">Short Answer</option>
+        </select>
+        <button id="newQuestionButton" class="btn col-sm" onclick="newQuestion()">Create Question</button>
+      </div>
+      <br>
+      <input id="submitSurvey" type="submit" class="btn btn-primary"></input>
+
+    </form>
+
+    <script src="surveyCreator.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+
+</html>
