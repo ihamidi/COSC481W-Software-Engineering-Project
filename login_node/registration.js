@@ -11,11 +11,9 @@ app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/registration.html'));
 });
 
-app.get('/download', function(request, response) {
-	response.download(path.join(__dirname, '/test.pdf'), function(error){
-        console.log(error);
-    });
-    response.end();
-});
+app.get('/download', function(req, res){
+    const file = (path.join(__dirname + '/test.pdf'));
+    res.download(file);
+  });
 
 app.listen(3000);
