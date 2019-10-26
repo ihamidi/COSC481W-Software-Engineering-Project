@@ -3,6 +3,8 @@ var express = require('express');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
+var pug = require('pug');
+
 var connection = mysql.createConnection({
     host     : '34.66.160.101',
 	user     : 'root',
@@ -10,14 +12,24 @@ var connection = mysql.createConnection({
 	database : 'swing_demo'
 });
 var app = express();
+
+//setting the express app to use pug as a generator engine i think that what im doing
+app.set('views', './views');
+app.set('view engine', 'pug');
+
+
+//session stuff
 app.use(session({
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true
 }));
+
+//dont know much about this part?
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
+//
 app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/views/login.html'));
 });
@@ -30,7 +42,7 @@ app.post('/auth', function(request, response) {
 		 {
 			if (results.length > 0) {
 				request.session.loggedin = true;
-				request.session.username = username;
+                request.session.username = username;
 				response.redirect('/home');
 			} else {
 				response.send('Incorrect Username and/or Password!');
@@ -45,8 +57,7 @@ app.post('/auth', function(request, response) {
 
 app.get('/home', function(request, response) {
     if (request.session.loggedin) {
-                //window.open(“signup.html”);
-        response.send('wELCOME bACK!');
+        response.render('index');
 	} else {
 		response.send('Please login to view this page!');
 	}
