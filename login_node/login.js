@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 app.get('/', function(request, response) {
-	response.sendFile(path.join(__dirname + '/login.html'));
+	response.sendFile(path.join(__dirname + '/views/login.html'));
 });
 
 app.post('/auth', function(request, response) {
@@ -44,8 +44,9 @@ app.post('/auth', function(request, response) {
 });
 
 app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.username + '!');
+    if (request.session.loggedin) {
+                //window.open(“signup.html”);
+        response.send('wELCOME bACK!');
 	} else {
 		response.send('Please login to view this page!');
 	}
