@@ -11,7 +11,7 @@
   <body>
     <h2 class="container">Survey Creator</h2>
     <form id="newSurveyForm" onsubmit="return null" class="container">
-      
+
       <button class="btn" id='newSurveyButton' onclick="newSurvey()">New Survey</button>
       <div class="form-group">
         <label for="surveyName">Survey Name</label>
@@ -22,12 +22,19 @@
           <option value="parent">Parent</option>
         </select>
       </div>
-      <div id="questions">
+      <br>
+
+      <div id="questions" class="form-group">
+        <div>
+          <label for="q1prompt">Question Prompt</label>
+          <input id="q1prompt" type="text" class="form-control" placeholder="Enter Question...">
+          <button type="button" id="q1newOption" class="btn" onclick=""></button>
+        </div>
 
       </div>
 
       <div class="form-group">
-        <label for="newQuestionType">New Question</label class="form-control">
+        <label for="newQuestionType">New Question</label>
         <select id="newQuestionType" class="form-control col">
           <option disabled selected>Select Question Type...</option>
           <option value="multipleChoice">Multiple Choice</option>
@@ -35,7 +42,7 @@
           <option value="dropDown">Drop Down</option>
           <option value="shortAnswer">Short Answer</option>
         </select>
-        <button id="newQuestionButton" class="btn col-sm" onclick="newQuestion()">Create Question</button>
+        <button id="newQuestionButton" type="button" class="btn col-sm" onclick="newQuestion()">Create Question</button>
       </div>
       <br>
       <input id="submitSurvey" type="submit" class="btn btn-primary"></input>

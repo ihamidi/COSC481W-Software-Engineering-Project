@@ -7,9 +7,30 @@ function newSurvey() {
 
 function newQuestion() {
   var questionsDiv = document.getElementById("questions");
+  var questionsValue;
+
+
 
 }
 
 function newOptionMultipleChoice() {
-  
+
+}
+
+class Question {
+  constructor(){
+
+  }
+
+}
+
+class MultipleChoice extends Question {
+  constructor() {
+
+  }
+  template() {
+    var template = document.createElment('div');
+    
+  }
+
 }
