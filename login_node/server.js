@@ -59,6 +59,18 @@ app.post('/auth', function(request, response) {
 		response.end();
 	}
 });
+
+//app.get('/download', formdownload.get('/download'));
+
+//copied code from registation.js for the meantime
+app.get('/download', function (req, res) {
+    const file = `${__dirname}/forms/test.pdf`;
+    res.download(file); // Set disposition and send it.
+});
+
+
+
+
 //dont need to redirect anymore, using pug to render webpage based on sign in type;
 /*
 app.get('/home', function(request, response) {
