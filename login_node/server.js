@@ -40,6 +40,73 @@ app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/views/login.html'));
 });
 
+app.get('/signup', function (request, response) {
+    response.sendFile(path.join(__dirname + '/views/signup.html'));
+});
+
+/*exports.register = function (req, res) {
+    // console.log("req",req.body);
+    var today = new Date();
+    var users = {
+        "first_name": req.body.first_name,
+        "last_name": req.body.last_name,
+        "email": req.body.email,
+        "password": req.body.password,
+        "created": today,
+        "modified": today
+    }
+    connection.query('INSERT INTO users SET ?', users, function (error, results, fields) {
+        if (error) {
+            console.log("error ocurred", error);
+            res.send({
+                "code": 400,
+                "failed": "error ocurred"
+            })
+        } else {
+            console.log('The solution is: ', results);
+            res.send({
+                "code": 200,
+                "success": "user registered sucessfully"
+            });
+        }
+    });
+}*/
+
+
+
+//registration method for db
+app.post('/reg', function (request, response) {
+    //var today = new Date();     //can be used later
+    //defining user as many parts from form
+    var users = {
+        "firstname": request.body.firstname,
+        "lastname": request.body.lastname,
+        "email": request.body.email,
+        "password": request.body.password,
+        "acctype": request.body.acctype,
+        "grade": 0
+    }
+    //need to tweak query 
+    connection.query('INSERT INTO accounts SET ?', users, function (error, results, fields) {
+        if (error) {
+            console.log("error ocurred", error);
+            response.send({
+                "code": 400,
+                "failed": "error ocurred"
+            })
+        } else {
+            console.log('The solution is: ', results);
+            response.send({
+                "code": 200,
+                "success": "user registered sucessfully"
+            });
+        }
+    })
+})
+
+
+
+
 //authorization metod after user submits
 app.post('/auth', function(request, response) {
 	var username = request.body.username;

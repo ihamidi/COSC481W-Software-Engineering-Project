@@ -7,11 +7,20 @@
   <body>
  <div class="wrapper-main">
         <section class="section-default">
-           <form class="form-login" action="jss.php" method="post">
+           <form class="form-login" action="reg" method="post">
 		   				<h3>Registration</h3>
-            <input type="text" name="uid" placeholder="Username">
-            <input type="text" name="mail" placeholder="E-mail">
-            <input type="password" name="pwd" placeholder="Password">
+              <input list="acctype" placeholder="Register as" type="text">		
+               <datalist id="acctype" >
+                  Register as
+                  <option value="Student"/>
+                  <option value="Parent"/>
+               </datalist>
+
+            <input type="text" name="firstname" placeholder="First">
+            <input type="text" name="lastname" placeholder="Last">
+            <input type="text" name="username" placeholder="Username">
+            <input type="text" name="email" placeholder="E-mail">
+            <input type="password" name="password" placeholder="Password">
             <input type="password" name="pwd-repeat" placeholder="Repeat password">
             <button type="submit" name="signup-submit">Sign up</button>
            </form>
