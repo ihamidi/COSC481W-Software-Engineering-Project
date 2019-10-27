@@ -4,6 +4,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 var pug = require('pug');
+var formdownload = require('./registration.js');
 
 var connection = mysql.createConnection({
     host     : '34.66.160.101',
