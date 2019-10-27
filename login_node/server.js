@@ -6,6 +6,8 @@ var path = require('path');
 var pug = require('pug');
 var formdownload = require('./registration.js');
 
+
+//giving clousql credentials
 var connection = mysql.createConnection({
     host     : '34.66.160.101',
 	user     : 'root',
@@ -13,6 +15,9 @@ var connection = mysql.createConnection({
 	database : 'BitsAndBytes'
 });
 var app = express();
+
+//testing to see if css may work
+app.use(express.static('./views/css'));
 
 //setting the express app to use pug as a generator engine i think that what im doing
 app.set('views', './views');
