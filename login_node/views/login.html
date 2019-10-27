@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
       <title>Bits And Bytes Login</title>
+      <link rel="stylesheet" href="loginAnSignUp.css">
    </head>
    <body>
-      <div class="login-form">
-         <h1>Login Form</h1>
+      <div class="wrapper-main">
          <section class="section-default">
          <form class="form-login" form action="auth" method="POST">
-            <input list="hosting-plan" placeholder="Login as" type="text">		
-            <datalist id="hosting-plan" >
-               Login as
-               <option value="Student"/>
-               <option value="Parent"/>
-               <option value="Admin"/>
-            </datalist>
+               <h3>Login</h3>
+				<input list="hosting-plan" placeholder="Login as" type="text">		
+               <datalist id="hosting-plan" >
+                  Login as
+                  <option value="Student"/>
+                  <option value="Parent"/>
+               </datalist>
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-            <input type="submit">
-         </form>
+               <button   "type="submit" name="login-submit">Login</button>
+            </form>
+            <div align="right" ><a href="signup.html"><h5>Sign up</h5></a></div>
+         </section>
       </div>
    </body>
 </html>
