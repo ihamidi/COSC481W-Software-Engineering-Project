@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
     host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
-	database : 'swing_demo'
+	database : 'BitsAndBytes'
 });
 var app = express();
 
@@ -34,16 +34,20 @@ app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/views/login.html'));
 });
 
+//authorization metod after user submits
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
-		connection.query('SELECT * FROM account WHERE user_name = ? AND password = ?', 				[username, password], function(error, results, fields)
+		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', 				[username, password], function(error, results, fields)
 		 {
 			if (results.length > 0) {
 				request.session.loggedin = true;
                 request.session.username = username;
-				response.redirect('/home');
+                console.log(results[0].acctype);
+                response.render('index', {
+                    acctype: results[0].acctype
+                });
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
@@ -54,14 +58,15 @@ app.post('/auth', function(request, response) {
 		response.end();
 	}
 });
-
+//dont need to redirect anymore, using pug to render webpage based on sign in type;
+/*
 app.get('/home', function(request, response) {
     if (request.session.loggedin) {
-        response.render('index');
+
 	} else {
 		response.send('Please login to view this page!');
 	}
 	response.end();
 });
-
+*/
 app.listen(3000);
