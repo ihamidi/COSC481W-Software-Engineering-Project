@@ -6,16 +6,18 @@ const http = require('http');
 const multer  = require('multer');
 const app = express();
 
-
-var renderPage = app.get('/', function (request, response) {
-	response.sendFile(path.join(__dirname + '/registration.html'));
+app.get('/', function (request, response) {
+    response.sendFile(path.join(__dirname + '/registration.html'));
 });
 
 app.set(function () {
     this.use('/public', express.static('public')); 
 });
 
-app.use('/forms', express.static(path.join(__dirname, './test.pdf')));
+app.get('/download', function (req, res) {
+    const file = `${__dirname}/forms/test.pdf`;
+    res.download(file); // Set disposition and send it.
+});
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -28,15 +30,18 @@ var storage = multer.diskStorage({
    
   var upload = multer({ storage: storage })
 
-  app.post('/uploadfile', upload.single('RegistrationForm'), (req, res, next) => {
+  app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
       error.httpStatusCode = 400
       return next(error)
     }
-      res.send(file)    
-      renderPage;
+      res.send(file)
+    
   })
 
+
 app.listen(3000);
+
+
