@@ -22,29 +22,38 @@
           <option value="parent">Parent</option>
         </select>
       </div>
-      <br>
+      <hr>
 
       <div id="questions" class="form-group">
         <div>
-          <label for="q1prompt">Question Prompt</label>
-          <input id="q1prompt" type="text" class="form-control" placeholder="Enter Question...">
-          <button type="button" id="q1newOption" class="btn" onclick="">New Response</button>
+          <label for="qprompt1">Question Prompt</label>
+          <input id="qprompt1" type="text" class="form-control" placeholder="Enter Question...">
+          <br>
+          <div id="qresponses1">
+            <label>Responses</label>
+            <input id="qopt1-1" type="text" class="form-control" placeholder="Enter Answer...">
+            <br>
+          </div>
+          <button type="button" id="q1newOption" class="btn" onclick="newOptionTest()">New Response</button>
         </div>
 
       </div>
 
+      <hr>
+
       <div class="form-group">
         <label for="newQuestionType">New Question</label>
-        <select id="newQuestionType" class="form-control col">
+        <select id="newQuestionType" class="form-control">
           <option disabled selected>Select Question Type...</option>
           <option value="multipleChoice">Multiple Choice</option>
           <option value="checkBox">Check Box</option>
           <option value="dropDown">Drop Down</option>
           <option value="shortAnswer">Short Answer</option>
         </select>
-        <button id="newQuestionButton" type="button" class="btn col-sm" onclick="newQuestion()">Create Question</button>
+        <br>
+        <button id="newQuestionButton" type="button" class="btn" onclick="newQuestion()">Create Question</button>
       </div>
-      <br>
+      <hr>
       <input id="submitSurvey" type="submit" class="btn btn-primary"></input>
 
     </form>
