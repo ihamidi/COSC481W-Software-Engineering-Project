@@ -16,8 +16,10 @@ body
             h2 Registration
             div
             p Click here to download the registration form:
-            form(action='download' method='GET')
-                input(type='submit')
+            form(action='registration' method='GET')
+                input(type='submit' value='cat')
+            form(action='test' method='GET')
+                input(type='submit' value='test')
         else
             .login
             a(href="/") Login
