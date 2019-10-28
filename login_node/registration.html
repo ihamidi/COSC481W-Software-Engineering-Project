@@ -7,9 +7,16 @@
     <h1>Registration</h1>
     <div>
         <p>Click here to download the registration form:</p>
-        <form action="forms" method="GET">
+        <form action="download" method="GET">
             <input type="submit">
         </form>
+    </div>
+    <br>
+    <div>
+        <form action="/uploadfile" enctype="multipart/form-data" method="POST"> 
+            <input type="file" name="myFile" />
+            <input type="submit" value="Upload a file"/>
+         </form>
     </div>
 </body>
 </html>

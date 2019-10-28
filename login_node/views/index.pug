@@ -1,0 +1,26 @@
+doctype html
+head
+    title Pug
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    script(type='text/javascript').
+        if (foo) bar(1 + 5)
+body
+    h1 Thanks for Logging in
+    #container.col
+    if acctype === 'Student'
+        p Click the button below to timestamp    
+        button(type='button' onclick="alert('Hello world!')") Timestamp!
+    else if acctype === 'Parent'
+        h1 Registration
+        div
+        p Click here to download the registration form:
+        form(action='download' method='GET')
+            input(type='submit')
+
+    else
+        .login
+        a(href="/") Login
+        p Welcome Admin
+        p Pug is a good use for the timestamp system.
+            
