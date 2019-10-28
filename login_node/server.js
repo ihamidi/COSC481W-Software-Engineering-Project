@@ -139,12 +139,15 @@ app.post('/auth', function(request, response) {
 //app.get('/download', formdownload.get('/download'));
 
 //copied code from registation.js for the meantime
-app.get('/download', function (req, res) {
-    const file = `${__dirname}/forms/test.pdf`;
+app.get('/registration', function (req, res) {
+    const file = `${__dirname}/forms/Cat.pdf`;
     res.download(file); // Set disposition and send it.
 });
 
-
+app.get('/test', function (req, res) {
+  const file = `${__dirname}/forms/test.pdf`;
+  res.download(file); // Set disposition and send it.
+});
 
 
 //dont need to redirect anymore, using pug to render webpage based on sign in type;
