@@ -18,19 +18,22 @@ function newOptionMultipleChoice() {
 }
 
 class Question {
-  constructor(){
-
+  constructor(questionNumber){
+    this.questionNumber = questionNumber;
+    var optionsCount = 0;
   }
+
 
 }
 
 class MultipleChoice extends Question {
-  constructor() {
+  constructor(questionNumber) {
+    super(questionNumber);
 
   }
   template() {
     var template = document.createElment('div');
-    
+
   }
 
 }
