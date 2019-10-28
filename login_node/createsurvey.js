@@ -44,7 +44,7 @@ app.get('/signup', function (request, response) {
     response.sendFile(path.join(__dirname + '/views/signup.html'));
 });
 app.get('/createsurvey', function (request, response) {
-    response.render(path.join(__dirname + '/views/createsurvey'));
+    response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
 });
 
 /*exports.register = function (req, res) {
