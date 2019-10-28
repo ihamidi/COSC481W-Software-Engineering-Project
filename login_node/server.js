@@ -81,6 +81,7 @@ app.post('/reg', function (request, response) {
     var users = {
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
+        "username":request.body.username,
         "email": request.body.email,
         "password": request.body.password,
         "acctype": request.body.acctype,
@@ -154,4 +155,8 @@ app.get('/home', function(request, response) {
 	response.end();
 });
 */
-app.listen(3000);
+
+
+//registration.js is a required module and it is using the port 3000, So i set it to port 30000
+//Izhak Hamidi
+app.listen(30000);
