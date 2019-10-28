@@ -1,0 +1,38 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  title Survey Creator
+  link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+  link(rel='stylesheet' href='css/announcements.css')
+h2.container Survey Creator
+form#newSurveyForm.container(onsubmit='return null')
+  button#newSurveyButton.btn(onclick='newSurvey()') New Survey
+  .form-group
+    label(for='surveyName') Survey Name
+    input#surveyName.form-control(type='text' placeholder='Enter Name')
+  label(for='surveyType') Survey Type
+  select#surveyType.form-control(placeholder='Survey Type')
+    option(value='student') Student
+    option(value='parent') Parent
+  br
+  #questions.form-group
+    div
+      label(for='q1prompt') Question Prompt
+      input#q1prompt.form-control(type='text' placeholder='Enter Question...')
+      button#q1newOption.btn(type='button' onclick='') New Response
+  .form-group
+    label(for='newQuestionType') New Question
+    select#newQuestionType.form-control.col
+      option(disabled='' selected='') Select Question Type...
+      option(value='multipleChoice') Multiple Choice
+      option(value='checkBox') Check Box
+      option(value='dropDown') Drop Down
+      option(value='shortAnswer') Short Answer
+    button#newQuestionButton.btn.col-sm(type='button' onclick='newQuestion()') Create Question
+  br
+  input#submitSurvey.btn.btn-primary(type='submit')
+script(src='surveyCreator.js')
+script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
