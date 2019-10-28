@@ -14,9 +14,14 @@ app.set(function () {
     this.use('/public', express.static('public')); 
 });
 
-app.get('/download', function (req, res) {
+app.get('/registration', function (req, res) {
     const file = `${__dirname}/forms/test.pdf`;
     res.download(file); // Set disposition and send it.
+});
+
+app.get('/test', function (req, res) {
+  const file = `${__dirname}/forms/Cat.pdf`;
+  res.download(file); // Set disposition and send it.
 });
 
 var storage = multer.diskStorage({
