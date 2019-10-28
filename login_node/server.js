@@ -43,6 +43,9 @@ app.get('/', function(request, response) {
 app.get('/signup', function (request, response) {
     response.sendFile(path.join(__dirname + '/views/signup.html'));
 });
+app.get('/createsurvey', function (request, response) {
+    response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
+});
 
 /*exports.register = function (req, res) {
     // console.log("req",req.body);
@@ -87,21 +90,21 @@ app.post('/reg', function (request, response) {
         "acctype": request.body.acctype,
         "grade": 0
     }
-    //need to tweak query 
-    connection.query('INSERT INTO accounts SET ?', users, function (error, results, fields) {
-        if (error) {
-            console.log("error ocurred", error);
-            response.send({
-                "code": 400,
-                "failed": "error ocurred"
-            })
-        } else {
-            console.log('The solution is: ', results);
-            response.send({
-                "code": 200,
-                "success": "user registered sucessfully"
-            });
-        }
+    //need to tweak query
+        connection.query('INSERT INTO accounts SET ?', users, function (error, results, fields) {
+            if (error) {
+                console.log("error ocurred", error);
+                response.send({
+                    "code": 400,
+                    "failed": "error ocurred"
+                })
+            } else {
+                console.log('The solution is: ', results);
+                response.send({
+                    "code": 200,
+                    "success": "user registered sucessfully"
+                });
+            }
     })
 })
 

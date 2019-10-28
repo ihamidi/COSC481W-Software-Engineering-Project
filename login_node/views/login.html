@@ -2,20 +2,37 @@
 <html>
    <head>
       <title>Bits And Bytes Login</title>
-      <link rel="stylesheet" href="./loginAnSignUp.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
    </head>
-   <body>
-      <div class="wrapper-main">
-         <section class="section-default">
-         <form class="form-login" form action="auth" method="POST">
-
-            <h3>Login</h3>
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-               <button   "type="submit" name="login-submit">Login</button>
+   <body style="background-color:#F8EFFF">
+      <nav class="navbar navbar-default" style="background-color: #FFC3BE">
+         <div class="container-fluid">
+            <div class="navbar-header">
+               <a class="navbar-brand" href="BitsBytes">BitsAndBytes</a>
+            </div>
+            <ul class="nav navbar-nav">
+               <li><A href="signup">Sign Up</a></li>
+               <li><a href="">Sign In</a></li>
+               <li><a href="about">About</a></li>
+               <li><a href="about">About</a></li>
+            </ul>
+         </div>
+      </nav>
+      <div class="jumbotron text-center" style="background-color: #F1DFFF">
+         <h2>Welcome to Bits and Bytes!<br><small>Login to view functions</small></h2>
+      </div>
+      <div class="row" >
+         <div class="col-sm-4"></div>
+         <div class="col-sm-4" style="background-color: #8E779F">
+            <form class="form-login" form action="auth" method="POST">
+               <input type="text" class="form-control" name="username" placeholder="Username" required>
+               <input type="password" class="form-control" name="password" placeholder="Password" required>
+               <button type="submit" class="btn btn-default" name="login-submit">Login</button>
             </form>
-            <div align="right" ><a href="signup"><h5>Sign up</h5></a></div>
-         </section>
+         </div>
+      </div>
       </div>
    </body>
 </html>
