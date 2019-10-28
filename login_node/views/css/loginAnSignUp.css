@@ -1,12 +1,12 @@
 body {
-  background-color: #014411;
+  background-color: #FEA1F5;
 }
 
 .section-default {
   width: 30%;
   padding: 20px;
   border-radius: 6px;
-  background-color: #60A677;
+  background-color: #D8A1FE;
   margin-top: 20%;
   margin-left: 33%;
 
@@ -38,7 +38,7 @@ body {
   margin-bottom: 6px;
   border: 1px solid #CCC;
   border-radius: 4px;
-  background-color: #F6F6F6;
+  background-color: #FEA1C7;
   float: left;
   font-family: arial;
 }
@@ -58,7 +58,7 @@ h3 {
 h5{
   text-align: right;
   font-size: 15px;
-  color: #111;
+  color: #F6FEA1;
 
 }
  div a {
@@ -76,8 +76,8 @@ h5{
   
 }
 div a:hover{
-  background-color: #F6F6F6;
-  color: white;
+  background-color: #F6FEA1;
+  color: #D8A1FE;
   text-align: center;
 }
 .dropdown-content a:hover {background-color: #ddd;}
