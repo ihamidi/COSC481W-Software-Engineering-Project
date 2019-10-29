@@ -11,7 +11,8 @@ body
         #container.col
         if acctype === 'Student'
             p Click the button below to timestamp    
-            button(type='button' onclick="alert('Hello world!')") Timestamp!
+            form(action='timestamp' method='GET')
+                input(type='submit' value='Timestamp!')
         else if acctype === 'Parent'
             h2 Registration
             div
@@ -20,9 +21,10 @@ body
                 input(type='submit' value='cat')
             form(action='test' method='GET')
                 input(type='submit' value='test')
-        else
+        else if acctype === 'Admin'
             .login
             a(href="/") Login
             p Welcome Admin
             p Pug is a good use for the timestamp system.
-            
+        else
+            h2 Please login to view contents

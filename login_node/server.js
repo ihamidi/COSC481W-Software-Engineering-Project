@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var pug = require('pug');
 var formdownload = require('./registration.js');
-
+var users;
 
 //giving clousql credentials
 var connection = mysql.createConnection({
@@ -35,16 +35,30 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
-//
+//\home of bits and bytes
 app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/views/login.html'));
 });
 
+
+//sending sign up oapge
 app.get('/signup', function (request, response) {
     response.sendFile(path.join(__dirname + '/views/signup.html'));
 });
+
+//
 app.get('/createsurvey', function (request, response) {
-    response.render(path.join(__dirname + '/views/createsurvey'));
+    if (request.session.loggedin && users.acctype) {
+        response.render(path.join(__dirname + '/views/createsurvey'));
+    }
+});
+
+app.get('/timestamp', function (request, response) {
+    console.log(request.session.username+" "+request.session.userID);
+    connection.query('SELECT * FROM timestamps WHERE username = ? AND userID = ?', [request.session.username, request.session.userid], function (error, results, fields) {
+        console.log("error ocurred", error);
+        response.send(results[0]);
+    })
 });
 
 /*exports.register = function (req, res) {
@@ -81,32 +95,52 @@ app.get('/createsurvey', function (request, response) {
 app.post('/reg', function (request, response) {
     //var today = new Date();     //can be used later
     //defining user as many parts from form
-    var users = {
+    users = {
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
-        "username":request.body.username,
+        "username": request.body.username,
         "email": request.body.email,
         "password": request.body.password,
         "acctype": request.body.acctype,
         "grade": 0
     }
-    //need to tweak query
-        connection.query('INSERT INTO accounts SET ?', users, function (error, results, fields) {
-            if (error) {
-                console.log("error ocurred", error);
-                response.send({
-                    "code": 400,
-                    "failed": "error ocurred"
-                })
-            } else {
-                console.log('The solution is: ', results);
-                response.send({
-                    "code": 200,
-                    "success": "user registered sucessfully"
-                });
-            }
+    //Inserting the user into accounts table
+    connection.query('INSERT INTO accounts SET ?', users, function (error, results, fields) {
     })
-})
+
+
+    //nestedQueries ???? What are you doing brah
+    //Inserting the user into timestamp table
+    if (request.body.acctype.toString().trim() === "Student") {
+        connection.query('SELECT userID FROM accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, resuls, fields) {
+            var timeinfo = {
+                "userID": resuls[0].userID,
+                "firstname": request.body.firstname,
+                "lastname": request.body.lastname,
+            }
+
+            connection.query('INSERT INTO timestamps SET ?', timeinfo, function (error, results, fields) {
+                if (error) {
+                    console.log("error ocurred", error);
+                    console.log("error ocurred jhere is the data: " + resuls.userID + " " + users.firstname + " " + users.lastname);
+                    response.send({
+                        "code": 400,
+                        "failed": "error ocurred"
+                    })
+                } else {
+                    console.log('The solution is: ', results);
+                    response.send({
+                        "code": 200,
+                        "success": "user registered sucessfully"
+                    });
+                }
+            })
+        })
+    }
+    else {
+        response.redirect('/');
+    }
+});
 
 
 
@@ -121,7 +155,8 @@ app.post('/auth', function(request, response) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
                 request.session.username = username;
-                console.log(results[0].acctype);
+                request.session.userid = results[0].userID;
+                console.log(results[0].acctype +":::: "+request.session.userid);
                 response.render('index', {
                     acctype: results[0].acctype
                 });
