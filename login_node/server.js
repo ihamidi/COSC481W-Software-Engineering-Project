@@ -48,7 +48,8 @@ app.get('/signup', function (request, response) {
 
 //
 app.get('/createsurvey', function (request, response) {
-    if (request.session.loggedin && users.acctype) {
+    console.log(request.session.username + " " + request.session.acctype);
+    if (request.session.loggedin && request.session.acctype) {
         response.render(path.join(__dirname + '/views/createsurvey'));
     }
 });
@@ -156,6 +157,7 @@ app.post('/auth', function(request, response) {
 				request.session.loggedin = true;
                 request.session.username = username;
                 request.session.userid = results[0].userID;
+                request.session.acctype = results[0].acctype;
                 console.log(results[0].acctype +":::: "+request.session.userid);
                 response.render('index', {
                     acctype: results[0].acctype

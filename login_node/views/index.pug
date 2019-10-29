@@ -44,5 +44,9 @@ body
             a(href="/") Login
             p Welcome Admin
             p Pug is a good use for the timestamp system.
+            form(action='createsurvey' method='GET')
+                input(type='submit' value='Create Survey')
+            form(action='modifyuser' method='GET')
+                input(type='submit' value='MODIFY USER')
         else
             h2 Please login to view contents
