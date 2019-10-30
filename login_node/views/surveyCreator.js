@@ -2,8 +2,6 @@ var questionsMaster;
 
 function onLoad() {
   questionsMaster = new Questions();
-
-
 }
 
 function newSurvey() {
@@ -15,14 +13,20 @@ function newSurvey() {
 
 function newQuestion() {
   var questionType = document.getElementById("newQuestionType");
-  console.log(questionType.options[questionType.selectedIndex].value);
   questionsMaster.newQuestion(questionType.options[questionType.selectedIndex].value);
 }
 
 function newResponse(questionID) {
-  console.log("newResponse() Called 1");
   questionsMaster.qnewResponse(questionID-1);
 
+}
+
+function createSurvey() {
+  surveyDiv = document.getElementById("finishedSurvey");
+
+  var survey = questionsMaster.qCreateSurvey()
+
+  surveyDiv.appendChild(survey);
 }
 
 class Questions {
@@ -34,8 +38,7 @@ class Questions {
 
   newQuestion(type) {
     if (type == "multiple") {
-      this.questions.push(new MultipleChoice(this.count+1))
-      console.log(this.questions[this.count]);
+      this.questions.push(new MultipleChoice(this.count+1));
       this.questionsDiv.appendChild(this.questions[this.count].template());
       this.questions[this.count].addResponse();
     }
@@ -59,16 +62,19 @@ class Questions {
     this.count++;
   }
 
+  qCreateSurvey() {
+    return this.questions[0].createQuestionDiv();
+  }
+
   qnewResponse(questionID) {
     this.questions[questionID].addResponse();
-    console.log("newResponse() Called");
   }
 }
 
 class Question {
   constructor(questionNumber) {
     this.questionNum = questionNumber;
-    this.optionNum = 1;
+    this.optionNum = 0;
     this.responses;
     this.type = "Question";
   }
@@ -160,6 +166,55 @@ class MultipleChoice extends Question {
     template.appendChild(document.createElement('br'));
 
     return template;
+  }
+  createQuestionDiv() {
+    var templatePrompt = document.getElementById("qprompt"+this.questionNum);
+
+    var questionDiv = document.createElement('div');
+
+    var prompt = document.createElement('p');
+    prompt.innerHTML = templatePrompt.value;
+
+    questionDiv.appendChild(prompt);
+
+    var i;
+    for (i = 0; i < this.optionNum; i++) {
+      var div = document.createElement('div');
+      div.setAttribute("class","form-check");
+
+      var radio = document.createElement('input');
+      radio.setAttribute("type", "radio");
+      radio.setAttribute("class", "form-check-input");
+      radio.setAttribute("name", "question" + this.questionNum);
+      radio.setAttribute("value", i);
+      radio.setAttribute("id","option"+this.questionNum+"-"+this.optionNum);
+
+      var label = document.createElement('label');
+      label.setAttribute("class","form-check-label");
+      label.setAttribute("for","option"+this.questionNum+"-"+this.optionNum);
+      label.innerHTML = (i+1) + ". " + document.getElementById("opt"+this.questionNum+"-"+i).value;
+
+      div.appendChild(radio);
+      div.appendChild(label);
+      questionDiv.appendChild(div);
+    }
+
+    return questionDiv;
+    /*
+    <div class="form-check">
+
+        <input type="radio" class="form-check-input" name="question1" id="question1"></input>
+        <label class="form-check-label" for="question1">Answer1</label>
+
+    </div>
+    <div class="form-check">
+
+        <input type="radio" class="form-check-input" name="question1" id="question2"></input>
+        <label class="form-check-label" for="question1">Answer2</label>
+
+    </div>*/
+
+
   }
 }
 
