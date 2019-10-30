@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/announcements.css">
   </head>
-  <body>
+  <body onload="onLoad()">
     <h2 class="container">Survey Creator</h2>
     <form id="newSurveyForm" onsubmit="return null" class="container">
 
@@ -25,17 +25,7 @@
       <hr>
 
       <div id="questions" class="form-group">
-        <div>
-          <label for="qprompt1">Question Prompt</label>
-          <input id="qprompt1" type="text" class="form-control" placeholder="Enter Question...">
-          <br>
-          <div id="qresponses1">
-            <label>Responses</label>
-            <input id="qopt1-1" type="text" class="form-control" placeholder="Enter Answer...">
-            <br>
-          </div>
-          <button type="button" id="q1newOption" class="btn" onclick="newOptionTest()">New Response</button>
-        </div>
+      
 
       </div>
 
@@ -45,10 +35,10 @@
         <label for="newQuestionType">New Question</label>
         <select id="newQuestionType" class="form-control">
           <option disabled selected>Select Question Type...</option>
-          <option value="multipleChoice">Multiple Choice</option>
-          <option value="checkBox">Check Box</option>
-          <option value="dropDown">Drop Down</option>
-          <option value="shortAnswer">Short Answer</option>
+          <option value="multiple">Multiple Choice</option>
+          <option value="checkbox">Check Box</option>
+          <option value="dropdown">Drop Down</option>
+          <option value="short">Short Answer</option>
         </select>
         <br>
         <button id="newQuestionButton" type="button" class="btn" onclick="newQuestion()">Create Question</button>
