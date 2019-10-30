@@ -212,12 +212,11 @@ class MultipleChoice extends Question {
       radio.setAttribute("value", i);
       radio.setAttribute("id","option"+this.questionNum+"-"+i);
 
-      console.log("i: " + i + " this.optionNum: " + this.optionNum + " qNum: " + this.questionNum);
       var label = document.createElement('label');
       label.setAttribute("class","form-check-label");
       label.setAttribute("for","option"+this.questionNum+"-"+i);
       var option = document.getElementById("qopt"+this.questionNum+"-"+i).value
-      label.innerHTML = (i+1) + ". " + option;
+      label.innerHTML = option;
 
       div.appendChild(radio);
       div.appendChild(label);
@@ -278,7 +277,7 @@ class MultipleChoice extends Question {
         label.setAttribute("class","form-check-label");
         label.setAttribute("for","option"+this.questionNum+"-"+i);
         var option = document.getElementById("qopt"+this.questionNum+"-"+i).value
-        label.innerHTML = (i+1) + ". " + option;
+        label.innerHTML = option;
 
         div.appendChild(checkbox);
         div.appendChild(label);
@@ -328,7 +327,7 @@ class MultipleChoice extends Question {
         var optionHTML = document.createElement('option');
         optionHTML.setAttribute("value", i)
         var option = document.getElementById("qopt"+this.questionNum+"-"+i).value;
-        optionHTML.innerHTML = (i+1) + ". " + option;
+        optionHTML.innerHTML = option;
 
         select.appendChild(optionHTML);
         /*
