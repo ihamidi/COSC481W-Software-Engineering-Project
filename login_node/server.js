@@ -46,14 +46,16 @@ app.get('/signup', function (request, response) {
     response.sendFile(path.join(__dirname + '/views/signup.html'));
 });
 
-//
+//redirecting to create survey
 app.get('/createsurvey', function (request, response) {
     console.log(request.session.username + " " + request.session.acctype);
+    //still figuring out how to xcompare the acctype to "Admin"
     if (request.session.loggedin && request.session.acctype) {
         response.render(path.join(__dirname + '/views/createsurvey'));
     }
 });
 
+//timestamp is essentailly a select query, will implement functionality later (later sprint maybe?)
 app.get('/timestamp', function (request, response) {
     console.log(request.session.username+" "+request.session.userID);
     connection.query('SELECT * FROM timestamps WHERE username = ? AND userID = ?', [request.session.username, request.session.userid], function (error, results, fields) {
@@ -61,35 +63,6 @@ app.get('/timestamp', function (request, response) {
         response.send(results[0]);
     })
 });
-
-/*exports.register = function (req, res) {
-    // console.log("req",req.body);
-    var today = new Date();
-    var users = {
-        "first_name": req.body.first_name,
-        "last_name": req.body.last_name,
-        "email": req.body.email,
-        "password": req.body.password,
-        "created": today,
-        "modified": today
-    }
-    connection.query('INSERT INTO users SET ?', users, function (error, results, fields) {
-        if (error) {
-            console.log("error ocurred", error);
-            res.send({
-                "code": 400,
-                "failed": "error ocurred"
-            })
-        } else {
-            console.log('The solution is: ', results);
-            res.send({
-                "code": 200,
-                "success": "user registered sucessfully"
-            });
-        }
-    });
-}*/
-
 
 
 //registration method for db
@@ -119,8 +92,9 @@ app.post('/reg', function (request, response) {
                 "firstname": request.body.firstname,
                 "lastname": request.body.lastname,
             }
-
+            //creating a record for the new student in the timestamp table s well
             connection.query('INSERT INTO timestamps SET ?', timeinfo, function (error, results, fields) {
+                //some basic error trapping implemented
                 if (error) {
                     console.log("error ocurred", error);
                     console.log("error ocurred jhere is the data: " + resuls.userID + " " + users.firstname + " " + users.lastname);
