@@ -57,10 +57,10 @@ app.get('/createsurvey', function (request, response) {
 
 //timestamp is essentailly a select query, will implement functionality later (later sprint maybe?)
 app.get('/timestamp', function (request, response) {
-    console.log(request.session.username+" "+request.session.userID);
-    connection.query('SELECT * FROM timestamps WHERE username = ? AND userID = ?', [request.session.username, request.session.userid], function (error, results, fields) {
-        console.log("error ocurred", error);
-        response.send(results[0]);
+    console.log(request.session.firstname+": this is what is sent :"+request.session.userid);
+    connection.query('SELECT * FROM timestamps WHERE firstname = ? AND userID = ?', [request.session.firstname, request.session.userid], function (error, results, fields) {
+        response.send(results);
+        console.log(results[0])
     })
 });
 
@@ -130,6 +130,7 @@ app.post('/auth', function(request, response) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
                 request.session.username = username;
+                request.session.firstname = results[0].firstname
                 request.session.userid = results[0].userID;
                 request.session.acctype = results[0].acctype;
                 console.log(results[0].acctype +":::: "+request.session.userid);

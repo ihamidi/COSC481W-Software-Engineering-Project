@@ -5,7 +5,7 @@ head
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
 
-body
+body(style="background-color:#0090FF")
     nav.navbar.navbar-inverse
         .container-fluid
         .navbar-header
@@ -24,7 +24,7 @@ body
                     a(href='#') Projects
                 li
                     a(href='#') Contact
-    .jumbotron.text-center
+    .jumbotron.text-center(style="background-color:#60BAFF") 
         h1 Thanks for Logging in
         #container.col
         if acctype === 'Student'

@@ -16,15 +16,11 @@
             <form class="form-login" action="reg" method="post">
                <h3>Registration</h3>
                <div class="form-group">
-
-                  <div class="custom-control custom-radio">
-                  <input type="radio" name="acctype" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadio1">Student</label>
-                  </div>
-                  <div class="custom-control custom-radio">
-                  <input type="radio" name="acctype" class="custom-control-input">
-                  <label class="custom-control-label" for="customRadio2">Parent</label>
-                  </div>
+		  
+  		  <select name="acctype">
+		    <option value="Parent">Parent</option>
+		    <option value="Student">Student</option>
+		  </select>
                   <input type="text" name="firstname" placeholder="First" required>
                   <input type="text" name="lastname" placeholder="Last" required>
                   <input type="text" name="username" placeholder="Username" required>
