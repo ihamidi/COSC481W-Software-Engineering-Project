@@ -63,7 +63,28 @@ class Questions {
   }
 
   qCreateSurvey() {
-    return this.questions[0].createQuestionDiv();
+    var surveyDiv = document.createElement('div');
+    var questionsDiv = document.createElement('div');
+    questionsDiv.setAttribute("class", "form-group");
+    questionsDiv.setAttribute("id", "questionsDiv");
+
+    var surveyName = document.createElement('h4');
+    surveyName.innerHTML = document.getElementById("surveyName").value + " ("
+                          + document.getElementById("surveyType").value + " Survey)";
+
+    questionsDiv.appendChild(surveyName);
+
+    for (var i = 0; i < this.count; i++) {
+      console.log("Loop entered2")
+      console.log(this.questions[i].createQuestionDiv());
+      questionsDiv.appendChild(this.questions[i].createQuestionDiv());
+      questionsDiv.appendChild(document.createElement('br'));
+    }
+
+    surveyDiv.appendChild(questionsDiv);
+
+
+    return surveyDiv;
   }
 
   qnewResponse(questionID) {
@@ -102,7 +123,7 @@ class MultipleChoice extends Question {
 
     responses.appendChild(responseInput);
     responses.appendChild(document.createElement('br'));
-
+    this.optionNum++;
   }
 
   template() {
@@ -178,7 +199,9 @@ class MultipleChoice extends Question {
     questionDiv.appendChild(prompt);
 
     var i;
+    console.log(this.optionNum);
     for (i = 0; i < this.optionNum; i++) {
+      console.log("loop entered");
       var div = document.createElement('div');
       div.setAttribute("class","form-check");
 
@@ -187,12 +210,14 @@ class MultipleChoice extends Question {
       radio.setAttribute("class", "form-check-input");
       radio.setAttribute("name", "question" + this.questionNum);
       radio.setAttribute("value", i);
-      radio.setAttribute("id","option"+this.questionNum+"-"+this.optionNum);
+      radio.setAttribute("id","option"+this.questionNum+"-"+i);
 
+      console.log("i: " + i + " this.optionNum: " + this.optionNum + " qNum: " + this.questionNum);
       var label = document.createElement('label');
       label.setAttribute("class","form-check-label");
-      label.setAttribute("for","option"+this.questionNum+"-"+this.optionNum);
-      label.innerHTML = (i+1) + ". " + document.getElementById("opt"+this.questionNum+"-"+i).value;
+      label.setAttribute("for","option"+this.questionNum+"-"+i);
+      var option = document.getElementById("qopt"+this.questionNum+"-"+i).value
+      label.innerHTML = (i+1) + ". " + option;
 
       div.appendChild(radio);
       div.appendChild(label);
@@ -223,14 +248,103 @@ class MultipleChoice extends Question {
       super(questionNumber);
       this.type = "Check Box";
     }
+
+    createQuestionDiv() {
+      var templatePrompt = document.getElementById("qprompt"+this.questionNum);
+
+      var questionDiv = document.createElement('div');
+
+      var prompt = document.createElement('p');
+      prompt.innerHTML = templatePrompt.value;
+
+      questionDiv.appendChild(prompt);
+
+      var i;
+      console.log(this.optionNum);
+      for (i = 0; i < this.optionNum; i++) {
+        console.log("loop entered");
+        var div = document.createElement('div');
+        div.setAttribute("class","form-check");
+
+        var checkbox = document.createElement('input');
+        checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("class", "form-check-input");
+        checkbox.setAttribute("name", "check" + this.questionNum+"-"+i);
+        checkbox.setAttribute("value", "checked");
+        checkbox.setAttribute("id","option"+this.questionNum+"-"+i);
+
+        console.log("i: " + i + " this.optionNum: " + this.optionNum + " qNum: " + this.questionNum);
+        var label = document.createElement('label');
+        label.setAttribute("class","form-check-label");
+        label.setAttribute("for","option"+this.questionNum+"-"+i);
+        var option = document.getElementById("qopt"+this.questionNum+"-"+i).value
+        label.innerHTML = (i+1) + ". " + option;
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        questionDiv.appendChild(div);
+
+        /*
+        <div>
+        <p>Do you want to check 1 and/or 2?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="qcheck1-1" name="qcheck1-1" value="checked"></input>
+          <label class="form-check-label" for="qcheck1-1">Check 1</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="qcheck1-2" name="qcheck1-2" value="checked"></input>
+          <label class="form-check-label" for="qcheck1-2">Check 2</label>
+        </div>
+        </div>*/
+      }
+      return questionDiv;
   }
+}
 
   class Dropdown extends MultipleChoice {
     constructor(questionNumber){
       super(questionNumber);
       this.type = "Drop Down";
     }
+    createQuestionDiv() {
+      var templatePrompt = document.getElementById("qprompt"+this.questionNum);
+
+      var questionDiv = document.createElement('div');
+
+      var prompt = document.createElement('p');
+      prompt.innerHTML = templatePrompt.value;
+
+      questionDiv.appendChild(prompt);
+
+      var select = document.createElement('select');
+      select.setAttribute("class", "form-control");
+      select.setAttribute("name", "question" + this.questionNum+"-"+i);
+      select.setAttribute("id","option"+this.questionNum+"-"+i);
+
+      var i;
+
+      for (i = 0; i < this.optionNum; i++) {
+
+        var optionHTML = document.createElement('option');
+        optionHTML.setAttribute("value", i)
+        var option = document.getElementById("qopt"+this.questionNum+"-"+i).value;
+        optionHTML.innerHTML = (i+1) + ". " + option;
+
+        select.appendChild(optionHTML);
+        /*
+        <div>
+          <p>Which Opt would you like?</p>
+          <select name=""class="form-control">
+            <option>Opt1</option>
+            <option>Opt2</option>
+            <option>Opt3</option>
+          </select>
+        </div>*/
+      }
+      questionDiv.appendChild(select);
+      return questionDiv;
   }
+}
 
   class ShortAnswer extends Question {
     constructor(questionNumber){
@@ -259,4 +373,28 @@ class MultipleChoice extends Question {
 
       return template;
     }
+    createQuestionDiv() {
+      var templatePrompt = document.getElementById("qprompt"+this.questionNum);
+
+      var questionDiv = document.createElement('div');
+
+      var prompt = document.createElement('p');
+      prompt.innerHTML = templatePrompt.value;
+
+      questionDiv.appendChild(prompt);
+      var i = 0;
+      var textarea = document.createElement('textarea');
+      textarea.setAttribute("class", "form-control");
+      textarea.setAttribute("name", "question" + this.questionNum+"-"+i);
+      textarea.setAttribute("id","option"+this.questionNum+"-"+i);
+      textarea.setAttribute("placeholder", "Enter Answer");
+
+        /*
+        <div>
+          <p>This is a answer in which you should use your words.</p>
+          <textarea placeholder="Enter Answer" class="form-control" id="option0-0" rows="3"></textarea>
+        </div>*/
+      questionDiv.appendChild(textarea);
+      return questionDiv;
   }
+}
