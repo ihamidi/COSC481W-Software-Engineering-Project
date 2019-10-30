@@ -7,7 +7,7 @@ const multer  = require('multer');
 const app = express();
 
 app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname + '/registration.html'));
+    response.sendFile(path.join(__dirname + '/views/registration.html'));
 });
 
 app.set(function () {

@@ -4,6 +4,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 var pug = require('pug');
+const multer  = require('multer');
 var formdownload = require('./registration.js');
 var users;
 
@@ -161,6 +162,27 @@ app.get('/test', function (req, res) {
   res.download(file); // Set disposition and send it.
 });
 
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  })
+   
+  var upload = multer({ storage: storage })
+
+  app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
+    const file = req.file
+    if (!file) {
+      const error = new Error('Please upload a file')
+      error.httpStatusCode = 400
+      return next(error)
+    }
+      res.send(file)
+    
+  })
 
 //dont need to redirect anymore, using pug to render webpage based on sign in type;
 /*
