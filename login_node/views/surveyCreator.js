@@ -45,6 +45,16 @@ class Questions {
       this.questionsDiv.appendChild(this.questions[this.count].template());
       this.questions[this.count].addResponse();
     }
+    else if (type == "dropdown") {
+      this.questions.push(new Dropdown(this.count+1))
+      this.questionsDiv.appendChild(this.questions[this.count].template());
+      this.questions[this.count].addResponse();
+    }
+    else if (type == "shortanswer") {
+      this.questions.push(new ShortAnswer(this.count+1))
+      this.questionsDiv.appendChild(this.questions[this.count].template());
+    }
+
 
     this.count++;
   }
@@ -60,6 +70,7 @@ class Question {
     this.questionNum = questionNumber;
     this.optionNum = 1;
     this.responses;
+    this.type = "Question";
   }
   template() {
 
@@ -72,6 +83,7 @@ class Question {
 class MultipleChoice extends Question {
   constructor(questionNumber){
     super(questionNumber);
+    this.type = "Multiple Choice";
   }
 
   addResponse() {
@@ -106,7 +118,7 @@ class MultipleChoice extends Question {
 
     var promptLabel = document.createElement('label');
     promptLabel.setAttribute("for", "qprompt"+this.questionNum);
-    promptLabel.innerHTML = "Question " + this.questionNum;
+    promptLabel.innerHTML = "Question " + this.questionNum + " - " + this.type;
 
     var questionInput = document.createElement('input');
     questionInput.setAttribute("id", "qprompt"+this.questionNum);
@@ -151,9 +163,45 @@ class MultipleChoice extends Question {
   }
 }
 
-
   class Checkbox extends MultipleChoice {
     constructor(questionNumber){
       super(questionNumber);
+      this.type = "Check Box";
+    }
+  }
+
+  class Dropdown extends MultipleChoice {
+    constructor(questionNumber){
+      super(questionNumber);
+      this.type = "Drop Down";
+    }
+  }
+
+  class ShortAnswer extends Question {
+    constructor(questionNumber){
+      super(questionNumber);
+      this.type = "Short Answer";
+    }
+    template() {
+      var template = document.createElement('div');
+      template.setAttribute("id","question" + this.questionNum);
+
+      var promptLabel = document.createElement('label');
+      promptLabel.setAttribute("for", "qprompt"+this.questionNum);
+      promptLabel.innerHTML = "Question " + this.questionNum + " - " + this.type;
+
+      var questionInput = document.createElement('input');
+      questionInput.setAttribute("id", "qprompt"+this.questionNum);
+      questionInput.setAttribute("type", "text");
+      questionInput.setAttribute("class","form-control");
+      questionInput.setAttribute("placeholder","Enter Question");
+
+      var lineBreak = document.createElement('br');
+
+      template.appendChild(promptLabel);
+      template.appendChild(questionInput);
+      template.appendChild(document.createElement('br'));
+
+      return template;
     }
   }
