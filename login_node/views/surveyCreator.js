@@ -16,6 +16,11 @@ function newQuestion() {
   questionsMaster.newQuestion(questionType.options[questionType.selectedIndex].value);
 }
 
+function deleteQuestion() {
+  var deleteQuestionButton = document.getElementById("deleteQuestionButton");
+  questionsMaster.deleteQuestion();
+}
+
 function newResponse(questionID) {
   questionsMaster.qnewResponse(questionID-1);
 
@@ -58,8 +63,13 @@ class Questions {
       this.questionsDiv.appendChild(this.questions[this.count].template());
     }
 
-
     this.count++;
+  }
+
+  deleteQuestion() {
+    this.questionsDiv.removeChild(this.questionsDiv.lastChild);
+    this.questions.pop();
+    this.count--;
   }
 
   qCreateSurvey() {
