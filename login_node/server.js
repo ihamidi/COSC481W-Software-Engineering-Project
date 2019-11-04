@@ -52,7 +52,8 @@ app.get('/createsurvey', function (request, response) {
     console.log(request.session.username + " " + request.session.acctype);
     //still figuring out how to xcompare the acctype to "Admin"
     if (request.session.loggedin && request.session.acctype) {
-        response.render(path.join(__dirname + '/views/createsurvey'));
+        response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
+        response.sendFile(path.join(__dirname + '/views/surveyCreator.js'))
     }
 });
 
@@ -140,7 +141,7 @@ app.post('/auth', function(request, response) {
                 });
 			} else {
 				response.send('Incorrect Username and/or Password!');
-			}			
+			}
 			response.end();
 		});
 	} else {
@@ -170,7 +171,7 @@ var storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + Date.now())
     }
   })
-   
+
   var upload = multer({ storage: storage })
 
   app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
@@ -181,7 +182,7 @@ var storage = multer.diskStorage({
       return next(error)
     }
       res.send(file)
-    
+
   })
 
 //dont need to redirect anymore, using pug to render webpage based on sign in type;
