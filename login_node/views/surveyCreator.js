@@ -1,5 +1,6 @@
 var questionsMaster;
 
+
 function onLoad() {
   questionsMaster = new Questions();
 }
@@ -28,10 +29,12 @@ function newResponse(questionID) {
 
 function createSurvey() {
   surveyDiv = document.getElementById("finishedSurvey");
+  surveyContainerDiv = document.createElement('div');
 
-  var survey = questionsMaster.qCreateSurvey()
+  var survey = questionsMaster.qCreateSurvey();
 
   surveyDiv.appendChild(survey);
+
 }
 
 class Questions {
