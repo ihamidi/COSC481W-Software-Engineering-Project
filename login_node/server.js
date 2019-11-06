@@ -52,8 +52,11 @@ app.get('/createsurvey', function (request, response) {
     console.log(request.session.username + " " + request.session.acctype);
     //still figuring out how to xcompare the acctype to "Admin"
     if (request.session.loggedin && request.session.acctype) {
-        response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
-        response.sendFile(path.join(__dirname + '/views/surveyCreator.js'))
+        app.use(express.static('./views/public_javascript'));
+    //response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
+        response.render(path.join(__dirname + '/views/createsurvey'));
+    //app.use('/static', express.static('./views/css/announcements.css'));
+
     }
 });
 
