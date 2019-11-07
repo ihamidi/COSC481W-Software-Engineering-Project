@@ -7,6 +7,7 @@ var pug = require('pug');
 const multer  = require('multer');
 var formdownload = require('./registration.js');
 var users;
+var registration = require('./studentManagement.js');
 
 //giving clousql credentials
 var connection = mysql.createConnection({
@@ -150,40 +151,11 @@ app.post('/auth', function(request, response) {
 	}
 });
 
-//app.get('/download', formdownload.get('/download'));
-
-//copied code from registation.js for the meantime
-app.get('/registration', function (req, res) {
-    const file = `${__dirname}/forms/Cat.pdf`;
-    res.download(file); // Set disposition and send it.
-});
-
-app.get('/test', function (req, res) {
-  const file = `${__dirname}/forms/test.pdf`;
-  res.download(file); // Set disposition and send it.
-});
-
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads')
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
-    }
-  })
-
-  var upload = multer({ storage: storage })
-
-  app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
-    const file = req.file
-    if (!file) {
-      const error = new Error('Please upload a file')
-      error.httpStatusCode = 400
-      return next(error)
-    }
-      res.send(file)
-
-  })
+//registration route
+app.use(registration);
+app.use('/registration', registration);
+app.use('/test', registration);
+app.use('/uploadfile', registration);
 
 //dont need to redirect anymore, using pug to render webpage based on sign in type;
 /*
