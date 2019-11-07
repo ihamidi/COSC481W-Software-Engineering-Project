@@ -1,12 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Survey Creator</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/announcements.css">
+    <link rel="stylesheet" href="announcements.css">
   </head>
   <body onload="onLoad()">
     <h2 class="container">Survey Creator</h2>
@@ -15,9 +14,9 @@
       <button class="btn" id='newSurveyButton' onclick="newSurvey()">New Survey</button>
       <div class="form-group">
         <label for="surveyName">Survey Name</label>
-        <input type="text" class="form-control" id="surveyName" placeholder="Enter Name"></div>
+        <input type="text" class="form-control" id="surveyName" placeholder="Enter Name"></input>
         <label for="surveyType">Survey Type</label>
-        <select id="surveyType"class="form-control" placeholder="Survey Type">
+        <select id="surveyType" class="form-control">
           <option value="Student">Student</option>
           <option value="Parent">Parent</option>
         </select>
@@ -45,25 +44,18 @@
       </div>
       <hr>
       <div class="form-group">
-        <button id="submitSurvey" type="button" class="btn btn-primary" onclick="createSurvey()">Create Survey</input>
-
+        <button id="submitSurvey" type="button" class="btn btn-primary" onclick="createSurvey()">Create Survey</button>
       </div>
 
       <hr>
       <div class="form-group" id="finishedSurvey">
 
       </div>
-
-    </div>
-
     </form>
-
-
 
     <script src="surveyCreator.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
-
 </html>
