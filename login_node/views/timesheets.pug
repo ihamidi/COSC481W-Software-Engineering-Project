@@ -1,0 +1,124 @@
+doctype html
+head
+	title Pug
+	link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+
+body(style="background-color:#0090FF")
+	nav.navbar.navbar-inverse
+		.container-fluid
+		.navbar-header
+			button.navbar-toggle(type='button' data-toggle='collapse' data-target='#myNavbar')
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+			a.navbar-brand(href='#') Logo
+		#myNavbar.collapse.navbar-collapse
+			ul.nav.navbar-nav
+				li.active
+					a(href='#') Home
+				li
+					a(href='#') About
+				li
+					a(href='#') Projects
+				li
+					a(href='#') Contact
+	.jumbotron.text-center(style="background-color:#60BAFF")
+		h1 Thanks for Logging in
+		#container.col
+		if acctype === 'Student'
+			p Click the button below to timestamp
+			form(action='timestamp' method='GET')
+				input(type='submit' value='Timestamp!')
+		else if acctype === 'Parent'
+      //-
+  			.col-sm-12.col-md-4(style="background-color:Green;")
+  				h2 Registration
+  				div
+  					p Click here to download the registration form:
+  					form(action='registration' method='GET')
+  						input(type='submit' value='cat')
+  					form(action='test' method='GET')
+  						input(type='submit' value='test')
+  					div
+  					p Upload Forms:
+  					form(action='/uploadfile' enctype='multipart/form-data' method='POST')
+  						input(type='file' name='myFile')
+  						input(type='submit' value='Upload a File')
+  			.col-sm-12.col-md-4(style="background-color:yellow;")
+  				h2 Sign up a student
+  				div
+  					p Click here to download the registration form:
+  					form(action='registration' method='GET')
+  						input(type='submit' value='cat')
+  					form(action='test' method='GET')
+  						input(type='submit' value='test')
+  						ul.nav.nav-tabs
+  			.col-sm-12.col-md-4(style="background-color:Orange;")
+  				h2 Check a students Timesheet
+  				div
+  					p Click here to download the registration form:
+  					form(action='registration' method='GET')
+  						input(type='submit' value='cat')
+  					form(action='test' method='GET')
+  						input(type='submit' value='test')
+  					div
+  			.col-sm-12(style="background-color:Orange;")
+      //
+			ul.nav.nav-tabs
+				li.active
+					a(data-toggle='tab' href='#home') Registration
+				li
+					a(data-toggle='tab' href='#menu1') Student Sign up
+				li
+					a(data-toggle='tab' href='#menu2') Timestamps
+			.tab-content
+				#home.tab-pane.fade.in.active
+					h2 Registration
+					div
+						p Click here to download the registration form:
+						form(action='registration' method='GET')
+							input(type='submit' value='cat')
+						form(action='test' method='GET')
+							input(type='submit' value='test')
+						div
+						p Upload Forms:
+						form(action='/uploadfile' enctype='multipart/form-data' method='POST')
+							input(type='file' name='myFile')
+							input(type='submit' value='Upload a File')
+				#menu1.tab-pane.fade
+					h2 Check a students Timesheet
+					div
+						p Click here to sign up a student
+						form(action='studentsignup' method='GET')
+							input(type='submit' value='Student Sign up')
+						div
+				#menu2.tab-pane.fade
+					h2 Check a students Timesheet
+					div
+						p Click here to download Check astudents timesheet
+						form(action='registration' method='GET')
+							input(type='submit' value='cat')
+						form(action='test' method='GET')
+							input(type='submit' value='test')
+						div
+				#menu3.tab-pane.fade
+					h3 Menu 3
+					p
+						| Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+
+
+
+		else if acctype === 'Admin'
+			.login
+			a(href="/") Login
+			p Welcome Admin
+			p Pug is a good use for the timestamp system.
+			form(action='createsurvey' method='GET')
+				input(type='submit' value='Create Survey')
+			form(action='modifyuser' method='GET')
+				input(type='submit' value='MODIFY USER')
+		else
+			h2 Please login to view contents

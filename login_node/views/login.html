@@ -37,6 +37,10 @@
                <div class="col-sm-8 text-left">
                            <h2>Welcome to Bits and Bytes!<br><small>Login to view functions</small></h2>
                        <form class="form-login" form action="auth" method="POST">
+                           <select name="acctype">
+                            <option value="Student">Student</option>
+                            <option value="Parent">Parent</option>
+                          </select>
                            <input type="text" class="form-control" name="username" placeholder="Username" required>
                            <input type="password" class="form-control" name="password" placeholder="Password" required>
                            <button type="submit" class="btn btn-default" name="login-submit">Login</button>

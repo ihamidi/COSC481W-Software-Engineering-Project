@@ -45,7 +45,18 @@ app.get('/', function(request, response) {
 
 //sending sign up oapge
 app.get('/signup', function (request, response) {
-    response.sendFile(path.join(__dirname + '/views/signup.html'));
+  response.sendFile(path.join(__dirname + '/views/signup.html'));
+});
+
+//sending sign up oapge
+app.get('/announcements', function (request, response) {
+  response.sendFile(path.join(__dirname + '/views/announcements.html'));
+});
+
+
+//sending sign up oapge
+app.get('/studentsignup', function (request, response) {
+  response.render(path.join(__dirname + '/views/studentsignup'));
 });
 
 //redirecting to create survey
