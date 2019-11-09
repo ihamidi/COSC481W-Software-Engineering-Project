@@ -72,6 +72,14 @@ app.get('/createsurvey', function (request, response) {
     }
 });
 
+
+
+//logout function, destroys session and redirects home
+app.get('/logout', function (request, response) {
+    request.session.destroy();
+    response.redirect('/');
+});
+
 //timestamp is essentailly a select query, will implement functionality later (later sprint maybe?)
 app.get('/timestamp', function (request, response) {
     console.log(request.session.firstname+": this is what is sent :"+request.session.userid);
