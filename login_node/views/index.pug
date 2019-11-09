@@ -62,7 +62,6 @@ body(style="background-color:#0090FF")
 						p tbd
 
 		else if acctype === 'Parent'
-			.col-sm-12(style="background-color:Orange;")
 			ul.nav.nav-tabs
 				li.active
 					a(data-toggle='tab' href='#home') Registration
@@ -85,7 +84,7 @@ body(style="background-color:#0090FF")
 							input(type='file' name='myFile' style='align: center')
 							input(type='submit' value='Upload a File')
 				#menu1.tab-pane.fade
-					h2 Check a students Timesheet
+					h2 Sign up a student
 					div
 						p Click here to sign up a student
 						form(action='studentsignup' method='GET')
@@ -94,7 +93,7 @@ body(style="background-color:#0090FF")
 				#menu2.tab-pane.fade
 					h2 Check a students Timesheet
 					div
-						p Click here to download Check astudents timesheet
+						p Click here to download Check a students timesheet
 						form(action='registration' method='GET')
 							input(type='submit' value='cat')
 						form(action='test' method='GET')

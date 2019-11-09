@@ -11,7 +11,7 @@ app.get('/', function (request, response) {
 });
 
 app.set(function () {
-    this.use('/public', express.static('public')); 
+    this.use('/public', express.static('public'));
 });
 
 app.get('/registration', function (req, res) {
@@ -32,7 +32,7 @@ var storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + Date.now())
     }
   })
-   
+
   var upload = multer({ storage: storage })
 
   app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
@@ -43,10 +43,8 @@ var storage = multer.diskStorage({
       return next(error)
     }
       res.send(file)
-    
+
   })
 
-
-app.listen(3000);
-
-
+//commented out the registration
+//app.listen(3000);

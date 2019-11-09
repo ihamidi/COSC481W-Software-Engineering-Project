@@ -11,7 +11,7 @@ var registration = require('./studentManagement.js');
 
 //giving clousql credentials
 var connection = mysql.createConnection({
-    host     : '34.66.160.101',
+  host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
 	database : 'BitsAndBytes'
@@ -145,6 +145,49 @@ app.post('/reg', function (request, response) {
 
 
 
+
+
+
+/* thiss is a new reg designed to work with the adult accounts
+app.post('/reg', function (request, response) {
+    //defining user as many parts from form
+    users = {
+        "firstname": request.body.firstname,
+        "lastname": request.body.lastname,
+        "username": request.body.username,
+        "email": request.body.email,
+        "password": request.body.password,
+    }
+    //Inserting the user into accounts table
+    connection.query('INSERT INTO adult_accounts SET ?', users, function (error, results, fields) {
+    })
+        response.redirect('/');
+});*/
+
+
+
+
+/* thiss is a new reg designed to work with the student accounts
+app.post('/studentreg', function (request, response) {
+    //defining user as many parts from form
+    users = {
+        "firstname": request.body.firstname,
+        "lastname": request.body.lastname,
+        "username": request.body.username,
+        "email": request.body.email,
+        "password": request.body.password,
+    }
+    //Inserting the user into accounts table
+    connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
+    })
+    response.render('index', {
+        acctype:.request.session.acctype
+    });
+});*/
+
+
+
+
 //authorization metod after user submits
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
@@ -179,17 +222,7 @@ app.use('/registration', registration);
 app.use('/test', registration);
 app.use('/uploadfile', registration);
 
-//dont need to redirect anymore, using pug to render webpage based on sign in type;
-/*
-app.get('/home', function(request, response) {
-    if (request.session.loggedin) {
 
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});
-*/
 
 
 //registration.js is a required module and it is using the port 3000, So i set it to port 30000
