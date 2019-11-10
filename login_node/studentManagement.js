@@ -33,7 +33,9 @@ var storage = multer.diskStorage({
       error.httpStatusCode = 400
       return next(error)
     }
-      res.send(file)
+    res.render('index', {
+      acctype: 'Parent'
+  });
 
   })
 

@@ -14,7 +14,7 @@ var connection = mysql.createConnection({
   host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
-	database : 'BitsAndBytes'
+	database : 'swing_demo' //change to BitsAndBytes when testing using current schema
 });
 var app = express();
 
@@ -100,46 +100,46 @@ app.post('/reg', function (request, response) {
         "username": request.body.username,
         "email": request.body.email,
         "password": request.body.password,
-        "acctype": request.body.acctype,
-        "grade": 0
+        // "acctype": request.body.acctype,
+        // "grade": 0
     }
     //Inserting the user into accounts table
-    connection.query('INSERT INTO accounts SET ?', users, function (error, results, fields) {
+    connection.query('INSERT INTO adult_accounts SET ?', users, function (error, results, fields) { //change adult_accounts to accounts when testing against current schema
     })
 
 
     //nestedQueries ???? What are you doing brah
     //Inserting the user into timestamp table
-    if (request.body.acctype.toString().trim() === "Student") {
-        connection.query('SELECT userID FROM accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, resuls, fields) {
-            var timeinfo = {
-                "userID": resuls[0].userID,
-                "firstname": request.body.firstname,
-                "lastname": request.body.lastname,
-            }
-            //creating a record for the new student in the timestamp table s well
-            connection.query('INSERT INTO timestamps SET ?', timeinfo, function (error, results, fields) {
-                //some basic error trapping implemented
-                if (error) {
-                    console.log("error ocurred", error);
-                    console.log("error ocurred jhere is the data: " + resuls.userID + " " + users.firstname + " " + users.lastname);
-                    response.send({
-                        "code": 400,
-                        "failed": "error ocurred"
-                    })
-                } else {
-                    console.log('The solution is: ', results);
-                    response.send({
-                        "code": 200,
-                        "success": "user registered sucessfully"
-                    });
-                }
-            })
-        })
-    }
-    else {
+    // if (request.body.acctype.toString().trim() === "Student") {
+    //     connection.query('SELECT userID FROM accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, resuls, fields) {
+    //         var timeinfo = {
+    //             "userID": resuls[0].userID,
+    //             "firstname": request.body.firstname,
+    //             "lastname": request.body.lastname,
+    //         }
+    //         //creating a record for the new student in the timestamp table s well
+    //         connection.query('INSERT INTO timestamps SET ?', timeinfo, function (error, results, fields) {
+    //             //some basic error trapping implemented
+    //             if (error) {
+    //                 console.log("error ocurred", error);
+    //                 console.log("error ocurred jhere is the data: " + resuls.userID + " " + users.firstname + " " + users.lastname);
+    //                 response.send({
+    //                     "code": 400,
+    //                     "failed": "error ocurred"
+    //                 })
+    //             } else {
+    //                 console.log('The solution is: ', results);
+    //                 response.send({
+    //                     "code": 200,
+    //                     "success": "user registered sucessfully"
+    //                 });
+    //             }
+    //         })
+    //     })
+    // }
+    // else {
         response.redirect('/');
-    }
+    // }
 });
 
 
@@ -188,22 +188,22 @@ app.post('/studentreg', function (request, response) {
 
 
 
-//authorization metod after user submits
+//authorization method after user submits
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
-		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', 				[username, password], function(error, results, fields)
+		connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[username, password], function(error, results, fields)
 		 {
 			if (results.length > 0) {
 				request.session.loggedin = true;
                 request.session.username = username;
                 request.session.firstname = results[0].firstname
                 request.session.userid = results[0].userID;
-                request.session.acctype = results[0].acctype;
+                // request.session.acctype = results[0].acctype;
                 console.log(results[0].acctype +":::: "+request.session.userid);
                 response.render('index', {
-                    acctype: results[0].acctype
+                    acctype: 'Parent'// change to results[0].acctype when testing against current schema
                 });
 			} else {
 				response.send('Incorrect Username and/or Password!');
