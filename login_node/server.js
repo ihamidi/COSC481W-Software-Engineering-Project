@@ -88,7 +88,39 @@ app.get('/timestamp', function (request, response) {
         console.log(results[0])
     })
 });
+//registration method for db
+app.post('/studentreg', function (request, response) {
+    //var today = new Date();     //can be used later
+    //defining user as many parts from form
+    users = {
+        "userID": request.session.userid,
+        "firstname": request.body.firstname,
+        "lastname": request.body.lastname,
+        "grade": request.body.acctype,
+        "username": request.body.username,
+        "email": request.body.email,
+        "school": request.body.school,
+        "password": request.body.password,
+        "acctype": "Student"
 
+    }
+    //Inserting the user into accounts table
+    connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
+      if (error) {
+          console.log("error ocurred", error);
+          console.log("error ocurred jhere is the data: " + resuls.userID + " " + users.firstname + " " + users.lastname);
+          response.send({
+              "code": 400,
+              "failed": "error ocurred"
+          })
+      } else {
+          console.log('The solution is: ', results);
+          response.send({
+              "code": 200,
+              "success": "user registered sucessfully"
+          })
+      }})
+    });
 
 //registration method for db
 app.post('/reg', function (request, response) {
