@@ -1,25 +1,16 @@
-
-const express = require('express');
-const path = require('path');
-const bodyParser= require('body-parser')
-const http = require('http');
+var express = require('express');
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var path = require('path');
 const multer  = require('multer');
-const app = express();
+const router = express.Router();
 
-app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname + '/views/registration.html'));
-});
-
-app.set(function () {
-    this.use('/public', express.static('public'));
-});
-
-app.get('/registration', function (req, res) {
+router.get('/registration', function (req, res) {
     const file = `${__dirname}/forms/Cat.pdf`;
     res.download(file); // Set disposition and send it.
 });
 
-app.get('/test', function (req, res) {
+router.get('/test', function (req, res) {
   const file = `${__dirname}/forms/test.pdf`;
   res.download(file); // Set disposition and send it.
 });
@@ -35,7 +26,7 @@ var storage = multer.diskStorage({
 
   var upload = multer({ storage: storage })
 
-  app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
+  router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
@@ -46,5 +37,4 @@ var storage = multer.diskStorage({
 
   })
 
-//commented out the registration
-//app.listen(3000);
+  module.exports = router

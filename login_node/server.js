@@ -7,10 +7,11 @@ var pug = require('pug');
 const multer  = require('multer');
 var formdownload = require('./registration.js');
 var users;
+var registration = require('./studentManagement.js');
 
 //giving clousql credentials
 var connection = mysql.createConnection({
-    host     : '34.66.160.101',
+  host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
 	database : 'BitsAndBytes'
@@ -44,7 +45,18 @@ app.get('/', function(request, response) {
 
 //sending sign up oapge
 app.get('/signup', function (request, response) {
-    response.sendFile(path.join(__dirname + '/views/signup.html'));
+  response.sendFile(path.join(__dirname + '/views/signup.html'));
+});
+
+//sending sign up oapge
+app.get('/announcements', function (request, response) {
+  response.sendFile(path.join(__dirname + '/views/announcements.html'));
+});
+
+
+//sending sign up oapge
+app.get('/studentsignup', function (request, response) {
+  response.render(path.join(__dirname + '/views/studentsignup'));
 });
 
 //redirecting to create survey
@@ -58,6 +70,14 @@ app.get('/createsurvey', function (request, response) {
     //app.use('/static', express.static('./views/css/announcements.css'));
 
     }
+});
+
+
+
+//logout function, destroys session and redirects home
+app.get('/logout', function (request, response) {
+    request.session.destroy();
+    response.redirect('/');
 });
 
 //timestamp is essentailly a select query, will implement functionality later (later sprint maybe?)
@@ -125,6 +145,49 @@ app.post('/reg', function (request, response) {
 
 
 
+
+
+
+/* thiss is a new reg designed to work with the adult accounts
+app.post('/reg', function (request, response) {
+    //defining user as many parts from form
+    users = {
+        "firstname": request.body.firstname,
+        "lastname": request.body.lastname,
+        "username": request.body.username,
+        "email": request.body.email,
+        "password": request.body.password,
+    }
+    //Inserting the user into accounts table
+    connection.query('INSERT INTO adult_accounts SET ?', users, function (error, results, fields) {
+    })
+        response.redirect('/');
+});*/
+
+
+
+
+/* thiss is a new reg designed to work with the student accounts
+app.post('/studentreg', function (request, response) {
+    //defining user as many parts from form
+    users = {
+        "firstname": request.body.firstname,
+        "lastname": request.body.lastname,
+        "username": request.body.username,
+        "email": request.body.email,
+        "password": request.body.password,
+    }
+    //Inserting the user into accounts table
+    connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
+    })
+    response.render('index', {
+        acctype:.request.session.acctype
+    });
+});*/
+
+
+
+
 //authorization metod after user submits
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
@@ -153,52 +216,13 @@ app.post('/auth', function(request, response) {
 	}
 });
 
-//app.get('/download', formdownload.get('/download'));
+//registration route
+app.use(registration);
+app.use('/registration', registration);
+app.use('/test', registration);
+app.use('/uploadfile', registration);
 
-//copied code from registation.js for the meantime
-app.get('/registration', function (req, res) {
-    const file = `${__dirname}/forms/Cat.pdf`;
-    res.download(file); // Set disposition and send it.
-});
 
-app.get('/test', function (req, res) {
-  const file = `${__dirname}/forms/test.pdf`;
-  res.download(file); // Set disposition and send it.
-});
-
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads')
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
-    }
-  })
-
-  var upload = multer({ storage: storage })
-
-  app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
-    const file = req.file
-    if (!file) {
-      const error = new Error('Please upload a file')
-      error.httpStatusCode = 400
-      return next(error)
-    }
-      res.send(file)
-
-  })
-
-//dont need to redirect anymore, using pug to render webpage based on sign in type;
-/*
-app.get('/home', function(request, response) {
-    if (request.session.loggedin) {
-
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});
-*/
 
 
 //registration.js is a required module and it is using the port 3000, So i set it to port 30000

@@ -1,0 +1,53 @@
+doctype html
+html
+	head
+		title
+		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js")
+	body(style="background-color:#C1FFFA")
+		nav.navbar.navbar-inverse
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href="/index") BitsAndBytes
+				#myNavbar.collapse.navbar-collapse
+					ul.nav.navbar-nav
+						li
+							a(href="/") Home
+						li
+							a(href="signup") Sign up
+						li
+							a(href="createsurvey") Create Survey +Test
+						li
+							a(href="/") Login
+					ul.nav.navbar-nav.navbar-right
+						li
+							a(href='/logout')
+								span.glyphicon.glyphicon-log-out
+								|  Log Out
+		.wrapper-main
+			.container
+				.row
+					.col-sm-9.col-md-7.col-lg-5.mx-auto
+						.card.card-signin.my-5
+							.card-body
+								form.form-login(action="reg" method="post")
+									h3 Student Sign up
+									.form-group
+										input(type="text" class="form-control" name="firstname" placeholder="First name" required="")
+										input(type="text" class="form-control" name="lastname" placeholder="Last name" required="")
+										select(name="grade" placeholder="Grade" class="form-control")
+											option(value="6") 6th Grade
+											option(value="7") 7th Grade
+											option(value="8") 8th Grade
+										input(type="text" class="form-control" name="username" placeholder="Username" required="")
+										input(type="text" class="form-control" name="email" placeholder="E-mail" required="")
+										input(type="text" class="form-control" name="School" placeholder="School" required="")
+
+										input(type="password" class="form-control" name="password" placeholder="Password" required="")
+										input(type="password" class="form-control" name="rptpassword" placeholder="Repeat password" required="")
+										button(type="submit" class="form-control" name="signup-submit") Sign up

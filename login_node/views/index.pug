@@ -1,57 +1,140 @@
 doctype html
 head
-    title Pug
-    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+	title BitsAndBytes Home
+	link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
 
 body(style="background-color:#0090FF")
-    nav.navbar.navbar-inverse
-        .container-fluid
-        .navbar-header
-            button.navbar-toggle(type='button' data-toggle='collapse' data-target='#myNavbar')
-                span.icon-bar
-                span.icon-bar
-                span.icon-bar
-            a.navbar-brand(href='#') Logo
-        #myNavbar.collapse.navbar-collapse
-            ul.nav.navbar-nav
-                li.active
-                    a(href='#') Home
-                li
-                    a(href='#') About
-                li
-                    a(href='#') Projects
-                li
-                    a(href='#') Contact
-    .jumbotron.text-center(style="background-color:#60BAFF") 
-        h1 Thanks for Logging in
-        #container.col
-        if acctype === 'Student'
-            p Click the button below to timestamp    
-            form(action='timestamp' method='GET')
-                input(type='submit' value='Timestamp!')
-        else if acctype === 'Parent'
-            h2 Registration
-            div
-            p Click here to download the registration form:
-            form(action='registration' method='GET')
-                input(type='submit' value='cat')
-            form(action='test' method='GET')
-                input(type='submit' value='test')
-            div
-            p Upload Forms:
-            form(action='/uploadfile' enctype='multipart/form-data' method='POST')
-                input(type='file' name='myFile')
-                input(type='submit' value='Upload a File')
-        else if acctype === 'Admin'
-            .login
-            a(href="/") Login
-            p Welcome Admin
-            p Pug is a good use for the timestamp system.
-            form(action='createsurvey' method='GET')
-                input(type='submit' value='Create Survey')
-            form(action='modifyuser' method='GET')
-                input(type='submit' value='MODIFY USER')
-        else
-            h2 Please login to view contents
+	nav.navbar.navbar-inverse
+		.container-fluid
+			.navbar-header
+				button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
+				a.navbar-brand(href="#") BitsAndBytes
+			#myNavbar.collapse.navbar-collapse
+				ul.nav.navbar-nav
+					li
+						a(href="/") Home
+					li
+						a(href="signup") Sign up
+					li
+						a(href="createsurvey") Create Survey +Test
+					li
+						a(href="/") Login
+				ul.nav.navbar-nav.navbar-right
+					li
+						a(href='/logout')
+							span.glyphicon.glyphicon-log-out
+							|  Log Out
+	.jumbotron.text-center(style="background-color:#FFFFFF")
+		h1 Home
+		#container.col
+		if acctype === 'Student'
+			ul.nav.nav-tabs
+				li.active
+					a(data-toggle='tab' href='#home') Check In
+				li
+					a(data-toggle='tab' href='#menu1') Check Out
+				li
+					a(data-toggle='tab' href='#menu2') TBD
+			.tab-content
+				#home.tab-pane.fade.in.active
+					h2 Check In
+					div
+						p Click here to check in
+						form(action='checkin' method='GET')
+							input(type='submit' value='Check In')
+
+
+				#menu1.tab-pane.fade
+					h2 Check Out
+					div
+						p Click here to check out
+						form(action='checkout' method='GET')
+							input(type='submit' value='Check Out')
+
+				#menu2.tab-pane.fade
+					h2 TBD
+					div
+						p tbd
+
+		else if acctype === 'Parent'
+			ul.nav.nav-tabs
+				li.active
+					a(data-toggle='tab' href='#home') Registration
+				li
+					a(data-toggle='tab' href='#menu1') Student Sign up
+				li
+					a(data-toggle='tab' href='#menu2') Timestamps
+			.tab-content
+				#home.tab-pane.fade.in.active
+					h2 Registration
+					div
+						p Click here to download the registration form:
+						form(action='registration' method='GET')
+							input(type='submit' value='cat')
+						form(action='test' method='GET')
+							input(type='submit' value='test')
+						div
+						p Upload Forms:
+						form(action='/uploadfile' enctype='multipart/form-data' method='POST')
+							input(type='file' name='myFile' style='align: center')
+							input(type='submit' value='Upload a File')
+				#menu1.tab-pane.fade
+					h2 Sign up a student
+					div
+						p Click here to sign up a student
+						form(action='studentsignup' method='GET')
+							input(type='submit' value='Student Sign up')
+						div
+				#menu2.tab-pane.fade
+					h2 Check a students Timesheet
+					div
+						p Click here to download Check a students timesheet
+						form(action='registration' method='GET')
+							input(type='submit' value='cat')
+						form(action='test' method='GET')
+							input(type='submit' value='test')
+						div
+
+
+
+
+
+		else if acctype === 'Admin'
+			ul.nav.nav-tabs
+				li.active
+					a(data-toggle='tab' href='#home') Create survey
+				li
+					a(data-toggle='tab' href='#menu1') Announcements
+				li
+					a(data-toggle='tab' href='#menu2') Modify Student
+			.tab-content
+				#home.tab-pane.fade.in.active
+					h2 Registration
+					div
+						p Create a survey using the survey creator
+						form(action='createsurvey' method='GET')
+							input(type='submit' value='Create Survey')
+
+				#menu1.tab-pane.fade
+					h2 Announcements
+					div
+						p Click here to create an announcements
+						form(action='announcements' method='GET')
+							input(type='submit' value='Announcements')
+						div
+				#menu2.tab-pane.fade
+					h2 Modify Student
+					div
+						p Modify a Student's information
+						form(action='registration' method='GET')
+							input(type='submit' value='Modify')
+			h3 Welcome Admin
+
+
+		else
+			h2 Please login to view contents
