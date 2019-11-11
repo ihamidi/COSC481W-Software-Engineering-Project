@@ -96,7 +96,7 @@ app.post('/studentreg', function (request, response) {
         "userID": request.session.userid,
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
-        "grade": request.body.acctype,
+        "grade": request.body.grade,
         "username": request.body.username,
         "email": request.body.email,
         "school": request.body.school,
@@ -108,7 +108,7 @@ app.post('/studentreg', function (request, response) {
     connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
       if (error) {
           console.log("error ocurred", error);
-          console.log("error ocurred jhere is the data: " + resuls.userID + " " + users.firstname + " " + users.lastname);
+
           response.send({
               "code": 400,
               "failed": "error ocurred"
