@@ -30,9 +30,11 @@ function newResponse(questionID) {
 function createSurvey() {
   surveyDiv = document.getElementById("finishedSurvey");
   surveyContainerDiv = document.createElement('div');
+  surveyHiddenInput = document.getElementById('hiddenFinishedSurveyInput');
+
 
   var survey = questionsMaster.qCreateSurvey();
-
+  surveyHiddenInput.value = survey.innerHTML;
   surveyDiv.appendChild(survey);
 
 }

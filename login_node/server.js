@@ -233,7 +233,7 @@ app.post('/auth', function(request, response) {
                 request.session.username = username;
                 request.session.firstname = results[0].firstname
                 request.session.userid = results[0].userID;
-                // request.session.acctype = results[0].acctype;
+                request.session.acctype = results[0].acctype;
                 console.log(results[0].acctype +":::: "+request.session.userid);
                 response.render('index', {
                     acctype: 'Parent'// change to results[0].acctype when testing against current schema
@@ -247,6 +247,12 @@ app.post('/auth', function(request, response) {
 		response.send('Please enter Username and Password!');
 		response.end();
 	}
+});
+
+// createsurvey method when admin submits survey
+app.post('/createsurvey', function(request, response) {
+	var surveyDiv = request.body.finishedSurvey;
+	console.log("Survey div created: " + surveyDiv);
 });
 
 //registration route

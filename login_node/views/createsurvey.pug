@@ -1,65 +1,66 @@
 doctype html
-html(lang='en')
-  head
-    meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    title Survey Creator
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm', crossorigin='anonymous')
-    link(rel='stylesheet', href='announcements.css')
-  body(onload='onLoad()')
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  title Survey Creator
+  link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+  link(rel='stylesheet' href='announcements.css')
+body(onload='onLoad()')
   nav.navbar.navbar-inverse
     .container-fluid
       .navbar-header
-        button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
+        button.navbar-toggle(type='button' data-toggle='collapse' data-target='#myNavbar')
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand(href="#") BitsAndBytes
+        a.navbar-brand(href='#') BitsAndBytes
       #myNavbar.collapse.navbar-collapse
         ul.nav.navbar-nav
           li
-            a(href="/") Home
+            a(href='/') Home
           li
-            a(href="signup") Sign up
+            a(href='signup') Sign up
           li
-            a(href="createsurvey") Create Survey +Test
+            a(href='createsurvey') Create Survey +Test
           li
-            a(href="/") Login
+            a(href='/') Login
         ul.nav.navbar-nav.navbar-right
           li
             a(href='/logout')
               span.glyphicon.glyphicon-log-out
               |  Log Out
-    h2.container Survey Creator
-    form#newSurveyForm.container(onsubmit='return null')
-      button#newSurveyButton.btn(onclick='newSurvey()') New Survey
-      .form-group
-        label(for='surveyName') Survey Name
-        input#surveyName.form-control(type='text', placeholder='Enter Name')
-        label(for='surveyType') Survey Type
-        select#surveyType.form-control
-          option(value='Student') Student
-          option(value='Parent') Parent
-      hr
-      #questions.form-group
-      hr
-      .form-group
-        label(for='newQuestionType') New Question
-        select#newQuestionType.form-control
-          option(disabled='', selected='') Select Question Type...
-          option(value='multiple') Multiple Choice
-          option(value='checkbox') Check Box
-          option(value='dropdown') Drop Down
-          option(value='shortanswer') Short Answer
-        br
-        button#newQuestionButton.btn(type='button', onclick='newQuestion()') Create Question
-        button#deleteQuestionButton.btn.btn-danger(type='button', onclick='deleteQuestion()') Delete Last Question
-      hr
-      .form-group
-        button#submitSurvey.btn.btn-primary(type='button', onclick='createSurvey()') Create Survey
-      hr
-      #finishedSurvey.form-group
-    script(src='surveyCreator.js')
-    script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')
+  h2.container Survey Creator
+  form#newSurveyForm.container(action='createsurvey' method='post')
+    button#newSurveyButton.btn(onclick='newSurvey()') New Survey
+    .form-group
+      label(for='surveyName') Survey Name
+      input#surveyName.form-control(type='text' placeholder='Enter Name')
+      label(for='surveyType') Survey Type
+      select#surveyType.form-control
+        option(value='Student') Student
+        option(value='Parent') Parent
+    hr
+    #questions.form-group
+    hr
+    .form-group
+      label(for='newQuestionType') New Question
+      select#newQuestionType.form-control
+        option(disabled='' selected='') Select Question Type...
+        option(value='multiple') Multiple Choice
+        option(value='checkbox') Check Box
+        option(value='dropdown') Drop Down
+        option(value='shortanswer') Short Answer
+      br
+      button#newQuestionButton.btn(type='button' onclick='newQuestion()') Create Question
+      button#deleteQuestionButton.btn.btn-danger(type='button' onclick='deleteQuestion()') Delete Last Question
+    hr
+    .form-group
+      button#previewSurvey.btn.btn-secondary(type='button' onclick='createSurvey()') Preview Survey
+    button.btn.btn-primary(type='submit' name='survey-submit') Submit
+    hr
+    #finishedSurvey.form-group
+    input#hiddenFinishedSurveyInput(type='hidden' name='finishedSurvey' value='null')
+  script(src='surveyCreator.js')
+  script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
