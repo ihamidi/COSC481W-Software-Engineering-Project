@@ -132,6 +132,7 @@ app.post('/reg', function (request, response) {
         "username": request.body.username,
         "email": request.body.email,
         "password": request.body.password,
+        "acctype": 'Parent'
         // "acctype": request.body.acctype,
         // "grade": 0
     }
