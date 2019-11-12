@@ -25,7 +25,20 @@ var storage = multer.diskStorage({
 
   var upload = multer({ storage: storage })
 
-  router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
+  router.post('/uploadpermission', upload.single('permission'), (req, res, next) => {
+    const file = req.file
+    if (!file) {
+      const error = new Error('Please upload a file')
+      error.httpStatusCode = 400
+      return next(error)
+    }
+    res.render('index', {
+      acctype: 'Parent'
+  });
+
+  })
+
+  router.post('/uploadwaiver', upload.single('waiver'), (req, res, next) => {
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
