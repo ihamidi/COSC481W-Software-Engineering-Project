@@ -109,9 +109,11 @@ app.post('/studentreg', function (request, response) {
       connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, results, fields) {
                 var userInfo = {
                     "sid": results[0].SID,
-                    "pid": results[0].PID
+                    "pid": results[0].PID,
+                    "waiver_complete": 0,
+                    "permission_complete": 0
                 }
-                connection.query('INSERT INTO registration_forms SET ?', [userInfo, 0, 0], function (error, results, fields) {
+                connection.query('INSERT INTO registration_forms SET ?', userInfo, function (error, results, fields) {
                     //some basic error trapping implemented
                     if (error) {
                         console.log("error ocurred", error);
@@ -241,8 +243,18 @@ app.post('/auth', function(request, response) {
 				request.session.loggedin = true;
                 request.session.username = username;
                 request.session.firstname = results[0].firstname
-                request.session.userid = results[0].userID;
+                request.session.userid = results[0].PID;
                 request.session.acctype = results[0].acctype;
+                connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userID, function(error, results, fields)
+		 {
+                request.session.sid = results[0].sid;
+                request.session.studentname = results[0].firstname;
+        });
+                connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				request.session.sid, function(error, results, fields)
+		 {
+                request.session.sid = results[0].sid;
+                request.session.studentname = results[0].firstname;
+        });
                 console.log(results[0].acctype +":::: "+request.session.userid);
                 response.render('index', {
                     acctype: 'Parent'// change to results[0].acctype when testing against current schema
