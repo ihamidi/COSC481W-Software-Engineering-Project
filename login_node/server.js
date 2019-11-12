@@ -104,20 +104,8 @@ app.post('/studentreg', function (request, response) {
     }
     //Inserting the user into accounts table
     connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
-      if (error) {
-          console.log("error ocurred", error);
 
-          response.send({
-              "code": 400,
-              "failed": "error ocurred"
-          })
-      } else {
-          console.log('The solution is: ', results);
-          response.send({
-              "code": 200,
-              "success": "user registered sucessfully"
-          })
-      }})
+     })
       connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, results, fields) {
                 var userInfo = {
                     "sid": results[0].SID,
