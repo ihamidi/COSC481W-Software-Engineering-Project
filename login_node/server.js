@@ -91,7 +91,7 @@ app.post('/studentreg', function (request, response) {
     //var today = new Date();     //can be used later
     //defining user as many parts from form
     users = {
-        "userID": request.session.userid,
+        "pid": request.session.pid,
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
         "grade": request.body.grade,
@@ -118,6 +118,29 @@ app.post('/studentreg', function (request, response) {
               "success": "user registered sucessfully"
           })
       }})
+      connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, results, fields) {
+                var userInfo = {
+                    "sid": results[0].SID,
+                    "pid": results[0].PID
+                }
+                connection.query('INSERT INTO registration_forms SET ?', [userInfo, 0, 0], function (error, results, fields) {
+                    //some basic error trapping implemented
+                    if (error) {
+                        console.log("error ocurred", error);
+                        console.log("error ocurred there is the data: " + results.userID + " " + users.firstname + " " + users.lastname);
+                        response.send({
+                            "code": 400,
+                            "failed": "error ocurred"
+                        })
+                    } else {
+                        console.log('The solution is: ', results);
+                        response.send({
+                            "code": 200,
+                            "success": "user registered sucessfully"
+                        });
+                    }
+                })
+            })
     });
 
 //registration method for db
