@@ -34,9 +34,9 @@ body(onload='onLoad()')
     button#newSurveyButton.btn(onclick='newSurvey()') New Survey
     .form-group
       label(for='surveyName') Survey Name
-      input#surveyName.form-control(type='text' placeholder='Enter Name')
+      input#surveyName.form-control(type='text' name='surveyName' placeholder='Enter Name')
       label(for='surveyType') Survey Type
-      select#surveyType.form-control
+      select#surveyType.form-control(name='surveyType')
         option(value='Student') Student
         option(value='Parent') Parent
     hr

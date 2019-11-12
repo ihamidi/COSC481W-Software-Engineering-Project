@@ -8,6 +8,7 @@ const multer  = require('multer');
 var formdownload = require('./registration.js');
 var users;
 var registration = require('./studentManagement.js');
+const fs = require('fs');
 
 //giving clousql credentials
 var connection = mysql.createConnection({
@@ -65,10 +66,7 @@ app.get('/createsurvey', function (request, response) {
     //still figuring out how to xcompare the acctype to "Admin"
     if (request.session.loggedin && request.session.acctype) {
         app.use(express.static('./views/public_javascript'));
-    //response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
         response.render(path.join(__dirname + '/views/createsurvey'));
-    //app.use('/static', express.static('./views/css/announcements.css'));
-
     }
 });
 
@@ -251,8 +249,25 @@ app.post('/auth', function(request, response) {
 
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
+  var surveyName = request.body.surveyName;
+  var surveyType = request.body.surveyType;
 	var surveyDiv = request.body.finishedSurvey;
-	console.log("Survey div created: " + surveyDiv);
+  console.log("Survey name: " + surveyName);
+  console.log("Survey type: " + surveyType);
+	console.log("Survey div: " + surveyDiv);
+
+  var filename = surveyType + "-" + surveyName + ".txt";
+
+  	console.log("Attempting to write " + filename);
+
+    fs.writeFile(path.join(__dirname + '/views/surveys/' + filename), surveyDiv, (err) => {
+    // throws an error, you could also catch it here
+    if (err) throw err;
+
+    // success case, the file was saved
+    console.log('Survey saved!');
+  });
+
 });
 
 //registration route

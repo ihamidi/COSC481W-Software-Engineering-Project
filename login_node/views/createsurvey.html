@@ -29,7 +29,7 @@
     </nav>
     <h2 class="container">Survey Creator</h2>
     <form class="container" id="newSurveyForm" action="createsurvey" method="post"><button class="btn" id="newSurveyButton" onclick="newSurvey()">New Survey</button>
-        <div class="form-group"><label for="surveyName">Survey Name</label><input class="form-control" id="surveyName" type="text" placeholder="Enter Name"><label for="surveyType">Survey Type</label><select class="form-control" id="surveyType"><option value="Student">Student</option><option value="Parent">Parent</option></select></div>
+        <div class="form-group"><label for="surveyName">Survey Name</label><input class="form-control" name="surveyName" id="surveyName" type="text" placeholder="Enter Name"><label for="surveyType">Survey Type</label><select class="form-control" name="surveyType" id="surveyType"><option value="Student">Student</option><option value="Parent">Parent</option></select></div>
         <hr>
         <div class="form-group" id="questions"></div>
         <hr>
