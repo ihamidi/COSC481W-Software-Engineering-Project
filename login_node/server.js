@@ -5,10 +5,13 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var pug = require('pug');
 const multer  = require('multer');
-var formdownload = require('./registration.js');
 var users;
 var registration = require('./studentManagement.js');
 const fs = require('fs');
+
+var hasPermission;
+var hasWaiver;
+var studentName;
 
 //giving clousql credentials
 var connection = mysql.createConnection({
@@ -150,43 +153,11 @@ app.post('/reg', function (request, response) {
     //Inserting the user into accounts table
     connection.query('INSERT INTO adult_accounts SET ?', users, function (error, results, fields) { //change adult_accounts to accounts when testing against current schema
     })
-
-
-    //nestedQueries ???? What are you doing brah
-    //Inserting the user into timestamp table
-    // if (request.body.acctype.toString().trim() === "Student") {
-    //     connection.query('SELECT userID FROM accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, resuls, fields) {
-    //         var timeinfo = {
-    //             "userID": resuls[0].userID,
-    //             "firstname": request.body.firstname,
-    //             "lastname": request.body.lastname,
-    //         }
-    //         //creating a record for the new student in the timestamp table s well
-    //         connection.query('INSERT INTO timestamps SET ?', timeinfo, function (error, results, fields) {
-    //             //some basic error trapping implemented
-    //             if (error) {
-    //                 console.log("error ocurred", error);
-    //                 console.log("error ocurred jhere is the data: " + resuls.userID + " " + users.firstname + " " + users.lastname);
-    //                 response.send({
-    //                     "code": 400,
-    //                     "failed": "error ocurred"
-    //                 })
-    //             } else {
-    //                 console.log('The solution is: ', results);
-    //                 response.send({
-    //                     "code": 200,
-    //                     "success": "user registered sucessfully"
-    //                 });
-    //             }
-    //         })
-    //     })
-    // }
-    // else {
         response.redirect('/');
-    // }
 });
 
 
+<<<<<<< HEAD
 
 
 
@@ -284,6 +255,8 @@ app.post('/studentauth', function(request, response) {
 
 
 
+=======
+>>>>>>> 19aeeef14ae254b960d342c2624cf6a68c86171b
 //authorization method after user submits
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
@@ -295,17 +268,31 @@ app.post('/auth', function(request, response) {
 				request.session.loggedin = true;
                 request.session.username = username;
                 request.session.firstname = results[0].firstname
-                request.session.userid = results[0].PID;
+                request.session.userid = results[0].userID;
                 request.session.acctype = results[0].acctype;
-                connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userID, function(error, results, fields)
+                connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userid, function(error, results, fields)
 		 {
-                request.session.sid = results[0].sid;
-                request.session.studentname = results[0].firstname;
+                request.session.sid = results[0].SID;
+                console.log(results[0].SID)
+                studentName = request.session.studentname = results[0].firstname;
         });
-                connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				request.session.sid, function(error, results, fields)
+                connection.query('SELECT * FROM registration_forms WHERE SID = ? AND waiver_complete = ?', 				[request.session.sid, 1], function(error, results, fields)
 		 {
-                request.session.sid = results[0].sid;
-                request.session.studentname = results[0].firstname;
+             if(results.length > 0){
+                hasWaiver = request.session.hasWaiver = false;
+             }
+             else{
+                hasWaiver = request.session.hasWaiver = true;
+             }
+        });
+        connection.query('SELECT * FROM registration_forms WHERE SID = ? AND permission_complete = ?', 				[request.session.sid, 1], function(error, results, fields)
+		 {
+             if(results.length > 0){
+                hasPermission = request.session.hasPermission = false;
+             }
+             else{
+                hasPermission = request.session.hasPermission = true;
+             }
         });
                 console.log(results[0].acctype +":::: "+request.session.userid);
                 response.render('index', {
