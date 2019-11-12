@@ -170,12 +170,14 @@ app.post('/auth', function(request, response) {
                 request.session.firstname = results[0].firstname
                 request.session.userid = results[0].userID;
                 request.session.acctype = results[0].acctype;
+                if (!request.session.acctype=="Admin") {
                 connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userid, function(error, results, fields)
 		 {
                 request.session.sid = results[0].SID;
                 console.log(results[0].SID)
                 studentName = request.session.studentname = results[0].firstname;
         });
+      }
                 connection.query('SELECT * FROM registration_forms WHERE SID = ? AND waiver_complete = ?', 				[request.session.sid, 1], function(error, results, fields)
 		 {
              if(results.length > 0){
