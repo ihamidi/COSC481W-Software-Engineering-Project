@@ -91,7 +91,7 @@ app.post('/studentreg', function (request, response) {
     //var today = new Date();     //can be used later
     //defining user as many parts from form
     users = {
-        "pid": request.session.pid,
+        "pid": request.session.userid,
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
         "grade": request.body.grade,
