@@ -232,6 +232,58 @@ app.post('/studentreg', function (request, response) {
 
 
 
+
+//authorization method after user submits
+app.post('/studentauth', function(request, response) {
+	var username = request.body.username;
+	var password = request.body.password;
+	if (username && password) {
+		connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[username, password], function(error, results, fields)
+		 {
+			if (results.length > 0) {
+				request.session.loggedin = true;
+                request.session.username = username;
+                request.session.firstname = results[0].firstname
+                request.session.userid = results[0].PID;
+                request.session.acctype = results[0].acctype;
+                connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userID, function(error, results, fields)
+		 {
+                request.session.sid = results[0].sid;
+                request.session.studentname = results[0].firstname;
+        });
+                connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				request.session.sid, function(error, results, fields)
+		 {
+                request.session.sid = results[0].sid;
+                request.session.studentname = results[0].firstname;
+        });
+                console.log(results[0].acctype +":::: "+request.session.userid);
+                response.render('index', {
+                    acctype: request.session.acctype// change to results[0].acctype when testing against current schema
+                });
+			} else {
+				response.send('Incorrect Username and/or Password!');
+			}
+			response.end();
+		});
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //authorization method after user submits
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
@@ -257,7 +309,7 @@ app.post('/auth', function(request, response) {
         });
                 console.log(results[0].acctype +":::: "+request.session.userid);
                 response.render('index', {
-                    acctype: 'Parent'// change to results[0].acctype when testing against current schema
+                    acctype: request.session.acctype// change to results[0].acctype when testing against current schema
                 });
 			} else {
 				response.send('Incorrect Username and/or Password!');
