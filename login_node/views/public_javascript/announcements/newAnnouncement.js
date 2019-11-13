@@ -1,19 +1,3 @@
-function newAnnouncement() {
-  var newAnnouncementDiv = document.getElementById("newAnnouncement");
-  var newAnnouncementButton = document.getElementById("newAnnouncementButton");
-  var box = document.getElementById("announcementBox");
-  var contentTitle = document.createElement('input');
-  var contentTextbox = document.createElement('input');
-  var createButton = document.createElement('button');
-  var chooseFileButton = document.createElement('input');
-
-  // this long text is the HTML for the new announcement form.
-  var announcementForm =
-  "<div class=\"form-group\"><label for=\"title\">Title</label><input type=\"text\" class=\"form-control\" id=\"title\" placeholder=\"Enter Title\"></div><div class=\"form-group\"><label for=\"content\">Announcement</label><textarea class=\"form-control\" id=\"content\" placeholder=\"Enter Announcement\"></textarea></div><div class=\"form-group\"><label for=\"myFile\">Upload Photo</label><input type=\"file\" class=\"form-control-file\" id=\"myFile\"></div><input type=\"submit\" class=\"btn btn-primary\"></button>";
-  newAnnouncementDiv.innerHTML = announcementForm;
-;
-}
-
 function createAnnouncement(){
   var newAnnouncementDiv = document.getElementById("newAnnouncement");
 
@@ -27,13 +11,25 @@ function createAnnouncement(){
   var announcements = document.getElementById("currentAnnouncements");
   var announcementBox = document.getElementById("announcementBox");
   var currentdate = new Date();
+  var minutes = currentdate.getMinutes();
+
+
+  if (currentdate.getHours() >= 12) {
+    var ampm = "PM";
+  }
+  else {
+    var ampm = "AM";
+  }
+
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
 
   var datetime = currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " @ "
+                + currentdate.getFullYear() + " - "
                 + currentdate.getHours()%12 + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
+                + minutes + " " + ampm;
 
 
 
@@ -45,14 +41,10 @@ function createAnnouncement(){
   announcement.appendChild(date);
   announcement.appendChild(paragraph);
 
+  var announcementHiddenInput = document.getElementById('hiddenAnnouncementInput');
+  announcementHiddenInput.value = announcement.innerHTML;
+
   announcements.insertBefore(announcement, announcements.childNodes[0]);
 
-  newAnnouncementDiv.innerHTML = "";
-  var newAnnouncementButton = document.createElement("button");
-  newAnnouncementButton.setAttribute("id", "newAnnouncementButton");
-  newAnnouncementButton.setAttribute("onclick", "newAnnouncement()");
-  newAnnouncementButton.innerHTML = "Create Announcement"
-
-  newAnnouncementDiv.appendChild(newAnnouncementButton);
-  return false;
+  return true;
 }

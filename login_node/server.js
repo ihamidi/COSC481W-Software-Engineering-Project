@@ -58,6 +58,26 @@ app.get('/announcements', function (request, response) {
   response.sendFile(path.join(__dirname + '/views/announcements.html'));
 });
 
+app.post('/createannouncement', function(request, response) { // needs lots of work
+  var title = request.body.title;
+	var announcementDiv = request.body.finishedAnnouncement;
+  console.log("Announcement Title: " + title);
+  console.log("Announcement Div: " + announcementDiv);
+
+  var filename = title + ".txt";
+
+  	console.log("Attempting to write " + filename);
+
+    fs.writeFile(path.join(__dirname + '/views/announcements/' + filename), announcementDiv, (err) => {
+    // throws an error, you could also catch it here
+    if (err) throw err;
+
+    // success case, the file was saved
+    console.log('Announcement saved!');
+  });
+
+});
+
 
 //sending sign up oapge
 app.get('/studentsignup', function (request, response) {
