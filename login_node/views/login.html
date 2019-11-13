@@ -6,65 +6,69 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
    </head>
-   <body style="background-color:#FEFAFA">
-       <nav class="navbar navbar-inverse">
-           <div class="container-fluid">
-               <div class="navbar-header">
-                   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                       <span class="icon-bar"></span>
-                       <span class="icon-bar"></span>
-                       <span class="icon-bar"></span>
-                   </button>
-                   <a class="navbar-brand">BitsAndBytes</a>
-               </div>
-               <div class="collapse navbar-collapse" id="myNavbar">
-                   <ul class="nav navbar-nav">
-                       <li class="active"><a href="">Home</a></li>
-                       <li><a href="signup">Sign up</a></li>
-                       <li><a href="createsurvey">Create Survey +Test</a></li>
-                       <li><a href="">Contact</a></li>
-                   </ul>
-               </div>
-           </div>
-       </nav>
-
-
-       <div class="container">
-<ul class="nav nav-tabs">
-  <li class="active"><a data-toggle="tab" href="#home">Parent</a></li>
-  <li><a data-toggle="tab" href="#menu1">Student</a></li>
-
-</ul>
-
-<div class="tab-content">
-  <div id="home" class="tab-pane fade in active">
-    <div class="d-flex justify-content-end social_icon">
-               <h2>Welcome to Bits and Bytes! Parent Login<br><small>Login to view functions</small></h2>
-           <form class="form-login" form action="auth" method="POST">
-               <input type="text" class="form-control" style ="padding: 10px" name="username" placeholder="Username" required>
-               <input type="password" class="form-control" style ="padding: 10px" name="password" placeholder="Password" required>
-               <button type="submit" class="btn btn-default" style ="padding: 10px" name="login-submit">Login</button>
-           </form>
-           <div class="card">
-                   <p>Learn More about Bits and Bytes here</p>
-                   <p><a href="aboutus">About us</a></p>
-               </div>
+   <body style="background-color:#c2ab82">
+      <nav class="navbar navbar-inverse navbar-fluid" style="background-color:#251e3e">
+         <div class="container-fluid " >
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand">BitsAndBytes</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+               <ul class="nav navbar-nav">
+                  <li><a href="">Home</a></li>
+                  <li><a href="signup">Sign up</a></li>
+                  <li><a href="createsurvey">Create Survey +Test</a></li>
+                  <li><a href="">Contact</a></li>
+               </ul>
+            </div>
          </div>
-  </div>
-  <div id="menu1" class="tab-pane fade">
-    <div class="d-flex justify-content-end social_icon">
-               <h2>Welcome to Bits and Bytes! Student Login<br><small>Login to view functions</small></h2>
-           <form class="form-login" form action="studentauth" method="POST">
-               <input type="text" class="form-control" style ="padding: 10px" name="username" placeholder="Username" required>
-               <input type="password" class="form-control" style ="padding: 10px" name="password" placeholder="Password" required>
-               <button type="submit" class="btn btn-default" style ="padding: 10px" name="login-submit">Login</button>
-           </form>
-           <div class="card">
-                   <p>Learn More about Bits and Bytes here</p>
-                   <p><a href="aboutus">About us</a></p>
-               </div>
+      </nav>
+      <div class="jumbotron jumbotron-fluid text-center" style="background:#851e3e">
+         <div class="container">
+            <h2 style="color:white"><strong>Welcome to Bits and Bytes!</strong></h2>
          </div>
-  </div>
-</div>
+      </div>
+      <div class="container text-center" style="width: 50%; background:#d63d41; color: white">
+         <ul class="nav nav-tabs">
+            <li class="active"style="color:white;"><a data-toggle="tab" href="#home">Parent</a></li>
+            <li ><a data-toggle="tab" href="#menu1">Student</a></li>
+         </ul>
+         <div class="tab-content" >
+            <div id="home" class="tab-pane fade in active">
+               <div class="d-flex justify-content-end social_icon">
+                  <h2><strong>Parent Login</strong><br><small style="color:white;">Login to view functions</small></h2>
+                  <form class="form-login" form action="auth"  method="POST">
+                     <center><input type="text" class="form-control " style ="padding:10px;width: 30%;" name="username" placeholder="Username" required></center>
+                     <center><input type="password" class="form-control" style ="padding: 10px;width: 30%;" name="password" placeholder="Password" required></center>
+                     <button type="submit" class="btn btn-default" style ="padding: 10px;width: 30%;" name="login-submit">Login</button>
+                  </form>
+                  <div class="card">
+                     <p>Learn More about Bits and Bytes here</p>
+                     <p><a href="aboutus">About us</a></p>
+                  </div>
+               </div>
+            </div>
+            <div id="menu1" class="tab-pane fade" style="color:white;">
+               <div class="d-flex justify-content-end social_icon">
+                  <h2><strong>Student Login</strong><br><small style="color:white;">Login to view functions</small></h2>
+                  <form class="form-login" form action="studentauth" method="POST">
+                     <center><input type="text" class="form-control" style ="padding: 10px; width: 30%;" name="username" placeholder="Username" required></center>
+                     <center><input type="password" class="form-control" style ="padding: 10px; width: 30%;" name="password" placeholder="Password" required></center>
+                     <button type="submit" class="btn btn-default" style ="padding: 10px;width: 30%;" name="login-submit">Login</button>
+                  </form>
+                  <div class="card" style="color:white;">
+                     <p>Learn More about Bits and Bytes here</p>
+                     <p><a href="aboutus">About us</a></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      </div>
+      </div>
    </body>
 </html>
