@@ -54,6 +54,7 @@ app.get('/signup', function (request, response) {
 
 //sending sign up oapge
 app.get('/announcements', function (request, response) {
+  app.use(express.static('./views/public_javascript/announcements'));
   response.sendFile(path.join(__dirname + '/views/announcements.html'));
 });
 
