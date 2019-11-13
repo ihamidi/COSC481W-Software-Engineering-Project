@@ -188,18 +188,18 @@ app.post('/auth', function(request, response) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
                 request.session.username = username;
-                request.session.firstname = results[0].firstname
+                request.session.firstname = results[0].firstname;
                 request.session.userid = results[0].userID;
                 request.session.acctype = results[0].acctype;
-                if (!request.session.acctype=="Admin") {
+                // if (!request.session.acctype=="Admin") {
                 connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userid, function(error, results, fields)
 		 {
-                request.session.sid = results[0].SID;
+                request.session.SID = results[0].SID;
                 console.log(results[0].SID)
                 studentName = request.session.studentname = results[0].firstname;
         });
-      }
-                connection.query('SELECT * FROM registration_forms WHERE SID = ? AND waiver_complete = ?', 				[request.session.sid, 1], function(error, results, fields)
+      // }
+                connection.query('SELECT * FROM registration_forms WHERE SID = ? AND waiver_complete = ?', 				[request.session.SID, 1], function(error, results, fields)
 		 {
              if(results.length > 0){
                 hasWaiver = request.session.hasWaiver = false;
@@ -208,7 +208,7 @@ app.post('/auth', function(request, response) {
                 hasWaiver = request.session.hasWaiver = true;
              }
         });
-        connection.query('SELECT * FROM registration_forms WHERE SID = ? AND permission_complete = ?', 				[request.session.sid, 1], function(error, results, fields)
+        connection.query('SELECT * FROM registration_forms WHERE SID = ? AND permission_complete = ?', 				[request.session.SID, 1], function(error, results, fields)
 		 {
              if(results.length > 0){
                 hasPermission = request.session.hasPermission = false;
@@ -231,6 +231,84 @@ app.post('/auth', function(request, response) {
 		response.end();
 	}
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//authorization method after user submits
+app.post('/studentauth', function(request, response) {
+	var username = request.body.username;
+	var password = request.body.password;
+	if (username && password) {
+		connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[username, password], function(error, results, fields)
+		 {
+			if (results.length > 0) {
+				request.session.loggedin = true;
+                request.session.username = username;
+                request.session.firstname = results[0].firstname
+                request.session.userid = results[0].PID;
+                request.session.acctype = results[0].acctype;
+                connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userID, function(error, results, fields)
+		 {
+                request.session.SID = results[0].SID;
+                request.session.studentname = results[0].firstname;
+        });
+                connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				request.session.SID, function(error, results, fields)
+		 {
+                request.session.SID = results[0].sid;
+                request.session.studentname = results[0].firstname;
+        });
+                console.log(results[0].acctype +":::: "+request.session.userid);
+                response.render('index', {
+                    acctype: request.session.acctype// change to results[0].acctype when testing against current schema
+                });
+			} else {
+				response.send('Incorrect Username and/or Password!');
+			}
+			response.end();
+		});
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
