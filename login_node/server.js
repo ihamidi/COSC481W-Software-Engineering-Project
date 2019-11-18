@@ -195,55 +195,44 @@ app.post('/auth', function(request, response) {
                 connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userid, function(error, results, fields)
 		 {
                 request.session.SID = results[0].SID;
-                console.log(results[0].SID)
-                studentName = request.session.studentname = results[0].firstname;
+                request.session.studentname = results[0].firstname;
         });
-      // }
                 connection.query('SELECT * FROM registration_forms WHERE SID = ? AND waiver_complete = ?', 				[request.session.SID, 1], function(error, results, fields)
 		 {
              if(results.length > 0){
-                hasWaiver = request.session.hasWaiver = false;
+                request.session.hasWaiver = false;
              }
              else{
-                hasWaiver = request.session.hasWaiver = true;
+                request.session.hasWaiver = true;
              }
         });
         connection.query('SELECT * FROM registration_forms WHERE SID = ? AND permission_complete = ?', 				[request.session.SID, 1], function(error, results, fields)
 		 {
              if(results.length > 0){
-                hasPermission = request.session.hasPermission = false;
+                request.session.hasPermission = false;
              }
              else{
-                hasPermission = request.session.hasPermission = true;
+                request.session.hasPermission = true;
              }
         });
-                console.log(results[0].acctype +":::: "+request.session.userid);
+      // }
+                // console.log(results[0].acctype +":::: "+request.session.userid);
+                
                 response.render('index', {
-                    acctype: request.session.acctype// change to results[0].acctype when testing against current schema
+                    acctype: request.session.acctype,
+                    session: request.session
                 });
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}
 			response.end();
-		});
+    });
+    console.log(request.session);
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();
 	}
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //authorization method after user submits
 app.post('/studentauth', function(request, response) {
@@ -276,39 +265,14 @@ app.post('/studentauth', function(request, response) {
 				response.send('Incorrect Username and/or Password!');
 			}
 			response.end();
-		});
+    });
+    request.session.username = username;
+    console.log(request.session);
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();
 	}
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
