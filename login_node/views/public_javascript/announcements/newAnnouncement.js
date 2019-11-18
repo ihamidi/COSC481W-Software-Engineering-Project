@@ -6,7 +6,7 @@ function createAnnouncement(){
   var title = document.getElementById("title").value;
   var content = document.getElementById("content").value;
   var contentTitle = document.createElement('h3');
-  var paragraph = document.createElement('p');
+  var paragraph = document.createElement('pre');
   var date = document.createElement('small');
   var announcements = document.getElementById("currentAnnouncements");
   var announcementBox = document.getElementById("announcementBox");
