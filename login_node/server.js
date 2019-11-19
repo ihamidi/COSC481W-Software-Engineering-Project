@@ -43,9 +43,26 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
+
+
+
+
+
+
+
+
+
 //\home of bits and bytes
 app.get('/', function(request, response) {
-	response.sendFile(path.join(__dirname + '/views/login.html'));
+  if (!request.session.loggedin){
+	   response.sendFile(path.join(__dirname + '/views/login.html'));
+   }
+  else {
+    response.render('index', {
+        acctype: request.session.acctype,
+        session: request.session
+    });
+  }
 });
 
 
