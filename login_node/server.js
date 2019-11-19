@@ -8,6 +8,7 @@ const multer  = require('multer');
 var users;
 var registration = require('./studentManagement.js');
 const fs = require('fs');
+var cookieParser = require('cookie-parser');
 
 var hasPermission;
 var hasWaiver;
@@ -31,6 +32,7 @@ app.set('view engine', 'pug');
 
 
 //session stuff
+app.use(cookieParser());
 app.use(session({
 	secret: 'secret',
 	resave: true,
@@ -216,9 +218,9 @@ app.post('/auth', function(request, response) {
                 request.session.hasPermission = true;
              }
         });
-      // }
+      }
                 // console.log(results[0].acctype +":::: "+request.session.userid);
-                
+
                 response.render('index', {
                     acctype: request.session.acctype,
                     session: request.session
@@ -259,13 +261,14 @@ app.post('/studentauth', function(request, response) {
                 request.session.studentname = results[0].firstname;
         });
                 // console.log(results[0].acctype +":::: "+request.session.userid);
-                response.render('index', {
-                    acctype: request.session.acctype// change to results[0].acctype when testing against current schema
-                });
-                console.log(request.session);
+
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}
+      response.render('index', {
+          acctype: request.session.acctype// change to results[0].acctype when testing against current schema
+      });
+      console.log(request.session);
 			response.end();
     });
     request.session.username = username;
