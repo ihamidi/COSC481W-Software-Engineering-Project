@@ -1,3 +1,19 @@
-body {
-  background-color: #0090FF;
+.bits-body {
+  background-color: #E2FBFB;
+}
+
+.bits-primary {
+  background-color: #7BCCCC;
+}
+
+.bits-secondary {
+  background-color: #B0E9E9;
+}
+
+.bits-navbar {
+  background-color: #7BCCCC;
+}
+
+.bits-navbar-header {
+  color: #FFFFFF;
 }
