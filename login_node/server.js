@@ -55,6 +55,7 @@ app.use(bodyParser.json());
 //\home of bits and bytes
 app.get('/', function(request, response) {
   if (!request.session.loggedin){
+     app.use(express.static('./views/css'));
 	   response.sendFile(path.join(__dirname + '/views/login.html'));
    }
   else {
