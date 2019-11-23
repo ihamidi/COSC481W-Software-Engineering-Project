@@ -53,7 +53,8 @@ app.use(bodyParser.json());
 
 
 //\home of bits and bytes
-app.get('/', function(request, response) {
+app.get('/', function(request, response)
+  sess=req.session;
   if (!request.session.loggedin){
 	   response.sendFile(path.join(__dirname + '/views/login.html'));
    }
@@ -197,6 +198,8 @@ app.post('/reg', function (request, response) {
 });
 
 
+
+
 //authorization method after user submits
 app.post('/auth', function(request, response) {
   var data = {
@@ -249,6 +252,18 @@ function get_student_info(data, callback){
     }})
 }
 
+function checkin_student(data, callback){
+
+
+  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+   {
+     if (error) {console.log('this.sql', this.sql); //command/query
+        console.log(command);
+        console.log("ERROR");
+        console.log(err);
+        return;}
+     console.log(results);
+})}
 
 //usage
 
@@ -280,6 +295,8 @@ app.post('/studentauth', function(request, response) {
           acctype: request.session.acctype,
           // session: request.session
         });
+
+
   })
 
 
@@ -310,6 +327,39 @@ app.post('/createsurvey', function(request, response) {
   });
 
 });
+
+//check in method
+app.get('/checkin', function(request, response) {
+  // var today = new Date();
+  // var currdate= today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var checkin = {
+     studentID: request.session.studentID,
+     firstname: request.session.firstname,
+     lastname: request.session.lastname,
+     InOrOut: 0
+   };
+   checkin_student(checkin, function(result){
+       results = result;
+
+       console.log(request.session.firstname+"   checked in  ");
+       response.render('index', {
+             acctype: request.session.acctype,
+               // session: request.session
+       });
+
+ });
+
+
+  }
+);
+
+
+
+
+
+
+
+
 
 //registration route
 app.use(registration);
