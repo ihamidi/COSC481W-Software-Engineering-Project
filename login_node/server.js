@@ -56,6 +56,7 @@ app.use(bodyParser.json());
 app.get('/', function(request, response)
   sess=req.session;
   if (!request.session.loggedin){
+     app.use(express.static('./views/css'));
 	   response.sendFile(path.join(__dirname + '/views/login.html'));
    }
   else {
