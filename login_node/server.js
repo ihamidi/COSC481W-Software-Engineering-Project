@@ -261,11 +261,11 @@ function checkin_student(data, callback){
 
   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
    {
-     // if (results.length > 0) {
+      if (results.length > 0) {
        console.log('this.sql', this.sql);
-       // console.log(results.affectedRows);
+        console.log(results.affectedRows);
        callback(data.firstname);
-     // }
+     }
 });}
 
 //usage
@@ -335,12 +335,14 @@ app.post('/createsurvey', function(request, response) {
 //check in method
 app.get('/checkin', function(request, response) {
   var today = new Date();
-  var currdate= today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+'  '+time;
   var checkin = {
-     studentID: request.session.studentID,
+     SID: request.session.studentID,
      firstname: request.session.firstname,
      lastname: request.session.lastname,
-     currdate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
+     timestamp: dateTime,
      InOrOut: 0
    };
    checkin_student(checkin, function(result){
