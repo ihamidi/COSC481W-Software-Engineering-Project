@@ -10,6 +10,22 @@
   background-color: #3DAAFD;
 }
 
+.bits-text {
+  color: white !important;
+}
+
+.bits-link {
+  color: #6C6CF4;
+}
+
+.bits-link:hover {
+  color: #FFB758;
+}
+
+a.bits-text:hover {
+  color: #FFB758 !important;
+}
+
 .bits-navbar {
   background-color: #3DAAFD;
 }
@@ -23,7 +39,7 @@ a.bits-tabs-item:active {
 }
 
 a.bits-tabs-item:hover {
-  color: gray;
+  color: gray !important;
 }
 
 a.bits-tabs-item:link {
