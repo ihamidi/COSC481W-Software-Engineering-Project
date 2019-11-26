@@ -1,19 +1,35 @@
 .bits-body {
-  background-color: #E2FBFB;
+  background-color: #C7DAE9;
 }
 
 .bits-primary {
-  background-color: #7BCCCC;
+  background-color: #5EB2F2;
 }
 
 .bits-secondary {
-  background-color: #B0E9E9;
+  background-color: #3DAAFD;
 }
 
 .bits-navbar {
-  background-color: #7BCCCC;
+  background-color: #3DAAFD;
 }
 
 .bits-navbar-header {
   color: #FFFFFF;
+}
+
+a.bits-tabs-item:active {
+  color: gray;
+}
+
+a.bits-tabs-item:hover {
+  color: gray;
+}
+
+a.bits-tabs-item:link {
+  color: white;
+}
+
+a.bits-tabs-item:visited {
+  color: gray;
 }
