@@ -8,8 +8,8 @@ const multer  = require('multer');
 var users;
 var registration = require('./studentManagement.js');
 const fs = require('fs');
-var cookieParser = require('cookie-parser');
-
+// var cookieParser = require('cookie-parser');
+var MemoryStore = require('memorystore')(session)
 var hasPermission;
 var hasWaiver;
 var studentName;
@@ -32,9 +32,13 @@ app.set('view engine', 'pug');
 
 
 //session stuff
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(session({
-	secret: 'secret',
+  cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
+    secret: 'keyboard cat',
 	resave: true,
 	saveUninitialized: true
 }));
@@ -53,7 +57,7 @@ app.use(bodyParser.json());
 
 
 //\home of bits and bytes
-app.get('/', function(request, response) {
+app.get('/', function(request, response){
   if (!request.session.loggedin){
      app.use(express.static('./views/css'));
 	   response.sendFile(path.join(__dirname + '/views/login.html'));
@@ -127,7 +131,7 @@ app.get('/timestamp', function (request, response) {
     console.log(request.session.firstname+": this is what is sent :"+request.session.userid);
     connection.query('SELECT * FROM timestamps WHERE firstname = ? AND userID = ?', [request.session.firstname, request.session.userid], function (error, results, fields) {
         response.send(results);
-        console.log(results[0])
+        console.log(results[0]);
     })
 });
 //registration method for db
@@ -198,6 +202,8 @@ app.post('/reg', function (request, response) {
 });
 
 
+
+
 //authorization method after user submits
 app.post('/auth', function(request, response) {
   var data = {
@@ -250,6 +256,17 @@ function get_student_info(data, callback){
     }})
 }
 
+function checkin_student(data, callback){
+
+
+  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+   {
+      if (results.length > 0) {
+       console.log('this.sql', this.sql);
+        console.log(results.affectedRows);
+       callback(data.firstname);
+     }
+});}
 
 //usage
 
@@ -272,7 +289,8 @@ app.post('/studentauth', function(request, response) {
     request.session.loggedin = true;
     request.session.username = results.username;
     request.session.firstname = results.firstname;
-    request.session.userid = results.SID;
+    request.session.lastname = results.lastname;
+    request.session.studentID = results.SID;
     request.session.acctype = results.acctype;
 
 
@@ -281,6 +299,8 @@ app.post('/studentauth', function(request, response) {
           acctype: request.session.acctype,
           // session: request.session
         });
+
+
   })
 
 
@@ -311,6 +331,42 @@ app.post('/createsurvey', function(request, response) {
   });
 
 });
+
+//check in method
+app.get('/checkin', function(request, response) {
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+'  '+time;
+  var checkin = {
+     SID: request.session.studentID,
+     firstname: request.session.firstname,
+     lastname: request.session.lastname,
+     timestamp: dateTime,
+     InOrOut: 0
+   };
+   checkin_student(checkin, function(result){
+       // results = result;
+
+       // console.log(results+"   checked in  ");
+
+
+ });
+ response.render('index', {
+       acctype: request.session.acctype,
+         // session: request.session
+ });
+
+  }
+);
+
+
+
+
+
+
+
+
 
 //registration route
 app.use(registration);
