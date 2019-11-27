@@ -63,6 +63,7 @@ app.get('/', function(request, response){
 	   response.sendFile(path.join(__dirname + '/views/login.html'));
    }
   else {
+    app.use(express.static('./views/css'));
     response.render('index', {
         acctype: request.session.acctype,
         session: request.session
@@ -113,8 +114,9 @@ app.get('/createsurvey', function (request, response) {
     console.log(request.session.username + " " + request.session.acctype);
     //still figuring out how to xcompare the acctype to "Admin"
     if (request.session.loggedin && request.session.acctype) {
+        app.use(express.static('./views/css'));
         app.use(express.static('./views/public_javascript/createsurvey'));
-        response.render(path.join(__dirname + '/views/createsurvey'));
+        response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
     }
 });
 

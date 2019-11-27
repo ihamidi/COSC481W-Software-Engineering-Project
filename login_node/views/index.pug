@@ -2,44 +2,46 @@ doctype html
 head
 	title BitsAndBytes Home
 	link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+	link(rel='stylesheet' type='text/css' href='sitewide.css')
+
 	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
 	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
 
-body(style="background-color:#0090FF")
-	nav.navbar.navbar-inverse
+body.bits-body
+	nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
 		.container-fluid
 			.navbar-header
 				button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
 					span.icon-bar
 					span.icon-bar
 					span.icon-bar
-				a.navbar-brand(href="#") BitsAndBytes
+				a.navbar-brand.bits-text(href="#") BitsAndBytes
 			#myNavbar.collapse.navbar-collapse
 				ul.nav.navbar-nav
 					li
-						a(href="/") Home
+						a.bits-text(href="/") Home
 					li
-						a(href="signup") Sign up
+						a.bits-text(href="signup") Sign up
 					li
-						a(href="createsurvey") Create Survey +Test
+						a.bits-text(href="createsurvey") Create Survey
 					li
-						a(href="/") Login
+						a.bits-text(href="/") Login
 				ul.nav.navbar-nav.navbar-right
 					li
-						a(href='/logout')
+						a.bits-text(href='/logout')
 							span.glyphicon.glyphicon-log-out
 							|  Log Out
-	.jumbotron.text-center(style="background-color:#FFFFFF")
-		h1 Home
+	.jumbotron.text-center.bits-primary.bits-border-rounded
+		h1.bits-text Home
 		#container.col
 		if acctype === 'Student'
 			ul.nav.nav-tabs
 				li.active
-					a(data-toggle='tab' href='#home') Check In
+					a.bits-text(data-toggle='tab' href='#home') Check In
 				li
-					a(data-toggle='tab' href='#menu1') Check Out
+					a.bits-text(data-toggle='tab' href='#menu1') Check Out
 				li
-					a(data-toggle='tab' href='#menu2') TBD
+					a.bits-text(data-toggle='tab' href='#menu2') TBD
 			.tab-content
 				#home.tab-pane.fade.in.active
 					h2 Check In
@@ -64,11 +66,11 @@ body(style="background-color:#0090FF")
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
 				li.active
-					a(data-toggle='tab' href='#home') Registration
+					a.bits-text(data-toggle='tab' href='#home') Registration
 				li
-					a(data-toggle='tab' href='#menu1') Student Sign up
+					a.bits-text(data-toggle='tab' href='#menu1') Student Sign up
 				li
-					a(data-toggle='tab' href='#menu2') Timestamps
+					a.bits-text(data-toggle='tab' href='#menu2') Timestamps
 			.tab-content
 				#home.tab-pane.fade.in.active
 					h2 Registration
@@ -113,34 +115,37 @@ body(style="background-color:#0090FF")
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
 				li.active
-					a(data-toggle='tab' href='#home') Create survey
+					a.bits-tabs-item(data-toggle='tab' href='#home') Create survey
 				li
-					a(data-toggle='tab' href='#menu1') Announcements
+					a.bits-tabs-item(data-toggle='tab' href='#menu1') Announcements
 				li
-					a(data-toggle='tab' href='#menu2') Modify Student
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') Modify Student
 			.tab-content
 				#home.tab-pane.fade.in.active
-					h2 Registration
+					h2.bits-text Registration
 					div
-						p Create a survey using the survey creator
+						p.bits-text Create a survey using the survey creator
 						form(action='createsurvey' method='GET')
-							input(type='submit' value='Create Survey')
+						button.btn.btn-default(type='submit') Create Survey
 
 				#menu1.tab-pane.fade
-					h2 Announcements
+					h2.bits-text Announcements
 					div
-						p Click here to create an announcements
+						p.bits-text Click here to create an announcements
 						form(action='announcements' method='GET')
-							input(type='submit' value='Announcements')
+							button.btn.btn-default(type='submit') Announcements
 						div
 				#menu2.tab-pane.fade
-					h2 Modify Student
+					h2.bits-text Modify Student
 					div
-						p Modify a Student's information
+						p.bits-text Modify a Student's information
 						form(action='registration' method='GET')
-							input(type='submit' value='Modify')
-			h3 Welcome Admin
+							button.btn.btn-default(type='submit') Modify
+			h3.bits-text Welcome Admin
 
 
 		else
 			h2 Please login to view contents
+	script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
