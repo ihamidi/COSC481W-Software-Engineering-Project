@@ -37,75 +37,75 @@ body.bits-body
 		if acctype === 'Student'
 			ul.nav.nav-tabs
 				li.active
-					a.bits-text(data-toggle='tab' href='#home') Check In
+					a.bits-tabs-item(data-toggle='tab' href='#home') Check In
 				li
-					a.bits-text(data-toggle='tab' href='#menu1') Check Out
+					a.bits-tabs-item(data-toggle='tab' href='#menu1') Check Out
 				li
-					a.bits-text(data-toggle='tab' href='#menu2') TBD
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') TBD
 			.tab-content
 				#home.tab-pane.fade.in.active
-					h2 Check In
+					h2.bits-text Check In
 					div
-						p Click here to check in
+						p.bits-text Click here to check in
 						form(action='checkin' method='GET')
-							input(type='submit' value='Check In')
+							button.btn.btn-default(type='submit') Check In
 
 
 				#menu1.tab-pane.fade
-					h2 Check Out
+					h2.bits-text Check Out
 					div
-						p Click here to check out
+						p.bits-text Click here to check out
 						form(action='checkout' method='GET')
-							input(type='submit' value='Check Out')
+							button.btn.btn-default(type='submit') Check Out
 
 				#menu2.tab-pane.fade
-					h2 TBD
+					h2.bits-text TBD
 					div
-						p tbd
+						p.bits-text tbd
 
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
 				li.active
-					a.bits-text(data-toggle='tab' href='#home') Registration
+					a.bits-tabs-item(data-toggle='tab' href='#home') Registration
 				li
-					a.bits-text(data-toggle='tab' href='#menu1') Student Sign up
+					a.bits-tabs-item(data-toggle='tab' href='#menu1') Student Sign up
 				li
-					a.bits-text(data-toggle='tab' href='#menu2') Timestamps
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') Timestamps
 			.tab-content
 				#home.tab-pane.fade.in.active
-					h2 Registration
+					h2.bits-text Registration
 					div
-						p Click here to download the registration form:
+						p.bits-text Click here to download the registration form:
 						form(action='registration' method='GET')
-							input(type='submit' value='cat')
+							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')
-							input(type='submit' value='test')
+							button.btn.btn-default(type='submit') Test
 						div
 						if !hasPermission
-						p Upload Permission Slip:
+						p.bits-text Upload Permission Slip:
 						form(action='/uploadpermission' enctype='multipart/form-data' method='POST')
 							input(type='file' name='permission' style='align: center')
-							input(type='submit' value='Upload a File')
+							button.btn.btn-default(type='submit') Upload a File
 						if !hasWaiver
-						p Upload Waiver:
+						p.bits-text Upload Waiver:
 						form(action='/uploadwaiver' enctype='multipart/form-data' method='POST')
 							input(type='file' name='waiver' style='align: center')
-							input(type='submit' value='Upload a File')
+							button.btn.btn-default(type='submit') Upload a File
 				#menu1.tab-pane.fade
-					h2 Sign up a student
+					h2.bits-text Sign up a student
 					div
-						p Click here to sign up a student
+						p.bits-text Click here to sign up a student
 						form(action='studentsignup' method='GET')
-							input(type='submit' value='Student Sign up')
+							button.btn.btn-default(type='submit') Student Sign up
 						div
 				#menu2.tab-pane.fade
-					h2 Check a students Timesheet
+					h2.bits-text Check a students Timesheet
 					div
-						p Click here to download Check a students timesheet
+						p.bits-text Click here to download Check a students timesheet
 						form(action='registration' method='GET')
-							input(type='submit' value='cat')
+							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')
-							input(type='submit' value='test')
+							button.btn.btn-default(type='submit') Test
 						div
 
 
@@ -146,6 +146,3 @@ body.bits-body
 
 		else
 			h2 Please login to view contents
-	script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
-	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
