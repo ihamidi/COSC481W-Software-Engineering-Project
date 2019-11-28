@@ -215,36 +215,50 @@ app.post('/auth', function(request, response) {
  var results;
   // response.cookie("userData", users);
 
-    get_info(data, function(result){
+    getParentData(data, function(result){
       results = result;
       request.session.acctype = results.acctype;
-           //rest of your code goes in here
+      request.session.PID = results.PID;
       request.session.loggedin = true;
+      getChildrenOfParent(request.session.PID, function(result){
+        student = result;
+        request.session.studentID = student.SID;
+        request.session.studentName = student.firstname;
+        // console.log(request.session);
+      })
 
-
-        console.log(request.session);
+      console.log(request.session);
         response.render('index', {
             acctype: request.session.acctype,
             session: request.session
           });
     })
-
-      // } else {
-      // 	response.send('Please enter Username and Password!');
-      // 	response.end();
-      // }
     });
 
 
-    function get_info(data, callback){
-
-
+    function getParentData(data, callback){
       connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
        {
         if (results.length > 0) {
-            console.log(results[0].acctype);
             callback(results[0]);
         }})
+}
+
+function getChildrenOfParent(data, callback){
+  connection.query('SELECT * FROM student_accounts WHERE PID = ?', 				[data], function(error, results, fields)
+   {
+    if (results.length > 0) {
+        callback(results[0]);
+    }})
+}
+
+function setRegistrationStatus(data, callback){
+  connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				[data], function(error, results, fields)
+   {
+    if (results.length > 0) {
+        console.log(results[0]);
+        callback(results[0]);
+    }})
 }
 
 function get_student_info(data, callback){
