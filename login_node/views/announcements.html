@@ -15,19 +15,21 @@
     <nav class="navbar navbar-inverse navbar-fluid bits-border-rounded">
        <div class="container-fluid bits-navbar">
           <div class="navbar-header">
-             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
+             <button type="button" class="navbar-toggle bits-navbar-collapse" data-toggle="collapse" data-target="#myNavbar">
+             <span class="icon-bar bits-navbar-collapse-span"></span>
+             <span class="icon-bar bits-navbar-collapse-span"></span>
+             <span class="icon-bar bits-navbar-collapse-span"></span>
              </button>
-             <a class="navbar-brand bits-text">BitsAndBytes</a>
+             <a class="navbar-brand bits-text" href="/">BitsAndBytes</a>
           </div>
           <div class="collapse navbar-collapse" id="myNavbar">
              <ul class="nav navbar-nav">
-                <li><a class="bits-text" href="">Home</a></li>
-                <li><a class="bits-text" href="signup">Sign up</a></li>
-                <li><a class="bits-text" href="createsurvey">Create Survey +Test</a></li>
+                <li><a class="bits-text" href="/">Home</a></li>
+                <li><a class="bits-text" href="createsurvey">Create Survey</a></li>
                 <li><a class="bits-text" href="">Contact</a></li>
+             </ul>
+             <ul class="nav navbar-nav navbar-right">
+               <li><a class="bits-text" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
              </ul>
           </div>
        </div>
@@ -35,13 +37,13 @@
 
 
 
-<form class="container bits-primary bits-border-rounded" id='newAnnouncement' action="createannouncement" method="post">
+<form class="container bits-primary bits-border-rounded" style="width:80%" id='newAnnouncement' action="createannouncement" method="post">
   <h2 class="bits-text">Create Announcement</h2>
   <div class="form-group">
-    <label for="title">Title</label>
+    <label class="bits-text" for="title">Title</label>
     <input name="title" type="text" class="form-control" id="title" placeholder="Enter Title"></div>
     <div class="form-group">
-      <label for="content">Announcement</label>
+      <label class="bits-text" for="content">Announcement</label>
       <textarea class="form-control" id="content" placeholder="Enter Announcement"></textarea>
     </div>
     <div class="form-group">
@@ -50,6 +52,7 @@
     </div>
     <button type="button" onclick="createAnnouncement()" class="btn btn-secondary">Preview</button>
     <button type="submit" class="btn btn-primary">Submit</button>
+    <br><br>
     <input type="hidden" name="finishedAnnouncement" id="hiddenAnnouncementInput" value="null">
 </form>
 

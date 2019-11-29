@@ -11,21 +11,18 @@ body.bits-body
 	nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
 		.container-fluid
 			.navbar-header
-				button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
-					span.icon-bar
-					span.icon-bar
-					span.icon-bar
+				button.navbar-toggle.bits-navbar-collapse(type="button" data-toggle="collapse" data-target="#myNavbar")
+					span.icon-bar.bits-navbar-collapse-span
+					span.icon-bar.bits-navbar-collapse-span
+					span.icon-bar.bits-navbar-collapse-span
 				a.navbar-brand.bits-text(href="#") BitsAndBytes
 			#myNavbar.collapse.navbar-collapse
 				ul.nav.navbar-nav
 					li
 						a.bits-text(href="/") Home
-					li
-						a.bits-text(href="signup") Sign up
-					li
-						a.bits-text(href="createsurvey") Create Survey
-					li
-						a.bits-text(href="/") Login
+					if acctype === 'Admin'
+						li
+							a.bits-text(href="createsurvey") Create Survey
 				ul.nav.navbar-nav.navbar-right
 					li
 						a.bits-text(href='/logout')

@@ -47,6 +47,34 @@ a.bits-text:hover {
   color: #FFFFFF;
 }
 
+button.bits-navbar-collapse {
+  background-color: #3DAAFD !important;
+  border-style: solid;
+  border-width: 1px;
+  border-color: white !important;
+  border-radius: 5px;
+}
+
+button.bits-navbar-collapse:hover {
+  background-color: #1F9EFF !important;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #FFB758 !important;
+  border-radius: 5px;
+}
+
+span.bits-navbar-collapse-span:hover {
+  background-color: #FFB758 !important;
+}
+
+button.bits-navbar-collapse span.bits-navbar-collapse-span {
+  background-color: white !important;
+}
+
+button.bits-navbar-collapse:hover span.bits-navbar-collapse-span {
+  background-color: #FFB758 !important;
+}
+
 a.bits-tabs-item:active {
   color: gray;
 }
