@@ -1,6 +1,5 @@
 var express = require('express');
 var session = require('express-session');
-var path = require('path');
 var mysql = require('mysql');
 const multer  = require('multer');
 const router = express.Router();

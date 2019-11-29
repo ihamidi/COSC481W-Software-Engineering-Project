@@ -1,26 +1,56 @@
-var mysql = require('mysql');
-var express = require('express');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var path = require('path');
-var pug = require('pug');
-const multer  = require('multer');
-var users;
-var registration = require('./studentManagement.js');
+const mysql = require('mysql');
+const dbConnection = require('./database.js');
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const path = require('path');
+const pug = require('pug');
+const registration = require('./studentManagement.js');
 const fs = require('fs');
-// var cookieParser = require('cookie-parser');
-var MemoryStore = require('memorystore')(session)
-var hasPermission;
-var hasWaiver;
-var studentName;
+const MemoryStore = require('memorystore')(session);
 
 //giving clousql credentials
-var connection = mysql.createConnection({
+// var connection = mysql.createConnection({
+//   host     : '34.66.160.101',
+// 	user     : 'root',
+// 	password : 'fiveguys',
+// 	database : 'swing_demo' 
+// });
+
+class Database {
+  constructor( config ) {
+      console.log("Database connected");
+      this.connection = mysql.createConnection( config );
+  }
+  query( sql, args ) {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.query( sql, args, ( err, rows ) => {
+              if ( err )
+                  return reject( err );
+              resolve( rows );
+          } );
+      } );
+  }
+  close() {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.end( err => {
+              if ( err )
+                  return reject( err );
+              resolve();
+          } );
+      } );
+  }
+}
+
+var config = {
   host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
-	database : 'swing_demo' //change to BitsAndBytes when testing using current schema
-});
+	database : 'swing_demo' 
+};
+
+const connection = new Database(config);
+
 var app = express();
 
 //testing to see if css may work
@@ -46,13 +76,6 @@ app.use(session({
 //dont know much about this part?
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
-
-
-
-
-
-
-
 
 
 
@@ -212,27 +235,28 @@ app.post('/auth', function(request, response) {
      username: request.body.username,
      password: request.body.password
  };
- var results;
-  // response.cookie("userData", users);
-
-    getParentData(data, function(result){
-      results = result;
-      request.session.acctype = results.acctype;
-      request.session.PID = results.PID;
-      request.session.loggedin = true;
-      getChildrenOfParent(request.session.PID, function(result){
-        student = result;
+ connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
+      .then(rows => {
+        request.session.acctype = parent.acctype;
+        request.session.PID = parent.PID;
+        request.session.loggedin = true;
+        var parent = rows;
+        return connection.query('SELECT * FROM student_accounts WHERE PID = ?', [request.session.PID])
+      })
+      .then(rows => {
+        var student = rows;
         request.session.studentID = student.SID;
         request.session.studentName = student.firstname;
-        // console.log(request.session);
+        return connection.close();
+        // return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.SID]);
       })
-
-      console.log(request.session);
+      .then(() => {
+        console.log(request.session);
         response.render('index', {
             acctype: request.session.acctype,
             session: request.session
           });
-    })
+      }) 
     });
 
 
