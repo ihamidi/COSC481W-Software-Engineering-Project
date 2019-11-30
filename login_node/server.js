@@ -323,7 +323,9 @@ app.post('/studentauth', function(request, response) {
      username: request.body.username,
      password: request.body.password
  };
-	// if (username && password) {
+ var today = new Date();
+ var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
     connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
         .then(rows => {
           var student = rows;
@@ -338,7 +340,7 @@ app.post('/studentauth', function(request, response) {
         .then(rows => {
           var timestamp = rows;
           if (results.length > 0) {
-            if(timestamp[0].InOrOut==0)
+            if(timestamp[0].currdate.includes(date)&& timestmap[0].InOrOut==0)
             {
               request.session.checkedIn=true;
             }
@@ -356,27 +358,6 @@ app.post('/studentauth', function(request, response) {
         .catch( err => {
           response.redirect('/');
         })
-
-
-
-  // get_student_info(data, function(result){
-  //   results = result;
-  //   request.session.loggedin = true;
-  //   request.session.username = results.username;
-  //   request.session.firstname = results.firstname;
-  //   request.session.lastname = results.lastname;
-  //   request.session.studentID = results.SID;
-  //   request.session.acctype = results.acctype;
-  //
-  //
-  //     console.log(request.session.acctype+"   as d asd asd sa d asd sad ads  ");
-  //     response.render('index', {
-  //         acctype: request.session.acctype,
-  //         // session: request.session
-  //       });
-  //
-  //
-  // })
 });
 
 // createsurvey method when admin submits survey
