@@ -38,12 +38,8 @@ body.bits-body
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Check Out
 				li
-<<<<<<< HEAD
 					a(data-toggle='tab' href='#menu2') Take Survey
-
-=======
-					a.bits-tabs-item(data-toggle='tab' href='#menu2') TBD
->>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
+					
 			.tab-content
 				#home.tab-pane.fade.in.active
 					h2.bits-text Check In
@@ -61,24 +57,16 @@ body.bits-body
 							button.btn.btn-default(type='submit') Check Out
 
 				#menu2.tab-pane.fade
-<<<<<<< HEAD
-					h2 Take Survey
+					h2.bits-text Take Survey
 					div
-						p Click here to take the presurvey
+						p.bits-text Click here to take the presurvey
 						form(action='PresurveyStudent' method='GET')
-							input(type='submit' value='Presurvey')
-							
-						
-						p Click here to take the postsurvey
+							button.btn.btn-default(type='submit' value='Presurvey') Pre-survey
+										
+						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
-							input(type='submit' value='Postsurvey')
+							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
 							
-=======
-					h2.bits-text TBD
-					div
-						p.bits-text tbd
-
->>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
 				li.active
@@ -86,13 +74,9 @@ body.bits-body
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Student Sign up
 				li
-<<<<<<< HEAD
-					a(data-toggle='tab' href='#menu2') Timestamps
-				li
-					a(data-toggle='tab' href='#menu3') Take Survey
-=======
 					a.bits-tabs-item(data-toggle='tab' href='#menu2') Timestamps
->>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#menu3') Take Survey
 			.tab-content
 				#home.tab-pane.fade.in.active
 					h2.bits-text Registration
