@@ -237,7 +237,6 @@ app.post('/auth', function(request, response) {
  };
  connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?',                 [data.username, data.password])
        .then(rows => {
-         console.log(rows);
          var parent = rows;
          request.session.acctype = parent[0].acctype;
          request.session.PID = parent[0].PID;
@@ -249,45 +248,32 @@ app.post('/auth', function(request, response) {
          var student = rows;
          request.session.studentID = student[0].SID;
          request.session.studentName = student[0].firstname;
-         console.log(request.session.studentID);
-         return connection.close();
-         // return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.SID]);
+         return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
+       })
+       .then(rows => {
+        var formStatus = rows[0];
+        if(formStatus.waiver_complete == 0){
+          request.session.hasWaiver = false;
+        }
+        else{
+          request.session.hasWaiver = true;
+        }
+        if(formStatus.permission_complete == 0){
+          request.session.hasPermission = false;
+        }
+        else{
+          request.session.hasPermission = true;
+        }
+        return connection.close();
        })
        .then(() => {
-         console.log(request.session.acctype);
+         console.log(request.session);
          response.render('index', {
-         acctype: request.session.acctype, 
+         acctype: request.session.acctype,
          sessionD: request.session
        });
        })
 });
-
-
-
-    function getParentData(data, callback){
-      connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
-       {
-        if (results.length > 0) {
-            callback(results[0]);
-        }})
-}
-
-function getChildrenOfParent(data, callback){
-  connection.query('SELECT * FROM student_accounts WHERE PID = ?', 				[data], function(error, results, fields)
-   {
-    if (results.length > 0) {
-        callback(results[0]);
-    }})
-}
-
-function setRegistrationStatus(data, callback){
-  connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				[data], function(error, results, fields)
-   {
-    if (results.length > 0) {
-        console.log(results[0]);
-        callback(results[0]);
-    }})
-}
 
 function get_student_info(data, callback){
 
