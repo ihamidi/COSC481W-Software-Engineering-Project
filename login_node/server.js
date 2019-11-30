@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var mysql = require('mysql');
 var express = require('express');
 var session = require('express-session');
@@ -14,20 +15,61 @@ var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 var foot='\n</body>\n</html>';
 var users;
 var registration = require('./studentManagement.js');
+=======
+const mysql = require('mysql');
+const dbConnection = require('./database.js');
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const path = require('path');
+const pug = require('pug');
+const registration = require('./studentManagement.js');
+>>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
 const fs = require('fs');
-var cookieParser = require('cookie-parser');
-
-var hasPermission;
-var hasWaiver;
-var studentName;
+const MemoryStore = require('memorystore')(session);
 
 //giving clousql credentials
-var connection = mysql.createConnection({
+// var connection = mysql.createConnection({
+//   host     : '34.66.160.101',
+// 	user     : 'root',
+// 	password : 'fiveguys',
+// 	database : 'swing_demo' 
+// });
+
+class Database {
+  constructor( config ) {
+      console.log("Database connected");
+      this.connection = mysql.createConnection( config );
+  }
+  query( sql, args ) {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.query( sql, args, ( err, rows ) => {
+              if ( err )
+                  return reject( err );
+              resolve( rows );
+          } );
+      } );
+  }
+  close() {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.end( err => {
+              if ( err )
+                  return reject( err );
+              resolve();
+          } );
+      } );
+  }
+}
+
+var config = {
   host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
-	database : 'swing_demo' //change to BitsAndBytes when testing using current schema
-});
+	database : 'swing_demo' 
+};
+
+const connection = new Database(config);
+
 var app = express();
 
 //testing to see if css may work
@@ -39,9 +81,13 @@ app.set('view engine', 'pug');
 
 
 //session stuff
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(session({
-	secret: 'secret',
+  cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
+    secret: 'keyboard cat',
 	resave: true,
 	saveUninitialized: true
 }));
@@ -52,19 +98,14 @@ app.use(bodyParser.json());
 
 
 
-
-
-
-
-
-
-
 //\home of bits and bytes
-app.get('/', function(request, response) {
+app.get('/', function(request, response){
   if (!request.session.loggedin){
+     app.use(express.static('./views/css'));
 	   response.sendFile(path.join(__dirname + '/views/login.html'));
    }
   else {
+    app.use(express.static('./views/css'));
     response.render('index', {
         acctype: request.session.acctype,
         session: request.session
@@ -115,8 +156,9 @@ app.get('/createsurvey', function (request, response) {
     console.log(request.session.username + " " + request.session.acctype);
     //still figuring out how to xcompare the acctype to "Admin"
     if (request.session.loggedin && request.session.acctype) {
+        app.use(express.static('./views/css'));
         app.use(express.static('./views/public_javascript/createsurvey'));
-        response.render(path.join(__dirname + '/views/createsurvey'));
+        response.sendFile(path.join(__dirname + '/views/createsurvey.html'));
     }
 });
 
@@ -133,7 +175,7 @@ app.get('/timestamp', function (request, response) {
     console.log(request.session.firstname+": this is what is sent :"+request.session.userid);
     connection.query('SELECT * FROM timestamps WHERE firstname = ? AND userID = ?', [request.session.firstname, request.session.userid], function (error, results, fields) {
         response.send(results);
-        console.log(results[0])
+        console.log(results[0]);
     })
 });
 //registration method for db
@@ -173,7 +215,7 @@ app.post('/studentreg', function (request, response) {
                             "failed": "error ocurred"
                         })
                     } else {
-                        console.log('The solution is: ', results);
+                        console.log('The solution is: ', );
                         response.send({
                             "code": 200,
                             "success": "user registered sucessfully"
@@ -204,103 +246,126 @@ app.post('/reg', function (request, response) {
 });
 
 
+
+
 //authorization method after user submits
 app.post('/auth', function(request, response) {
-	var username = request.body.username;
-	var password = request.body.password;
-	if (username && password) {
-		connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[username, password], function(error, results, fields)
-		 {
-			if (results.length > 0) {
-				request.session.loggedin = true;
-                request.session.username = username;
-                request.session.firstname = results[0].firstname
-                request.session.userid = results[0].userID;
-                request.session.acctype = results[0].acctype;
-                if (!request.session.acctype=="Admin") {
-                connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userid, function(error, results, fields)
-		 {
-                request.session.SID = results[0].SID;
-                request.session.studentname = results[0].firstname;
-        });
-                connection.query('SELECT * FROM registration_forms WHERE SID = ? AND waiver_complete = ?', 				[request.session.SID, 1], function(error, results, fields)
-
-		 {
-             if(results.length > 0){
-                request.session.hasWaiver = false;
-             }
-             else{
-                request.session.hasWaiver = true;
-             }
-        });
-        connection.query('SELECT * FROM registration_forms WHERE SID = ? AND permission_complete = ?', 				[request.session.sid, 1], function(error, results, fields)
-		 {
-             if(results.length > 0){
-                request.session.hasPermission = false;
-             }
-             else{
-                request.session.hasPermission = true;
-             }
-        });
-      }
-                // console.log(results[0].acctype +":::: "+request.session.userid);
-
-                response.render('index', {
-                    acctype: request.session.acctype,
-                    session: request.session
-                });
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}
-			response.end();
+  var data = {
+     username: request.body.username,
+     password: request.body.password
+ };
+ connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
+      .then(rows => {
+        request.session.acctype = parent.acctype;
+        request.session.PID = parent.PID;
+        request.session.loggedin = true;
+        var parent = rows;
+        return connection.query('SELECT * FROM student_accounts WHERE PID = ?', [request.session.PID])
+      })
+      .then(rows => {
+        var student = rows;
+        request.session.studentID = student.SID;
+        request.session.studentName = student.firstname;
+        return connection.close();
+        // return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.SID]);
+      })
+      .then(() => {
+        console.log(request.session);
+        response.render('index', {
+            acctype: request.session.acctype,
+            session: request.session
+          });
+      }) 
     });
-    console.log(request.session);
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
-});
+
+
+    function getParentData(data, callback){
+      connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
+       {
+        if (results.length > 0) {
+            callback(results[0]);
+        }})
+}
+
+function getChildrenOfParent(data, callback){
+  connection.query('SELECT * FROM student_accounts WHERE PID = ?', 				[data], function(error, results, fields)
+   {
+    if (results.length > 0) {
+        callback(results[0]);
+    }})
+}
+
+function setRegistrationStatus(data, callback){
+  connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				[data], function(error, results, fields)
+   {
+    if (results.length > 0) {
+        console.log(results[0]);
+        callback(results[0]);
+    }})
+}
+
+function get_student_info(data, callback){
+
+
+  connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
+   {
+    if (results.length > 0) {
+        console.log(results[0].acctype);
+        callback(results[0]);
+    }})
+}
+
+function checkin_student(data, callback){
+
+
+  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+   {
+      if (results.length > 0) {
+       console.log('this.sql', this.sql);
+        console.log(results.affectedRows);
+       callback(data.firstname);
+     }
+});}
+
+//usage
+
+
+
+
+
+
 
 //authorization method after user submits
 app.post('/studentauth', function(request, response) {
-	var username = request.body.username;
-	var password = request.body.password;
-	if (username && password) {
-		connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[username, password], function(error, results, fields)
-		 {
-			if (results.length > 0) {
-				request.session.loggedin = true;
-                request.session.username = username;
-                request.session.firstname = results[0].firstname
-                request.session.userid = results[0].PID;
-                request.session.acctype = results[0].acctype;
-                connection.query('SELECT SID, firstname FROM student_accounts WHERE PID = ?', 				request.session.userID, function(error, results, fields)
-		 {
-                request.session.SID = results[0].SID;
-                request.session.studentname = results[0].firstname;
-        });
-                connection.query('SELECT * FROM registration_forms WHERE SID = ?', 				request.session.SID, function(error, results, fields)
-		 {
-                request.session.SID = results[0].sid;
-                request.session.studentname = results[0].firstname;
-        });
-                // console.log(results[0].acctype +":::: "+request.session.userid);
+  var data = {
+     username: request.body.username,
+     password: request.body.password
+ };
+	// if (username && password) {
 
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}
+  get_student_info(data, function(result){
+    results = result;
+    request.session.loggedin = true;
+    request.session.username = results.username;
+    request.session.firstname = results.firstname;
+    request.session.lastname = results.lastname;
+    request.session.studentID = results.SID;
+    request.session.acctype = results.acctype;
+
+
+      console.log(request.session.acctype+"   as d asd asd sa d asd sad ads  ");
       response.render('index', {
-          acctype: request.session.acctype// change to results[0].acctype when testing against current schema
-      });
-      console.log(request.session);
-			response.end();
-    });
-    request.session.username = username;
-    console.log(request.session);
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
+          acctype: request.session.acctype,
+          // session: request.session
+        });
+
+
+  })
+
+
+
+
+                // console.log(results[0].acctype +":::: "+request.session.userid);
 });
 
 // createsurvey method when admin submits survey
@@ -326,6 +391,7 @@ app.post('/createsurvey', function(request, response) {
 
 });
 
+<<<<<<< HEAD
 app.get('/PresurveyParent', function(request, response) {
   console.log(request.session.username + " " + request.session.acctype);
   //still figuring out how to xcompare the acctype to "Admin"
@@ -405,6 +471,41 @@ app.get('/PostsurveyStudent', function(request, response) {
   }
   response.sendFile(path.join(__dirname + '/views/PostsurveyStudent.html'));
 });
+=======
+//check in method
+app.get('/checkin', function(request, response) {
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+'  '+time;
+  var checkin = {
+     SID: request.session.studentID,
+     firstname: request.session.firstname,
+     lastname: request.session.lastname,
+     timestamp: dateTime,
+     InOrOut: 0
+   };
+   checkin_student(checkin, function(result){
+       // results = result;
+
+       // console.log(results+"   checked in  ");
+
+
+ });
+ response.render('index', {
+       acctype: request.session.acctype,
+         // session: request.session
+ });
+
+  }
+);
+
+
+
+
+
+
+>>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
 
 
 

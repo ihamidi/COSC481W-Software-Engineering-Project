@@ -5,37 +5,58 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Survey Creator</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="announcements.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="sitewide.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 
-<body onload="onLoad()"style="background-color:#c2ab82">
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header"><button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#myNavbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="#">BitsAndBytes</a></div>
-            <div
-                class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="signup">Sign up</a></li>
-                    <li><a href="createsurvey">Create Survey +Test</a></li>
-                    <li><a href="/">Login</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-                </ul>
+<body class="bits-body" onload="onLoad()">
+  <nav class="navbar navbar-inverse navbar-fluid bits-border-rounded">
+     <div class="container-fluid bits-navbar">
+        <div class="navbar-header">
+           <button type="button" class="navbar-toggle bits-navbar-collapse" data-toggle="collapse" data-target="#myNavbar">
+           <span class="icon-bar bits-navbar-collapse-span"></span>
+           <span class="icon-bar bits-navbar-collapse-span"></span>
+           <span class="icon-bar bits-navbar-collapse-span"></span>
+           </button>
+           <a class="navbar-brand bits-text" href="/">BitsAndBytes</a>
         </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+           <ul class="nav navbar-nav">
+              <li><a class="bits-text" href="/">Home</a></li>
+              <li><a class="bits-text" href="createsurvey">Create Survey</a></li>
+              <li><a class="bits-text" href="">Contact</a></li>
+           </ul>
+           <ul class="nav navbar-nav navbar-right">
+             <li><a class="bits-text" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+           </ul>
         </div>
-    </nav>
-    <h2 class="container">Survey Creator</h2>
-    <form class="container" id="newSurveyForm" action="createsurvey" method="post"><button class="btn" id="newSurveyButton" onclick="newSurvey()">New Survey</button>
-        <div class="form-group"><label for="surveyName">Survey Name</label><input class="form-control" name="surveyName" id="surveyName" type="text" placeholder="Enter Name"><label for="surveyType">Survey Type</label><select class="form-control" name="surveyType" id="surveyType"><option value="Student">Student</option><option value="Parent">Parent</option></select></div>
+     </div>
+  </nav>
+    <form class="container bits-primary bits-border-rounded" style="width:80%" id="newSurveyForm" action="createsurvey" method="post">
+        <h2 class="bits-text">Survey Creator</h2>
+        <div class="form-group"><label class="bits-text" for="surveyName">Survey Name</label>
+        <input class="form-control" name="surveyName" id="surveyName" type="text" placeholder="Enter Name">
+        <br>
+        <label class="bits-text" for="surveyType">Survey Type</label>
+        <select class="form-control" name="surveyType" id="surveyType">
+          <option value="Student">Student</option>
+          <option value="Parent">Parent</option>
+        </select></div>
         <hr>
         <div class="form-group" id="questions"></div>
         <hr>
-        <div class="form-group"><label for="newQuestionType">New Question</label><select class="form-control" id="newQuestionType"><option disabled="" selected="">Select Question Type...</option><option value="multiple">Multiple Choice</option><option value="checkbox">Check Box</option><option value="dropdown">Drop Down</option><option value="shortanswer">Short Answer</option></select><br>
-            <button
-                class="btn" id="newQuestionButton" type="button" onclick="newQuestion()">Create Question</button><button class="btn btn-danger" id="deleteQuestionButton" type="button" onclick="deleteQuestion()">Delete Last Question</button></div>
+        <div class="form-group"><label class="bits-text" for="newQuestionType">New Question</label>
+          <select class="form-control" id="newQuestionType">
+            <option disabled="" selected="">Select Question Type...</option>
+            <option value="multiple">Multiple Choice</option><option value="checkbox">Check Box</option>
+            <option value="dropdown">Drop Down</option><option value="shortanswer">Short Answer</option>
+          </select>
+          <br>
+            <button class="btn" id="newQuestionButton" type="button" onclick="newQuestion()">Create Question</button>
+            <button class="btn btn-danger" id="deleteQuestionButton" type="button" onclick="deleteQuestion()">Delete Last Question</button>
+        </div>
         <hr>
         <div class="form-group"><button class="btn btn-secondary" id="previewSurvey" type="button" onclick="createSurvey()">Preview Survey</button></div>
         <button type="submit" class="btn btn-primary" name="survey-submit">Submit</button>
@@ -44,9 +65,6 @@
         <input type="hidden" name="finishedSurvey" id="hiddenFinishedSurveyInput" value="null">
     </form>
     <script src="surveyCreator.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>

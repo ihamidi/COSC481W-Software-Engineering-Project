@@ -1,0 +1,92 @@
+.bits-body {
+  background-color: #C7DAE9;
+}
+
+.bits-primary {
+  background-color: #5EB2F2;
+}
+
+.bits-secondary {
+  background-color: #3DAAFD;
+}
+
+.bits-border {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray !important;
+}
+
+.bits-border-rounded {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray !important;
+  border-radius: 5px;
+}
+
+.bits-text {
+  color: white !important;
+}
+
+.bits-link {
+  color: #6C6CF4;
+}
+
+.bits-link:hover {
+  color: #FFB758;
+}
+
+a.bits-text:hover {
+  color: #FFB758 !important;
+}
+
+.bits-navbar {
+  background-color: #3DAAFD;
+}
+
+.bits-navbar-header {
+  color: #FFFFFF;
+}
+
+button.bits-navbar-collapse {
+  background-color: #3DAAFD !important;
+  border-style: solid;
+  border-width: 1px;
+  border-color: white !important;
+  border-radius: 5px;
+}
+
+button.bits-navbar-collapse:hover {
+  background-color: #1F9EFF !important;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #FFB758 !important;
+  border-radius: 5px;
+}
+
+span.bits-navbar-collapse-span:hover {
+  background-color: #FFB758 !important;
+}
+
+button.bits-navbar-collapse span.bits-navbar-collapse-span {
+  background-color: white !important;
+}
+
+button.bits-navbar-collapse:hover span.bits-navbar-collapse-span {
+  background-color: #FFB758 !important;
+}
+
+a.bits-tabs-item:active {
+  color: gray;
+}
+
+a.bits-tabs-item:hover {
+  color: gray !important;
+}
+
+a.bits-tabs-item:link {
+  color: white;
+}
+
+a.bits-tabs-item:visited {
+  color: white;
+}

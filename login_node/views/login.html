@@ -2,67 +2,70 @@
 <html>
    <head>
       <title>Bits And Bytes Login</title>
+
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="sitewide.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-   </head>
-   <body style="background-color:#c2ab82">
-      <nav class="navbar navbar-inverse navbar-fluid" style="background-color:#251e3e">
-         <div class="container-fluid " >
+   <body class="bits-body">
+      <nav class="navbar navbar-inverse navbar-fluid bits-border-rounded">
+         <div class="container-fluid bits-navbar">
             <div class="navbar-header">
-               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
+               <button type="button" class="navbar-toggle bits-navbar-collapse" data-toggle="collapse" data-target="#myNavbar">
+               <span class="icon-bar bits-navbar-collapse-span"></span>
+               <span class="icon-bar bits-navbar-collapse-span"></span>
+               <span class="icon-bar bits-navbar-collapse-span"></span>
                </button>
-               <a class="navbar-brand">BitsAndBytes</a>
+               <a class="navbar-brand bits-text" href="/">BitsAndBytes</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                <ul class="nav navbar-nav">
-                  <li><a href="">Home</a></li>
-                  <li><a href="signup">Sign up</a></li>
-                  <li><a href="createsurvey">Create Survey +Test</a></li>
-                  <li><a href="">Contact</a></li>
+                  <li><a class="bits-text" href="">Home</a></li>
+                  <li><a class="bits-text" href="signup">Sign up</a></li>
+                  <li><a class="bits-text" href="">Contact</a></li>
                </ul>
             </div>
          </div>
       </nav>
-      <div class="jumbotron jumbotron-fluid text-center" style="background:#851e3e">
+      <div class="jumbotron jumbotron-fluid text-center bits-primary bits-border-rounded">
          <div class="container">
-            <h2 style="color:white"><strong>Welcome to Bits and Bytes!</strong></h2>
+            <h2 class="bits-text"><strong>Welcome to Bits and Bytes!</strong></h2>
          </div>
       </div>
-      <div class="container text-center" style="width: 50%; background:#d63d41; color: white">
-         <ul class="nav nav-tabs">
-            <li class="active"style="color:white;"><a data-toggle="tab" href="#home">Parent</a></li>
-            <li ><a data-toggle="tab" href="#menu1">Student</a></li>
+      <span>
+      <div class="container text-center bits-primary bits-text bits-border-rounded" style="width: 40%;">
+         <ul class="nav nav-tabs bits-tabs">
+            <li class="active"><a class="bits-tabs-item" data-toggle="tab" href="#home">Parent</a></li>
+            <li><a class="bits-tabs-item" data-toggle="tab" href="#menu1">Student</a></li>
          </ul>
          <div class="tab-content" >
             <div id="home" class="tab-pane fade in active">
                <div class="d-flex justify-content-end social_icon">
-                  <h2><strong>Parent Login</strong><br><small style="color:white;">Login to view functions</small></h2>
+                  <h2><strong>Parent Login</strong><br><small class="bits-text">Login to view functions</small></h2>
                   <form class="form-login" form action="auth"  method="POST">
-                     <center><input type="text" class="form-control " style ="padding:10px;width: 30%;" name="username" placeholder="Username" required></center>
-                     <center><input type="password" class="form-control" style ="padding: 10px;width: 30%;" name="password" placeholder="Password" required></center>
-                     <button type="submit" class="btn btn-default" style ="padding: 10px;width: 30%;" name="login-submit">Login</button>
+                     <center><input type="text" class="form-control" style ="padding:10px;width: 40%;" name="username" placeholder="Username" required></center>
+                     <center><input type="password" class="form-control" style ="padding: 10px;width: 40%;" name="password" placeholder="Password" required></center>
+                     <button type="submit" class="btn btn-default" style ="padding: 10px;width: 40%;" name="login-submit">Login</button>
                   </form>
+                  <br>
                   <div class="card">
                      <p>Learn More about Bits and Bytes here</p>
-                     <p><a href="aboutus">About us</a></p>
+                     <p><a class="bits-link" href="aboutus">About us</a></p>
                   </div>
                </div>
             </div>
-            <div id="menu1" class="tab-pane fade" style="color:white;">
+            <div id="menu1" class="tab-pane fade in" style="color:white;">
                <div class="d-flex justify-content-end social_icon">
-                  <h2><strong>Student Login</strong><br><small style="color:white;">Login to view functions</small></h2>
+                  <h2><strong>Student Login</strong><br><small class="bits-text">Login to view functions</small></h2>
                   <form style="text-align: center;"class="form-login" form action="studentauth" method="POST">
-                     <center><input type="text" class="form-control" style ="padding: 10px; width: 30%;" name="username" placeholder="Username" required></center>
-                     <center><input type="password" class="form-control" style ="padding: 10px; width: 30%;" name="password" placeholder="Password" required></center>
-                     <button type="submit" class="btn btn-default" style ="padding: 10px;width: 30%;" name="login-submit">Login</button>
+                     <center><input type="text" class="form-control" style ="padding: 10px; width: 40%;" name="username" placeholder="Username" required></center>
+                     <center><input type="password" class="form-control" style ="padding: 10px; width: 40%;" name="password" placeholder="Password" required></center>
+                     <button type="submit" class="btn btn-default" style ="padding: 10px;width: 40%;" name="login-submit">Login</button>
                   </form>
-                  <div class="card" style="color:white;">
+                  <br>
+                  <div class="card bits-text">
                      <p>Learn More about Bits and Bytes here</p>
-                     <p><a href="aboutus">About us</a></p>
+                     <p><a class="bits-link" href="aboutus">About us</a></p>
                   </div>
                </div>
             </div>

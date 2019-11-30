@@ -2,62 +2,66 @@ doctype html
 head
 	title BitsAndBytes Home
 	link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+	link(rel='stylesheet' type='text/css' href='sitewide.css')
+
 	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
 	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
 
-body(style="background-color:#0090FF")
-	nav.navbar.navbar-inverse
+body.bits-body
+	nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
 		.container-fluid
 			.navbar-header
-				button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
-					span.icon-bar
-					span.icon-bar
-					span.icon-bar
-				a.navbar-brand(href="#") BitsAndBytes
+				button.navbar-toggle.bits-navbar-collapse(type="button" data-toggle="collapse" data-target="#myNavbar")
+					span.icon-bar.bits-navbar-collapse-span
+					span.icon-bar.bits-navbar-collapse-span
+					span.icon-bar.bits-navbar-collapse-span
+				a.navbar-brand.bits-text(href="#") BitsAndBytes
 			#myNavbar.collapse.navbar-collapse
 				ul.nav.navbar-nav
 					li
-						a(href="/") Home
-					li
-						a(href="signup") Sign up
-					li
-						a(href="createsurvey") Create Survey +Test
-					li
-						a(href="/") Login
+						a.bits-text(href="/") Home
+					if acctype === 'Admin'
+						li
+							a.bits-text(href="createsurvey") Create Survey
 				ul.nav.navbar-nav.navbar-right
 					li
-						a(href='/logout')
+						a.bits-text(href='/logout')
 							span.glyphicon.glyphicon-log-out
 							|  Log Out
-	.jumbotron.text-center(style="background-color:#FFFFFF")
-		h1 Home
+	.jumbotron.text-center.bits-primary.bits-border-rounded
+		h1.bits-text Home
 		#container.col
 		if acctype === 'Student'
 			ul.nav.nav-tabs
 				li.active
-					a(data-toggle='tab' href='#home') Check In
+					a.bits-tabs-item(data-toggle='tab' href='#home') Check In
 				li
-					a(data-toggle='tab' href='#menu1') Check Out
+					a.bits-tabs-item(data-toggle='tab' href='#menu1') Check Out
 				li
+<<<<<<< HEAD
 					a(data-toggle='tab' href='#menu2') Take Survey
 
+=======
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') TBD
+>>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
 			.tab-content
 				#home.tab-pane.fade.in.active
-					h2 Check In
+					h2.bits-text Check In
 					div
-						p Click here to check in
+						p.bits-text Click here to check in
 						form(action='checkin' method='GET')
-							input(type='submit' value='Check In')
+							button.btn.btn-default(type='submit') Check In
 
 
 				#menu1.tab-pane.fade
-					h2 Check Out
+					h2.bits-text Check Out
 					div
-						p Click here to check out
+						p.bits-text Click here to check out
 						form(action='checkout' method='GET')
-							input(type='submit' value='Check Out')
+							button.btn.btn-default(type='submit') Check Out
 
 				#menu2.tab-pane.fade
+<<<<<<< HEAD
 					h2 Take Survey
 					div
 						p Click here to take the presurvey
@@ -69,51 +73,61 @@ body(style="background-color:#0090FF")
 						form(action='PostsurveyStudent' method='GET')
 							input(type='submit' value='Postsurvey')
 							
+=======
+					h2.bits-text TBD
+					div
+						p.bits-text tbd
+
+>>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
 				li.active
-					a(data-toggle='tab' href='#home') Registration
+					a.bits-tabs-item(data-toggle='tab' href='#home') Registration
 				li
-					a(data-toggle='tab' href='#menu1') Student Sign up
+					a.bits-tabs-item(data-toggle='tab' href='#menu1') Student Sign up
 				li
+<<<<<<< HEAD
 					a(data-toggle='tab' href='#menu2') Timestamps
 				li
 					a(data-toggle='tab' href='#menu3') Take Survey
+=======
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') Timestamps
+>>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
 			.tab-content
 				#home.tab-pane.fade.in.active
-					h2 Registration
+					h2.bits-text Registration
 					div
-						p Click here to download the registration form:
+						p.bits-text Click here to download the registration form:
 						form(action='registration' method='GET')
-							input(type='submit' value='cat')
+							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')
-							input(type='submit' value='test')
+							button.btn.btn-default(type='submit') Test
 						div
 						if !hasPermission
-						p Upload Permission Slip:
+						p.bits-text Upload Permission Slip:
 						form(action='/uploadpermission' enctype='multipart/form-data' method='POST')
 							input(type='file' name='permission' style='align: center')
-							input(type='submit' value='Upload a File')
+							button.btn.btn-default(type='submit') Upload a File
 						if !hasWaiver
-						p Upload Waiver:
+						p.bits-text Upload Waiver:
 						form(action='/uploadwaiver' enctype='multipart/form-data' method='POST')
 							input(type='file' name='waiver' style='align: center')
-							input(type='submit' value='Upload a File')
+							button.btn.btn-default(type='submit') Upload a File
 				#menu1.tab-pane.fade
-					h2 Sign up a student
+					h2.bits-text Sign up a student
 					div
-						p Click here to sign up a student
+						p.bits-text Click here to sign up a student
 						form(action='studentsignup' method='GET')
-							input(type='submit' value='Student Sign up')
+							button.btn.btn-default(type='submit') Student Sign up
 						div
 				#menu2.tab-pane.fade
-					h2 Check a students Timesheet
+					h2.bits-text Check a students Timesheet
 					div
-						p Click here to download Check a students timesheet
+						p.bits-text Click here to download Check a students timesheet
 						form(action='registration' method='GET')
-							input(type='submit' value='cat')
+							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')
-							input(type='submit' value='test')
+							button.btn.btn-default(type='submit') Test
 						div
 				
 				#menu3.tab-pane.fade
@@ -133,33 +147,33 @@ body(style="background-color:#0090FF")
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
 				li.active
-					a(data-toggle='tab' href='#home') Create survey
+					a.bits-tabs-item(data-toggle='tab' href='#home') Create survey
 				li
-					a(data-toggle='tab' href='#menu1') Announcements
+					a.bits-tabs-item(data-toggle='tab' href='#menu1') Announcements
 				li
-					a(data-toggle='tab' href='#menu2') Modify Student
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') Modify Student
 			.tab-content
 				#home.tab-pane.fade.in.active
-					h2 Registration
+					h2.bits-text Registration
 					div
-						p Create a survey using the survey creator
+						p.bits-text Create a survey using the survey creator
 						form(action='createsurvey' method='GET')
-							input(type='submit' value='Create Survey')
+						button.btn.btn-default(type='submit') Create Survey
 
 				#menu1.tab-pane.fade
-					h2 Announcements
+					h2.bits-text Announcements
 					div
-						p Click here to create an announcements
+						p.bits-text Click here to create an announcements
 						form(action='announcements' method='GET')
-							input(type='submit' value='Announcements')
+							button.btn.btn-default(type='submit') Announcements
 						div
 				#menu2.tab-pane.fade
-					h2 Modify Student
+					h2.bits-text Modify Student
 					div
-						p Modify a Student's information
+						p.bits-text Modify a Student's information
 						form(action='registration' method='GET')
-							input(type='submit' value='Modify')
-			h3 Welcome Admin
+							button.btn.btn-default(type='submit') Modify
+			h3.bits-text Welcome Admin
 
 
 		else

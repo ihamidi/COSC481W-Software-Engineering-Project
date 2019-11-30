@@ -1,6 +1,5 @@
 var express = require('express');
 var session = require('express-session');
-var path = require('path');
 var mysql = require('mysql');
 const multer  = require('multer');
 const router = express.Router();
@@ -35,6 +34,7 @@ var storage = multer.diskStorage({
   var upload = multer({ storage: storage })
 
   router.post('/uploadpermission', upload.single('permission'), (req, res, next) => {
+    console.log(req.session);
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
