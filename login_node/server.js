@@ -5,6 +5,13 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var pug = require('pug');
 const multer  = require('multer');
+const testFolder = './';
+var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
++'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
++'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
++'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
++'\n</head> <body style="background-color:#c2ab82">';
+var foot='\n</body>\n</html>';
 var users;
 var registration = require('./studentManagement.js');
 const fs = require('fs');
@@ -318,6 +325,88 @@ app.post('/createsurvey', function(request, response) {
   });
 
 });
+
+app.get('/PresurveyParent', function(request, response) {
+  console.log(request.session.username + " " + request.session.acctype);
+  //still figuring out how to xcompare the acctype to "Admin"
+  if (request.session.loggedin && request.session.acctype) {
+    fs.readdirSync(testFolder).forEach(fl => {
+      if(path.extname(fl)=='/views/surveys/p_presurvey.txt')
+      fileToRead=fl;
+  });
+    fd = fs.openSync('/views/PresurveyParent.html', 'a');
+
+    fs.writeSync(fd, head ,'utf8')    
+    content = fs.readFileSync(fileToRead, 'utf8');
+    fs.writeSync(fd, content+foot,'utf8') 
+
+    fs.closeSync(fd)
+
+  }
+  response.sendFile(path.join(__dirname + '/views/PresurveyParent.html'));
+
+
+});
+
+app.get('/PostsurveyParent', function(request, response) {
+
+  if (request.session.loggedin && request.session.acctype) {
+    fs.readdirSync(testFolder).forEach(fl => {
+      if(path.extname(fl)=='/views/surveys/p_postsurvey.txt')
+      fileToRead=fl;
+  });
+    fd = fs.openSync('/views/PostsurveyParent.html', 'a');
+
+    fs.writeSync(fd, head ,'utf8')    
+    content = fs.readFileSync(fileToRead, 'utf8');
+    fs.writeSync(fd, content+foot,'utf8') 
+
+    fs.closeSync(fd)
+
+  }
+  response.sendFile(path.join(__dirname + '/views/PostsurveyParent.html'));
+
+});
+
+app.get('/PresurveyStudent', function(request, response) {
+  
+  if (request.session.loggedin && request.session.acctype) {
+    fs.readdirSync(testFolder).forEach(fl => {
+      if(path.extname(fl)=='/views/surveys/s_presurvey.txt')
+      fileToRead=fl;
+  });
+    fd = fs.openSync('/views/PresurveyStudent.html', 'a');
+
+    fs.writeSync(fd, head ,'utf8')    
+    content = fs.readFileSync(fileToRead, 'utf8');
+    fs.writeSync(fd, content+foot,'utf8') 
+
+    fs.closeSync(fd)
+
+  }
+  response.sendFile(path.join(__dirname + '/views/PresurveyStudent.html'));
+});
+
+app.get('/PostsurveyStudent', function(request, response) {
+
+  if (request.session.loggedin && request.session.acctype) {
+    fs.readdirSync(testFolder).forEach(fl => {
+      if(path.extname(fl)=='/views/surveys/s_postsurvey.txt')
+      fileToRead=fl;
+  });
+    fd = fs.openSync('/views/PostsurveyStudent.html', 'a');
+
+    fs.writeSync(fd, head ,'utf8')    
+    content = fs.readFileSync(fileToRead, 'utf8');
+    fs.writeSync(fd, content+foot,'utf8') 
+
+    fs.closeSync(fd)
+
+  }
+  response.sendFile(path.join(__dirname + '/views/PostsurveyStudent.html'));
+});
+
+
 
 //registration route
 app.use(registration);
