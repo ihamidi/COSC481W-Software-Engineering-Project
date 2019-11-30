@@ -15,14 +15,7 @@ var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 var foot='\n</body>\n</html>';
 var users;
 var registration = require('./studentManagement.js');
-const mysql = require('mysql');
 const dbConnection = require('./database.js');
-const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const path = require('path');
-const pug = require('pug');
-const registration = require('./studentManagement.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 
@@ -31,7 +24,7 @@ var connection = mysql.createConnection({
   host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
-	database : 'swing_demo' 
+	database : 'swing_demo'
 });
 
 
@@ -362,9 +355,9 @@ app.get('/PresurveyParent', function(request, response) {
   });
     fd = fs.openSync('/views/PresurveyParent.html', 'a');
 
-    fs.writeSync(fd, head ,'utf8')    
+    fs.writeSync(fd, head ,'utf8')
     content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8') 
+    fs.writeSync(fd, content+foot,'utf8')
 
     fs.closeSync(fd)
 
@@ -383,9 +376,9 @@ app.get('/PostsurveyParent', function(request, response) {
   });
     fd = fs.openSync('/views/PostsurveyParent.html', 'a');
 
-    fs.writeSync(fd, head ,'utf8')    
+    fs.writeSync(fd, head ,'utf8')
     content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8') 
+    fs.writeSync(fd, content+foot,'utf8')
 
     fs.closeSync(fd)
 
@@ -395,7 +388,7 @@ app.get('/PostsurveyParent', function(request, response) {
 });
 
 app.get('/PresurveyStudent', function(request, response) {
-  
+
   if (request.session.loggedin && request.session.acctype) {
     fs.readdirSync(testFolder).forEach(fl => {
       if(path.extname(fl)=='/views/surveys/s_presurvey.txt')
@@ -403,9 +396,9 @@ app.get('/PresurveyStudent', function(request, response) {
   });
     fd = fs.openSync('/views/PresurveyStudent.html', 'a');
 
-    fs.writeSync(fd, head ,'utf8')    
+    fs.writeSync(fd, head ,'utf8')
     content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8') 
+    fs.writeSync(fd, content+foot,'utf8')
 
     fs.closeSync(fd)
 
@@ -422,9 +415,9 @@ app.get('/PostsurveyStudent', function(request, response) {
   });
     fd = fs.openSync('/views/PostsurveyStudent.html', 'a');
 
-    fs.writeSync(fd, head ,'utf8')    
+    fs.writeSync(fd, head ,'utf8')
     content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8') 
+    fs.writeSync(fd, content+foot,'utf8')
 
     fs.closeSync(fd)
 

@@ -1,0 +1,64 @@
+doctype html
+head
+	title BitsAndBytes Home
+	link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+
+body(style="background-color:#0090FF")
+	nav.navbar.navbar-inverse
+		.container-fluid
+			.navbar-header
+				button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
+				a.navbar-brand(href="#") BitsAndBytes
+			#myNavbar.collapse.navbar-collapse
+				ul.nav.navbar-nav
+					li
+						a(href="/") Home
+					li
+						a(href="signup") Sign up
+					li
+						a(href="createsurvey") Create Survey +Test
+					li
+						a(href="/") Login
+				ul.nav.navbar-nav.navbar-right
+					li
+						a(href='/logout')
+							span.glyphicon.glyphicon-log-out
+							|  Log Out
+	.jumbotron.text-center(style="background-color:#FFFFFF")
+		h1 Home
+		#container.col
+		if acctype === 'Student'
+			ul.nav.nav-tabs
+				li.active
+					a(data-toggle='tab' href='#home') Check In
+				li
+					a(data-toggle='tab' href='#menu1') Check Out
+
+			.tab-content
+				#home.tab-pane.fade.in.active
+					h2 Check In
+					div
+						if checkIn == false
+							p Click here to check out
+							form(action='checkout' method='GET')
+								input(type='submit' value='Check Out')
+
+
+				#menu1.tab-pane.fade
+					h2 Check Out
+					div
+						if checkIn == true
+							p Click here to check out
+							form(action='checkout' method='GET')
+								input(type='submit' value='Check Out')
+
+
+
+
+		else
+			h2 Please login to view contents
