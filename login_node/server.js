@@ -27,46 +27,13 @@ const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 
 //giving clousql credentials
-// var connection = mysql.createConnection({
-//   host     : '34.66.160.101',
-// 	user     : 'root',
-// 	password : 'fiveguys',
-// 	database : 'swing_demo' 
-// });
-
-class Database {
-  constructor( config ) {
-      console.log("Database connected");
-      this.connection = mysql.createConnection( config );
-  }
-  query( sql, args ) {
-      return new Promise( ( resolve, reject ) => {
-          this.connection.query( sql, args, ( err, rows ) => {
-              if ( err )
-                  return reject( err );
-              resolve( rows );
-          } );
-      } );
-  }
-  close() {
-      return new Promise( ( resolve, reject ) => {
-          this.connection.end( err => {
-              if ( err )
-                  return reject( err );
-              resolve();
-          } );
-      } );
-  }
-}
-
-var config = {
+var connection = mysql.createConnection({
   host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
 	database : 'swing_demo' 
-};
+});
 
-const connection = new Database(config);
 
 var app = express();
 
@@ -252,28 +219,24 @@ app.post('/auth', function(request, response) {
      username: request.body.username,
      password: request.body.password
  };
- connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
-      .then(rows => {
-        request.session.acctype = parent.acctype;
-        request.session.PID = parent.PID;
-        request.session.loggedin = true;
-        var parent = rows;
-        return connection.query('SELECT * FROM student_accounts WHERE PID = ?', [request.session.PID])
-      })
-      .then(rows => {
-        var student = rows;
-        request.session.studentID = student.SID;
-        request.session.studentName = student.firstname;
-        return connection.close();
-        // return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.SID]);
-      })
-      .then(() => {
-        console.log(request.session);
-        response.render('index', {
-            acctype: request.session.acctype,
-            session: request.session
-          });
-      }) 
+ getParentData(data, function(result){
+  results = result;
+  request.session.acctype = results.acctype;
+  request.session.PID = results.PID;
+  request.session.loggedin = true;
+  getChildrenOfParent(request.session.PID, function(result){
+    student = result;
+    request.session.studentID = student.SID;
+    request.session.studentName = student.firstname;
+    // console.log(request.session);
+  })
+
+  console.log(request.session);
+    response.render('index', {
+        acctype: request.session.acctype,
+        session: request.session
+      });
+})
     });
 
 
@@ -389,7 +352,6 @@ app.post('/createsurvey', function(request, response) {
 
 });
 
-<<<<<<< HEAD
 app.get('/PresurveyParent', function(request, response) {
   console.log(request.session.username + " " + request.session.acctype);
   //still figuring out how to xcompare the acctype to "Admin"
@@ -469,7 +431,7 @@ app.get('/PostsurveyStudent', function(request, response) {
   }
   response.sendFile(path.join(__dirname + '/views/PostsurveyStudent.html'));
 });
-=======
+
 //check in method
 app.get('/checkin', function(request, response) {
   var today = new Date();
@@ -497,14 +459,6 @@ app.get('/checkin', function(request, response) {
 
   }
 );
-
-
-
-
-
-
->>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
-
 
 
 //registration route
