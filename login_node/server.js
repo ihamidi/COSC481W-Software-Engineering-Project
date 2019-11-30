@@ -1,32 +1,55 @@
-
-var mysql = require('mysql');
-var express = require('express');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var path = require('path');
-var pug = require('pug');
-const multer  = require('multer');
-const testFolder = './';
-var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
-+'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
-+'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
-+'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
-+'\n</head> <body style="background-color:#c2ab82">';
-var foot='\n</body>\n</html>';
-var users;
-var registration = require('./studentManagement.js');
+const mysql = require('mysql');
 const dbConnection = require('./database.js');
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const path = require('path');
+const pug = require('pug');
+const registration = require('./studentManagement.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 
 //giving clousql credentials
-var connection = mysql.createConnection({
+// var connection = mysql.createConnection({
+//   host     : '34.66.160.101',
+// 	user     : 'root',
+// 	password : 'fiveguys',
+// 	database : 'swing_demo'
+// });
+
+class Database {
+  constructor( config ) {
+      console.log("Database connected");
+      this.connection = mysql.createConnection( config );
+  }
+  query( sql, args ) {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.query( sql, args, ( err, rows ) => {
+              if ( err )
+                  return reject( err );
+              resolve( rows );
+          } );
+      } );
+  }
+  close() {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.end( err => {
+              if ( err )
+                  return reject( err );
+              resolve();
+          } );
+      } );
+  }
+}
+
+var config = {
   host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
 	database : 'swing_demo'
-});
+};
 
+const connection = new Database(config);
 
 var app = express();
 
@@ -212,25 +235,33 @@ app.post('/auth', function(request, response) {
      username: request.body.username,
      password: request.body.password
  };
- getParentData(data, function(result){
-  results = result;
-  request.session.acctype = results.acctype;
-  request.session.PID = results.PID;
-  request.session.loggedin = true;
-  getChildrenOfParent(request.session.PID, function(result){
-    student = result;
-    request.session.studentID = student.SID;
-    request.session.studentName = student.firstname;
-    // console.log(request.session);
-  })
+ connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?',                 [data.username, data.password])
+       .then(rows => {
+         console.log(rows);
+         var parent = rows;
+         request.session.acctype = parent[0].acctype;
+         request.session.PID = parent[0].PID;
+         request.session.loggedin = true;
+         var parent = rows;
+         return connection.query('SELECT * FROM student_accounts WHERE PID = ?', [request.session.PID])
+       })
+       .then(rows => {
+         var student = rows;
+         request.session.studentID = student[0].SID;
+         request.session.studentName = student[0].firstname;
+         console.log(request.session.studentID);
+         return connection.close();
+         // return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.SID]);
+       })
+       .then(() => {
+         console.log(request.session.acctype);
+         response.render('index', {
+         acctype: request.session.acctype, 
+         sessionD: request.session
+       });
+       })
+});
 
-  console.log(request.session);
-    response.render('index', {
-        acctype: request.session.acctype,
-        session: request.session
-      });
-})
-    });
 
 
     function getParentData(data, callback){
@@ -345,86 +376,6 @@ app.post('/createsurvey', function(request, response) {
 
 });
 
-app.get('/PresurveyParent', function(request, response) {
-  console.log(request.session.username + " " + request.session.acctype);
-  //still figuring out how to xcompare the acctype to "Admin"
-  if (request.session.loggedin && request.session.acctype) {
-    fs.readdirSync(testFolder).forEach(fl => {
-      if(path.extname(fl)=='/views/surveys/p_presurvey.txt')
-      fileToRead=fl;
-  });
-    fd = fs.openSync('/views/PresurveyParent.html', 'a');
-
-    fs.writeSync(fd, head ,'utf8')
-    content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8')
-
-    fs.closeSync(fd)
-
-  }
-  response.sendFile(path.join(__dirname + '/views/PresurveyParent.html'));
-
-
-});
-
-app.get('/PostsurveyParent', function(request, response) {
-
-  if (request.session.loggedin && request.session.acctype) {
-    fs.readdirSync(testFolder).forEach(fl => {
-      if(path.extname(fl)=='/views/surveys/p_postsurvey.txt')
-      fileToRead=fl;
-  });
-    fd = fs.openSync('/views/PostsurveyParent.html', 'a');
-
-    fs.writeSync(fd, head ,'utf8')
-    content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8')
-
-    fs.closeSync(fd)
-
-  }
-  response.sendFile(path.join(__dirname + '/views/PostsurveyParent.html'));
-
-});
-
-app.get('/PresurveyStudent', function(request, response) {
-
-  if (request.session.loggedin && request.session.acctype) {
-    fs.readdirSync(testFolder).forEach(fl => {
-      if(path.extname(fl)=='/views/surveys/s_presurvey.txt')
-      fileToRead=fl;
-  });
-    fd = fs.openSync('/views/PresurveyStudent.html', 'a');
-
-    fs.writeSync(fd, head ,'utf8')
-    content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8')
-
-    fs.closeSync(fd)
-
-  }
-  response.sendFile(path.join(__dirname + '/views/PresurveyStudent.html'));
-});
-
-app.get('/PostsurveyStudent', function(request, response) {
-
-  if (request.session.loggedin && request.session.acctype) {
-    fs.readdirSync(testFolder).forEach(fl => {
-      if(path.extname(fl)=='/views/surveys/s_postsurvey.txt')
-      fileToRead=fl;
-  });
-    fd = fs.openSync('/views/PostsurveyStudent.html', 'a');
-
-    fs.writeSync(fd, head ,'utf8')
-    content = fs.readFileSync(fileToRead, 'utf8');
-    fs.writeSync(fd, content+foot,'utf8')
-
-    fs.closeSync(fd)
-
-  }
-  response.sendFile(path.join(__dirname + '/views/PostsurveyStudent.html'));
-});
-
 //check in method
 app.get('/checkin', function(request, response) {
   var today = new Date();
@@ -452,6 +403,13 @@ app.get('/checkin', function(request, response) {
 
   }
 );
+
+
+
+
+
+
+
 
 
 //registration route
