@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 var mysql = require('mysql');
 var express = require('express');
 var session = require('express-session');
@@ -15,7 +15,6 @@ var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 var foot='\n</body>\n</html>';
 var users;
 var registration = require('./studentManagement.js');
-=======
 const mysql = require('mysql');
 const dbConnection = require('./database.js');
 const express = require('express');
@@ -24,7 +23,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const pug = require('pug');
 const registration = require('./studentManagement.js');
->>>>>>> 7d743978a8932b4496e322b15852948eab9bfcba
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 
