@@ -297,6 +297,17 @@ function checkin_student(data, callback){
        callback(data.firstname);
      }
 });}
+function checkout_student(data, callback){
+
+
+  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+   {
+      if (results.length > 0) {
+       console.log('this.sql', this.sql);
+        console.log(results.affectedRows);
+       callback(data.firstname);
+     }
+});}
 
 //usage
 
@@ -326,19 +337,25 @@ app.post('/studentauth', function(request, response) {
         })
         .then(rows => {
           var timestamp = rows;
-          if(timestamp[0].InOrOut==0)
-          {
-            request.session.checkedIn=true;
+          if (results.length > 0) {
+            if(timestamp[0].InOrOut==0)
+            {
+              request.session.checkedIn=true;
+            }
           }
           return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
         })
         .then(() => {
           console.log(request.session);
           response.render('index', {
-          acctype: request.session.acctype,
-          sessionD: request.session
-        });
-      })
+            acctype: request.session.acctype,
+            checkedIn: request.session.checkedIn,
+            sessionD: request.session
+          });
+        })
+        .catch( err => {
+          response.redirect('/');
+        })
 
 
 
@@ -399,21 +416,42 @@ app.get('/checkin', function(request, response) {
      InOrOut: 0
    };
    checkin_student(checkin, function(result){
-       // results = result;
 
-       // console.log(results+"   checked in  ");
 
 
  });
  response.render('index', {
-       acctype: request.session.acctype,
-         // session: request.session
+   acctype: request.session.acctype,
+   checkedIn: true,
+   sessionD: request.session
  });
 
   }
 );
 
+//check out method
+app.get('/checkout', function(request, response) {
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+'  '+time;
+  var checkout = {
+     SID: request.session.studentID,
+     firstname: request.session.firstname,
+     lastname: request.session.lastname,
+     timestamp: dateTime,
+     InOrOut: 1
+   };
+   checkout_student(checkout, function(result){
+   });
+   response.render('index', {
+     acctype: request.session.acctype,
+     checkedIn: false,
+     sessionD: request.session
+   });
 
+  }
+);
 
 
 

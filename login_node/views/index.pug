@@ -39,14 +39,17 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Check Out
 				li
 					a(data-toggle='tab' href='#menu2') Take Survey
-					
+
 			.tab-content
 				#home.tab-pane.fade.in.active
 					h2.bits-text Check In
 					div
-						p.bits-text Click here to check in
-						form(action='checkin' method='GET')
-							button.btn.btn-default(type='submit') Check In
+						if !checkedIn
+							p.bits-text Click here to check in
+							form(action='checkin' method='GET')
+								button.btn.btn-default(type='submit') Check In
+						else
+							p.bits-text You have already checked in today
 
 
 				#menu1.tab-pane.fade
@@ -62,11 +65,11 @@ body.bits-body
 						p.bits-text Click here to take the presurvey
 						form(action='PresurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Presurvey') Pre-survey
-										
+
 						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
-							
+
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
 				li.active
@@ -113,19 +116,19 @@ body.bits-body
 						form(action='test' method='GET')
 							button.btn.btn-default(type='submit') Test
 						div
-				
+
 				#menu3.tab-pane.fade
 
 					div
 						p Click here to take the presurvey
 						form(action='PresurveyParent' method='GET')
 							input(type='submit' value='Presurvey')
-							
-						
+
+
 						p Click here to take the postsurvey
 						form(action='PostsurveyParent' method='GET')
 							input(type='submit' value='Postsurvey')
-							
+
 
 
 		else if acctype === 'Admin'
