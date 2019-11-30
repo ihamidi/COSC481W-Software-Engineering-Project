@@ -313,30 +313,53 @@ app.post('/studentauth', function(request, response) {
      password: request.body.password
  };
 	// if (username && password) {
-
-  get_student_info(data, function(result){
-    results = result;
-    request.session.loggedin = true;
-    request.session.username = results.username;
-    request.session.firstname = results.firstname;
-    request.session.lastname = results.lastname;
-    request.session.studentID = results.SID;
-    request.session.acctype = results.acctype;
-
-
-      console.log(request.session.acctype+"   as d asd asd sa d asd sad ads  ");
-      response.render('index', {
+    connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
+        .then(rows => {
+          var student = rows;
+          request.session.loggedin = true;
+          request.session.username = student[0].username;
+          request.session.firstname = student[0].firstname;
+          request.session.lastname = student[0].lastname;
+          request.session.studentID = student[0].SID;
+          request.session.acctype = student[0].acctype;
+          return connection.query('SELECT * FROM timestamps WHERE SID = ?', [request.session.studentID])
+        })
+        .then(rows => {
+          var timestamp = rows;
+          if(timestamp[0].InOrOut==0)
+          {
+            request.session.checkedIn=true;
+          }
+          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
+        })
+        .then(() => {
+          console.log(request.session);
+          response.render('index', {
           acctype: request.session.acctype,
-          // session: request.session
+          sessionD: request.session
         });
-
-
-  })
-
+      })
 
 
 
-                // console.log(results[0].acctype +":::: "+request.session.userid);
+  // get_student_info(data, function(result){
+  //   results = result;
+  //   request.session.loggedin = true;
+  //   request.session.username = results.username;
+  //   request.session.firstname = results.firstname;
+  //   request.session.lastname = results.lastname;
+  //   request.session.studentID = results.SID;
+  //   request.session.acctype = results.acctype;
+  //
+  //
+  //     console.log(request.session.acctype+"   as d asd asd sa d asd sad ads  ");
+  //     response.render('index', {
+  //         acctype: request.session.acctype,
+  //         // session: request.session
+  //       });
+  //
+  //
+  // })
 });
 
 // createsurvey method when admin submits survey
