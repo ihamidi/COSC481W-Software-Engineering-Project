@@ -284,7 +284,9 @@ app.post('/auth', function(request, response) {
          console.log(request.session);
          response.render('index', {
          acctype: request.session.acctype,
-         sessionD: request.session
+         sessionD: request.session,
+         hasWaiver: request.session.hasWaiver,
+         hasPermission: request.session.hasPermission
        });
        })
 });
