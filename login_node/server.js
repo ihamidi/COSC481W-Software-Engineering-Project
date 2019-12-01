@@ -246,8 +246,14 @@ app.post('/auth', function(request, response) {
        })
        .then(rows => {
          var student = rows;
-         request.session.studentID = student[0].SID;
-         request.session.studentName = student[0].firstname;
+         if (student.length > 0) {
+           request.session.studentID = student[0].SID;
+           request.session.studentName = student[0].firstname;
+         }
+         else {
+           request.session.studentID = 4;
+         }
+
          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
        })
        .then(rows => {

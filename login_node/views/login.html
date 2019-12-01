@@ -37,6 +37,7 @@
          <ul class="nav nav-tabs bits-tabs">
             <li class="active"><a class="bits-tabs-item" data-toggle="tab" href="#home">Parent</a></li>
             <li><a class="bits-tabs-item" data-toggle="tab" href="#menu1">Student</a></li>
+            <li><a class="bits-tabs-item" data-toggle="tab" href="#menu2">Admin</a></li>
          </ul>
          <div class="tab-content" >
             <div id="home" class="tab-pane fade in active">
@@ -58,6 +59,21 @@
                <div class="d-flex justify-content-end social_icon">
                   <h2><strong>Student Login</strong><br><small class="bits-text">Login to view functions</small></h2>
                   <form style="text-align: center;"class="form-login" form action="studentauth" method="POST">
+                     <center><input type="text" class="form-control" style ="padding: 10px; width: 40%;" name="username" placeholder="Username" required></center>
+                     <center><input type="password" class="form-control" style ="padding: 10px; width: 40%;" name="password" placeholder="Password" required></center>
+                     <button type="submit" class="btn btn-default" style ="padding: 10px;width: 40%;" name="login-submit">Login</button>
+                  </form>
+                  <br>
+                  <div class="card bits-text">
+                     <p>Learn More about Bits and Bytes here</p>
+                     <p><a class="bits-link" href="aboutus">About us</a></p>
+                  </div>
+               </div>
+            </div>
+            <div id="menu2" class="tab-pane fade in" style="color:white;">
+               <div class="d-flex justify-content-end social_icon">
+                  <h2><strong>Admin Login</strong><br><small class="bits-text">Login to view functions</small></h2>
+                  <form style="text-align: center;"class="form-login" form action="adminauth" method="POST">
                      <center><input type="text" class="form-control" style ="padding: 10px; width: 40%;" name="username" placeholder="Username" required></center>
                      <center><input type="password" class="form-control" style ="padding: 10px; width: 40%;" name="password" placeholder="Password" required></center>
                      <button type="submit" class="btn btn-default" style ="padding: 10px;width: 40%;" name="login-submit">Login</button>
