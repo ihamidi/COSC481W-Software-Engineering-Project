@@ -259,7 +259,7 @@ app.post('/auth', function(request, response) {
            request.session.studentName = student[0].firstname;
          }
          else {
-           request.session.studentID = 4;
+           request.session.studentID = 1;
          }
 
          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
