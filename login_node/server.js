@@ -8,7 +8,14 @@ const pug = require('pug');
 const registration = require('./studentManagement.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
-
+const testFolder = './views/surveys';
+var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
++'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
++'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
++'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
++'\n</head> <body style="background-color:#c2ab82">';
+var foot='\n</body>\n</html>';
+var fileToRead="";
 //giving clousql credentials
 // var connection = mysql.createConnection({
 //   host     : '34.66.160.101',
