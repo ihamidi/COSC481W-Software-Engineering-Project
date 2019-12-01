@@ -440,7 +440,80 @@ app.get('/checkout', function(request, response) {
   }
 );
 
+app.get('/PresurveyParent', function (request, response)
+{
+	if (fs.existsSync('./views/presurveyParent.html'))
+	{
+		fs.unlinkSync('./views/presurveyParent.html');
+	}
+	fileToRead = "./views/surveys/p_presurvey.txt";
+	fd = fs.openSync('./views/presurveyParent.html', 'a');
 
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+
+
+	response.sendFile(path.join(__dirname + '/views/presurveyParent.html'));
+
+});
+
+app.get('/PostsurveyParent', function (request, response)
+{
+	if (fs.existsSync('./views/postsurveyParent.html'))
+	{
+		fs.unlinkSync('./views/postsurveyParent.html');
+	}
+	fileToRead = "./views/surveys/p_postsurvey.txt";
+	fd = fs.openSync('./views/postsurveyParent.html', 'a');
+
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+
+
+	response.sendFile(path.join(__dirname + '/views/postsurveyParent.html'));
+
+});
+
+app.get('/PresurveyStudent', function (request, response)
+{
+	if (fs.existsSync('./views/presurveyStudent.html'))
+	{
+		fs.unlinkSync('./views/presurveyStudent.html');
+	}
+	fileToRead = "./views/surveys/s_presurvey.txt";
+	fd = fs.openSync('./views/presurveyStudent.html', 'a');
+
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+	response.sendFile(path.join(__dirname + '/views/presurveyStudent.html'));
+});
+
+app.get('/PostsurveyStudent', function (request, response)
+{
+	if (fs.existsSync('./views/postsurveyStudent.html'))
+	{
+		fs.unlinkSync('./views/postsurveyStudent.html');
+	}
+	fileToRead = "./views/surveys/s_postsurvey.txt";
+	fd = fs.openSync('./views/postsurveyStudent.html', 'a');
+
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+
+	response.sendFile(path.join(__dirname + '/views/postsurveyStudent.html'));
+});
 
 
 
