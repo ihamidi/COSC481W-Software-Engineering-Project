@@ -6,6 +6,7 @@ head
 
 	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
 	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+	
 
 body.bits-body
 	nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
@@ -39,6 +40,9 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Check Out
 				li
 					a(data-toggle='tab' href='#menu2') Take Survey
+				li
+					a(data-toggle='tab' href='#menu3') Announcements
+
 
 			.tab-content
 				#home.tab-pane.fade.in.active
@@ -70,6 +74,16 @@ body.bits-body
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
 						div
+				
+				#menu3.tab-pane.fade
+						h2.bits-text Announcements
+						div
+						form(action='loadAnounce' method='GET')
+							button.btn.btn-default(type='submit' value='announcements')
+ 
+						div
+						
+
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
 				li.active

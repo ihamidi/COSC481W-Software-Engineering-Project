@@ -528,26 +528,35 @@ app.get('/loadAnounce', function (request, response)
   if (fs.existsSync('./views/viewannouncements.html'))
 	{
 		fs.unlinkSync('./views/viewannouncements.html');
-	}
-	fileToRead = "./views/announcements/";
-	fs.readdirSync(fileToRead).forEach(fl =>
-	{
+  }
+  
 
-		if (path.extname(fl) == ".txt")
-			arr.push(fl);
-	});
-	fd = fs.openSync('./views/viewannouncements.html', 'a');
-	fs.writeSync(fd, head, 'utf8')
+  
+  fileToRead = "./views/announcements";
 
-	for (var i = 0; i < arr.length; i++)
-	{
-		content = fs.readFileSync(arr[i], 'utf8');
-		fs.writeSync(fd, content, 'utf8')
-	}
-	fs.writeSync(fd, foot, 'utf8');
+  const directoryPath = path.join(__dirname, fileToRead);
+
+  fs.readdirSync(fileToRead).forEach(fl => {
 
 
-	fs.closeSync(fd)
+    arr.push(fl);
+    
+});
+fd = fs.openSync('./views/viewannouncements.html', 'a');
+
+fs.writeSync(fd, head ,'utf8')    
+
+
+for(var i=0; i<arr.length;i++){
+
+   content = fs.readFileSync(arr[i], 'utf8');
+   fs.writeSync(fd, content ,'utf8') 
+
+}
+fs.writeSync(fd, foot ,'utf8')    
+
+fs.closeSync(fd)
+
 
 	response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 });
