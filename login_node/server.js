@@ -172,7 +172,7 @@ app.post('/studentreg', function (request, response) {
     //var today = new Date();     //can be used later
     //defining user as many parts from form
     users = {
-        "pid": request.session.userid,
+        "pid": request.session.PID,
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
         "grade": request.body.grade,
@@ -183,36 +183,25 @@ app.post('/studentreg', function (request, response) {
         "acctype": "Student"
 
     }
+    console.log(users)
     //Inserting the user into accounts table
-    connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
-
-     })
-      connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, results, fields) {
-                var userInfo = {
-                    "sid": results[0].SID,
-                    "pid": results[0].PID,
-                    "waiver_complete": 0,
-                    "permission_complete": 0
-                }
-                connection.query('INSERT INTO registration_forms SET ?', userInfo, function (error, results, fields) {
-                    //some basic error trapping implemented
-                    if (error) {
-                        console.log("error ocurred", error);
-                        console.log("error ocurred there is the data: " + results.userID + " " + users.firstname + " " + users.lastname);
-                        response.send({
-                            "code": 400,
-                            "failed": "error ocurred"
-                        })
-                    } else {
-                        console.log('The solution is: ', );
-                        response.send({
-                            "code": 200,
-                            "success": "user registered sucessfully"
-                        });
-                    }
-                })
-            })
-    });
+    connection.query('INSERT INTO student_accounts SET ?', users)
+    .then(() => {
+      return connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password])
+    })
+    .then(rows => {
+      var userInfo = {
+        "sid": rows[0].SID,
+        "pid": rows[0].PID,
+        "waiver_complete": 0,
+        "permission_complete": 0
+    }
+    return connection.query('INSERT INTO registration_forms SET ?', userInfo);
+  })
+  .then(() => {
+    return connection.close();
+  })  
+});
 
 //registration method for db
 app.post('/reg', function (request, response) {
@@ -243,7 +232,7 @@ app.post('/auth', function(request, response) {
      username: request.body.username,
      password: request.body.password
  };
- connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?',                 [data.username, data.password])
+ connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', [data.username, data.password])
        .then(rows => {
          var parent = rows;
          request.session.acctype = parent[0].acctype;
@@ -257,11 +246,11 @@ app.post('/auth', function(request, response) {
          if (student.length > 0) {
            request.session.studentID = student[0].SID;
            request.session.studentName = student[0].firstname;
+           request.session.studentLast = student[0].lastname;
          }
          else {
            request.session.studentID = 1;
          }
-
          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
        })
        .then(rows => {
@@ -278,7 +267,7 @@ app.post('/auth', function(request, response) {
         else{
           request.session.hasPermission = true;
         }
-        return connection.close();
+        return;
        })
        .then(() => {
          console.log(request.session);
@@ -291,20 +280,7 @@ app.post('/auth', function(request, response) {
        })
 });
 
-function get_student_info(data, callback){
-
-
-  connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
-   {
-    if (results.length > 0) {
-        console.log(results[0].acctype);
-        callback(results[0]);
-    }})
-}
-
 function checkin_student(data, callback){
-
-
   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
    {
       if (results.length > 0) {
@@ -313,9 +289,8 @@ function checkin_student(data, callback){
        callback(data.firstname);
      }
 });}
+
 function checkout_student(data, callback){
-
-
   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
    {
       if (results.length > 0) {
@@ -324,14 +299,6 @@ function checkout_student(data, callback){
        callback(data.firstname);
      }
 });}
-
-//usage
-
-
-
-
-
-
 
 //authorization method after user submits
 app.post('/studentauth', function(request, response) {

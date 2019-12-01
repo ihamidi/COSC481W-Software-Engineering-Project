@@ -24,10 +24,10 @@ router.get('/test', function (req, res) {
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads')
+      cb(null, 'uploads');
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
+      cb(null, file.fieldname + '-' + req.session.studentName + req.session.studentLast) + req.session.studentID;
     }
   })
 
