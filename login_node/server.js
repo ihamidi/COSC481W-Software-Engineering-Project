@@ -16,6 +16,7 @@ var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 +'\n</head> <body style="background-color:#c2ab82">';
 var foot='\n</body>\n</html>';
 var fileToRead="";
+var arr = [];
 //giving clousql credentials
 // var connection = mysql.createConnection({
 //   host     : '34.66.160.101',
@@ -522,8 +523,34 @@ app.get('/PostsurveyStudent', function (request, response)
 	response.sendFile(path.join(__dirname + '/views/postsurveyStudent.html'));
 });
 
+app.get('/loadAnounce', function (request, response)
+{
+  if (fs.existsSync('./views/viewannouncements.html'))
+	{
+		fs.unlinkSync('./views/viewannouncements.html');
+	}
+	fileToRead = "./views/announcements/";
+	fs.readdirSync(fileToRead).forEach(fl =>
+	{
+
+		if (path.extname(fl) == ".txt")
+			arr.push(fl);
+	});
+	fd = fs.openSync('./views/viewannouncements.html', 'a');
+	fs.writeSync(fd, head, 'utf8')
+
+	for (var i = 0; i < arr.length; i++)
+	{
+		content = fs.readFileSync(arr[i], 'utf8');
+		fs.writeSync(fd, content, 'utf8')
+	}
+	fs.writeSync(fd, foot, 'utf8');
 
 
+	fs.closeSync(fd)
+
+	response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
+});
 
 
 //registration route
