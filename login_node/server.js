@@ -251,8 +251,6 @@ app.post('/reg', function (request, response) {
         "email": request.body.email,
         "password": request.body.password,
         "acctype": 'Parent'
-        // "acctype": request.body.acctype,
-        // "grade": 0
     }
     //Inserting the user into accounts table
     connection.query('INSERT INTO adult_accounts SET ?', users, function (error, results, fields) { //change adult_accounts to accounts when testing against current schema
@@ -286,7 +284,6 @@ app.post('/auth', function(request, response) {
          for (i = 0; i < rows.length; i++) {
            allstuds[i]=student[i].SID;
          }
-
 
          return connection.query('SELECT * FROM timestamps WHERE SID IN (?) ORDER BY ?', [allstuds,"firstname"])
        })
@@ -328,7 +325,9 @@ app.post('/auth', function(request, response) {
          response.render('index', {
          acctype: request.session.acctype,
          sessionD: request.session,
-         times: request.session.times
+         times: request.session.times,
+         hasWaiver: request.session.hasWaiver,
+         hasPermission: request.session.hasPermission
        });
        })
 });
