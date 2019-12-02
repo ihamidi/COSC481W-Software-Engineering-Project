@@ -25,10 +25,10 @@ router.get('/test', function (req, res) {
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads')
+      cb(null, 'uploads');
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
+      cb(null, file.fieldname + '-' + req.session.studentName + req.session.studentLast) + req.session.studentID;
     }
   })
 
@@ -41,11 +41,9 @@ var storage = multer.diskStorage({
       error.httpStatusCode = 400
       return next(error)
     }
-    connection.query('UPDATE registration_forms SET permission_complete = ? WHERE SID = ?', [1, req.session.SID], function (error, results, fields) {
-      //some basic error trapping implemented
+    connection.query('UPDATE registration_forms SET permission_complete = ? WHERE SID = ?', [1, req.session.studentID], function (error, results, fields) {
       if (error) {
           console.log("error ocurred", error);
-          console.log("error ocurred there is the data: " + results.userID + " " + users.firstname + " " + users.lastname);
           res.send({
               "code": 400,
               "failed": "error ocurred"
@@ -53,7 +51,10 @@ var storage = multer.diskStorage({
       } else {
           console.log('The solution is: ', results);
           res.render('index', {
-            acctype: req.session.acctype
+            acctype: req.session.acctype,
+            sessionD: req.session,
+            hasWaiver: req.session.hasWaiver,
+            hasPermission: true
         });
       }
   })
@@ -61,25 +62,26 @@ var storage = multer.diskStorage({
   })
 
   router.post('/uploadwaiver', upload.single('waiver'), (req, res, next) => {
-    console.log(session.SID);
+    console.log(req.session);
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
       error.httpStatusCode = 400
       return next(error)
     }
-  connection.query('UPDATE registration_forms SET waiver_complete = ? WHERE SID = ?', [1, session.SID], function (error, results, fields) {
-    //some basic error trapping implemented
+  connection.query('UPDATE registration_forms SET waiver_complete = ? WHERE SID = ?', [1, req.session.studentID], function (error, results, fields) {
     if (error) {
         console.log("error ocurred", error);
-        console.log("error ocurred there is the data: " + results.userID + " " + users.firstname + " " + users.lastname);
         res.send({
             "code": 400,
             "failed": "error ocurred"
         })
     } else {
         res.render('index', {
-          acctype: session.acctype
+          acctype: req.session.acctype,
+          sessionD: req.session,
+          hasWaiver: true,
+          hasPermission: req.session.hasPermission
       });
     }
   });

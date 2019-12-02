@@ -2,28 +2,30 @@ doctype html
 html
 	head
 		title
-		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css")
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js")
-	body(style="background-color:#C1FFFA")
-		nav.navbar.navbar-inverse
+		link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+		link(rel='stylesheet' type='text/css' href='sitewide.css')
+
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+	body.bits-body
+		nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
 			.container-fluid
 				.navbar-header
 					button.navbar-toggle(type="button" data-toggle="collapse" data-target="#myNavbar")
 						span.icon-bar
 						span.icon-bar
 						span.icon-bar
-					a.navbar-brand(href="/index") BitsAndBytes
+					a.navbar-brand.bits-text(href="/index") BitsAndBytes
 				#myNavbar.collapse.navbar-collapse
 					ul.nav.navbar-nav
 						li
-							a(href="/") Home
+							a.bits-text(href="/") Home
 						li
-							a(href="signup") Sign up
+							a.bits-text(href="signup") Sign up
 						li
-							a(href="createsurvey") Create Survey +Test
+							a.bits-text(href="createsurvey") Create Survey +Test
 						li
-							a(href="/") Login
+							a.bits-text(href="/") Login
 					ul.nav.navbar-nav.navbar-right
 						li
 							a(href='/logout')
@@ -31,23 +33,23 @@ html
 								|  Log Out
 		.wrapper-main
 			.container
-				.row
-					.col-sm-9.col-md-7.col-lg-5.mx-auto
-						.card.card-signin.my-5
-							.card-body
-								form.form-login(action="studentreg" method="post")
-									h3 Student Sign up
-									.form-group
-										input(type="text" class="form-control" name="firstname" placeholder="First name" required="")
-										input(type="text" class="form-control" name="lastname" placeholder="Last name" required="")
-										select(name="grade" placeholder="Grade" class="form-control")
-											option(value="6") 6th Grade
-											option(value="7") 7th Grade
-											option(value="8") 8th Grade
-										input(type="text" class="form-control" name="username" placeholder="Username" required="")
-										input(type="text" class="form-control" name="email" placeholder="E-mail" required="")
-										input(type="text" class="form-control" name="school" placeholder="School" required="")
+				.card-body
+					.jumbotron.text-center.bits-primary.bits-border-rounded
+						form.form-login(action="studentreg" method="post")
+							h3.bits-text Student Sign up
+							p Must use Google Email "@gmail.com"
+							p Password must be at least 8 characters
+							.form-group
+								input(type="text" class="form-control" name="firstname" placeholder="First name" required="")
+								input(type="text" class="form-control" name="lastname" placeholder="Last name" required="")
+								select(name="grade" placeholder="Grade" class="form-control")
+									option(value="6") 6th Grade
+									option(value="7") 7th Grade
+									option(value="8") 8th Grade
+								input(type="text" class="form-control" name="username" placeholder="Username" required="")
+								input(type="text" class="form-control" name="email" placeholder="E-mail" required="")
+								input(type="text" class="form-control" name="school" placeholder="School" required="")
 
-										input(type="password" class="form-control" name="password" placeholder="Password" required="")
-										input(type="password" class="form-control" name="rptpassword" placeholder="Repeat password" required="")
-										button(type="submit" class="form-control" name="signup-submit") Sign up
+								input(type="password" class="form-control" name="password" placeholder="Password" required="")
+								input(type="password" class="form-control" name="rptpassword" placeholder="Repeat password" required="")
+								button(type="submit" class="form-control" name="signup-submit") Sign up

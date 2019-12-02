@@ -7,6 +7,7 @@ head
 	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
 	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
 
+
 body.bits-body
 	nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
 		.container-fluid
@@ -38,7 +39,11 @@ body.bits-body
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Check Out
 				li
-					a(data-toggle='tab' href='#menu2') Take Survey
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') Take Survey
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#menu3') Announcements
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#menu4') Timestamps
 
 			.tab-content
 				#home.tab-pane.fade.in.active
@@ -55,9 +60,13 @@ body.bits-body
 				#menu1.tab-pane.fade
 					h2.bits-text Check Out
 					div
-						p.bits-text Click here to check out
-						form(action='checkout' method='GET')
-							button.btn.btn-default(type='submit') Check Out
+					if !checkedOut
+							p.bits-text Click here to check out
+							form(action='checkout' method='GET')
+								button.btn.btn-default(type='submit') Check Out
+					else
+						p.bits-text You have already checked out today
+
 
 				#menu2.tab-pane.fade
 					h2.bits-text Take Survey
@@ -69,7 +78,21 @@ body.bits-body
 						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
-						div
+
+				#menu3.tab-pane.fade
+					h2.bits-text Announcements
+					div
+						form(action='loadAnounce' method='GET')
+							button.btn.btn-default(type='submit' value='announcements') Announcements
+
+				#menu4.tab-pane.fade
+					h2.bits-text Timestamps
+					div
+					ul
+						each val in times
+							li= val
+
+
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
 				li.active
@@ -80,6 +103,8 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu2') Timestamps
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu3') Take Survey
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#menu4') Announcements
 			.tab-content
 				#home.tab-pane.fade.in.active
 					h2.bits-text Registration
@@ -89,17 +114,17 @@ body.bits-body
 							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')
 							button.btn.btn-default(type='submit') Test
-						div
 						if !hasPermission
-						p.bits-text Upload Permission Slip:
-						form(action='/uploadpermission' enctype='multipart/form-data' method='POST')
-							input(type='file' name='permission' style='align: center')
-							button.btn.btn-default(type='submit') Upload a File
+							div
+							p.bits-text Upload Permission Slip:
+							form(action='/uploadpermission' enctype='multipart/form-data' method='POST')
+								input(type='file' name='permission' style='align: center')
+								button.btn.btn-default(type='submit') Upload a File
 						if !hasWaiver
-						p.bits-text Upload Waiver:
-						form(action='/uploadwaiver' enctype='multipart/form-data' method='POST')
-							input(type='file' name='waiver' style='align: center')
-							button.btn.btn-default(type='submit') Upload a File
+							p.bits-text Upload Waiver:
+							form(action='/uploadwaiver' enctype='multipart/form-data' method='POST')
+								input(type='file' name='waiver' style='align: center')
+								button.btn.btn-default(type='submit') Upload a File
 				#menu1.tab-pane.fade
 					h2.bits-text Sign up a student
 					div
@@ -111,6 +136,13 @@ body.bits-body
 					h2.bits-text Check a students Timesheet
 					div
 						p.bits-text Click here to download Check a students timesheet
+						div
+						if (val !== undefined)
+							ul
+								each val in times
+									li= val
+
+
 						form(action='registration' method='GET')
 							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')
@@ -130,6 +162,12 @@ body.bits-body
 							input(type='submit' value='Postsurvey')
 
 						div
+				#menu4.tab-pane.fade
+					h2.bits-text Announcements
+					div
+						form(action='loadAnounce' method='GET')
+							button.btn.btn-default(type='submit' value='announcements') Announcements
+
 
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
@@ -158,9 +196,15 @@ body.bits-body
 					h2.bits-text Modify Student
 					div
 						p.bits-text Modify a Student's information
-						form(action='registration' method='GET')
-							button.btn.btn-default(type='submit') Modify
-			h3.bits-text Welcome Admin
+						div.bits-div
+							form(action='registration' method='GET')
+								button.btn.btn-default(type='submit') Modify
+						hr(style='border: 5px solid white; border-radius: 5px;')
+						p.bits-text Delete a Form
+						div.bits-div
+							form(action='modForm' method='GET')
+								input#name.form-control(type='text', placeholder='Enter a file name' name='name')
+								button.btn.btn-default(type='submit'  style='width: 300px' name='delete') Delete
 
 
 		else
