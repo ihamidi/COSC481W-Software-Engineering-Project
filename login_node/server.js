@@ -363,17 +363,21 @@ app.post('/studentauth', function(request, response) {
         .then(rows => {
           console.log(rows[0]);
           var timestamp = rows;
-          if (timestamp.length > 0) {
-            if(timestamp[0].InOrOut==0)
-            {
+          request.session.checkedIn=false;
+          request.session.fa=false;
 
+          if (timestamp.length > 0) {
+            for(i=0;i<timestamp.length;i++)
+            {
+            if(timestamp[i].InOrOut==0)
+            {
               request.session.checkedIn=true;
             }
-            if(timestamp[0].InOrOut==0)
+            if(timestamp[i].InOrOut==1)
             {
-
               request.session.checkedOut=true;
             }
+          }
           }
           return connection.query('SELECT * FROM timestamps WHERE SID = ?', [request.session.studentID] )
         })
