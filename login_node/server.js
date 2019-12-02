@@ -8,6 +8,16 @@ const pug = require('pug');
 const registration = require('./studentManagement.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
+/* THIS CODE MAY BE BROKEN
+const testFolder = './views/surveys';
+var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
++'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
++'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
++'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
++'\n</head> <body style="background-color:#c2ab82">';
+var foot='\n</body>\n</html>';
+var fileToRead="";
+var arr = [];*/
 
 //giving clousql credentials
 // var connection = mysql.createConnection({
@@ -362,6 +372,121 @@ app.post('/studentauth', function(request, response) {
           response.redirect('/');
         })
 });
+
+/* THIS CODE MAY BE BROKEN
+app.get('/PresurveyParent', function (request, response)
+{
+	if (fs.existsSync('./views/presurveyParent.html'))
+	{
+		fs.unlinkSync('./views/presurveyParent.html');
+	}
+	fileToRead = "./views/surveys/p_presurvey.txt";
+	fd = fs.openSync('./views/presurveyParent.html', 'a');
+
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+
+
+	response.sendFile(path.join(__dirname + '/views/presurveyParent.html'));
+
+});
+
+app.get('/PostsurveyParent', function (request, response)
+{
+	if (fs.existsSync('./views/postsurveyParent.html'))
+	{
+		fs.unlinkSync('./views/postsurveyParent.html');
+	}
+	fileToRead = "./views/surveys/p_postsurvey.txt";
+	fd = fs.openSync('./views/postsurveyParent.html', 'a');
+
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+
+
+	response.sendFile(path.join(__dirname + '/views/postsurveyParent.html'));
+
+});
+
+app.get('/PresurveyStudent', function (request, response)
+{
+	if (fs.existsSync('./views/presurveyStudent.html'))
+	{
+		fs.unlinkSync('./views/presurveyStudent.html');
+	}
+	fileToRead = "./views/surveys/s_presurvey.txt";
+	fd = fs.openSync('./views/presurveyStudent.html', 'a');
+
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+	response.sendFile(path.join(__dirname + '/views/presurveyStudent.html'));
+});
+
+app.get('/PostsurveyStudent', function (request, response)
+{
+	if (fs.existsSync('./views/postsurveyStudent.html'))
+	{
+		fs.unlinkSync('./views/postsurveyStudent.html');
+	}
+	fileToRead = "./views/surveys/s_postsurvey.txt";
+	fd = fs.openSync('./views/postsurveyStudent.html', 'a');
+
+	fs.writeSync(fd, head, 'utf8')
+	content = fs.readFileSync(fileToRead, 'utf8');
+	fs.writeSync(fd, content + foot, 'utf8')
+
+	fs.closeSync(fd)
+
+	response.sendFile(path.join(__dirname + '/views/postsurveyStudent.html'));
+});
+
+app.get('/loadAnounce', function (request, response)
+{
+  if (fs.existsSync('./views/viewannouncements.html'))
+	{
+		fs.unlinkSync('./views/viewannouncements.html');
+  }
+
+
+
+  fileToRead = "./views/announcements";
+
+  const directoryPath = path.join(__dirname, fileToRead);
+
+  fs.readdirSync(fileToRead).forEach(fl => {
+
+
+    arr.push(fl);
+
+});
+fd = fs.openSync('./views/viewannouncements.html', 'a');
+
+fs.writeSync(fd, head ,'utf8')
+
+
+for(var i=0; i<arr.length;i++){
+
+   content = fs.readFileSync(arr[i], 'utf8');
+   fs.writeSync(fd, content ,'utf8')
+
+}
+fs.writeSync(fd, foot ,'utf8')
+
+fs.closeSync(fd)
+
+
+	response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
+});
+*/
 
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
