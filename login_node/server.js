@@ -582,18 +582,6 @@ app.post('/createsurvey', function(request, response) {
   });
 
 });
-app.get('/modForm', function (request, response) {
-  if (request.session.loggedin && request.session.acctype=="Admin") {
-     // var myText = req.query.mytext; //mytext is the name of your input box
-     // console.log(myText);
-     var item = req.body.userSearchInput;
-     console.log(item);
-      if (fs.existsSync('./uploads/'+item))
-      {
-        fs.unlinkSync('./uploads/'+item);
-      }
-  }
-});
 //check in method
 app.get('/checkin', function(request, response) {
   var today = new Date();
