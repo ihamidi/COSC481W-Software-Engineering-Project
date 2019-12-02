@@ -86,7 +86,7 @@ body.bits-body
 							button.btn.btn-default(type='submit' value='announcements') Announcements
 
 				#menu4.tab-pane.fade
-					h2.bits-text Timestmaps
+					h2.bits-text Timestamps
 					div
 					ul
 						each val in times
@@ -134,6 +134,12 @@ body.bits-body
 					h2.bits-text Check a students Timesheet
 					div
 						p.bits-text Click here to download Check a students timesheet
+						div
+						ul
+							each val in times
+								li= val
+
+
 						form(action='registration' method='GET')
 							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')

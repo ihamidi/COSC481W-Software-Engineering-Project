@@ -281,6 +281,29 @@ app.post('/auth', function(request, response) {
          var student = rows;
          request.session.studentID = student[0].SID;
          request.session.studentName = student[0].firstname;
+         var allstuds=[];
+         for (i = 0; i < rows.length; i++) {
+           allstuds[i]=student[i].SID;
+         }
+
+
+         return connection.query('SELECT * FROM timestamps WHERE SID IN (?) ORDER BY ?', [allstuds,"firstname"])
+       })
+       .then(rows => {
+        var times=[];
+         if(rows.length>0){
+         for (i = 0; i < rows.length; i++) {
+           if(rows[i].InOrOut==0)
+             times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked In";
+           else {
+             times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked Out";
+           }
+           console.log(request.session.times);
+
+         }
+         request.session.times=times;
+         console.log(request.session.times);
+       }
          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
        })
        .then(rows => {
@@ -297,12 +320,14 @@ app.post('/auth', function(request, response) {
         else{
           request.session.hasPermission = true;
         }
+
        })
        .then(() => {
          console.log(request.session);
          response.render('index', {
          acctype: request.session.acctype,
-         sessionD: request.session
+         sessionD: request.session,
+         times: request.session.times
        });
        })
 });
@@ -353,8 +378,8 @@ app.post('/studentauth', function(request, response) {
           return connection.query('SELECT * FROM timestamps WHERE SID = ?', [request.session.studentID] )
         })
         .then(rows => {
-          if(rows.length>0){
           var times=[];
+          if(rows.length>0){
           for (i = 0; i < rows.length; i++) {
             if(rows[i].InOrOut==0)
               times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked In";
@@ -368,7 +393,7 @@ app.post('/studentauth', function(request, response) {
           console.log(request.session.times);
         }
         else{
-          request.session.times[0]="no times";
+          request.session.times="no times";
 
         }
 
