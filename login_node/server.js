@@ -153,7 +153,7 @@ app.get('/logout', function (request, response) {
 
 //timestamp is essentailly a select query, will implement functionality later (later sprint maybe?)
 app.get('/timestamp', function (request, response) {
-    console.log(request.session.firstname+": this is what is sent :"+request.session.userid);
+    console.log(request.session.firstname+": this is what is sent :"+request.session.PID);
     connection.query('SELECT * FROM timestamps WHERE firstname = ? AND userID = ?', [request.session.firstname, request.session.userid], function (error, results, fields) {
         response.send(results);
         console.log(results[0]);
@@ -164,7 +164,7 @@ app.post('/studentreg', function (request, response) {
     //var today = new Date();     //can be used later
     //defining user as many parts from form
     users = {
-        "pid": request.session.userid,
+        "PID": request.session.PID,
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
         "grade": request.body.grade,
@@ -175,35 +175,40 @@ app.post('/studentreg', function (request, response) {
         "acctype": "Student"
 
     }
+    console.log(users);
     //Inserting the user into accounts table
-    connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
 
+    connection.query('INSERT INTO student_accounts SET ?', users)
+     .then(rows => {
+       var parent = rows;
+
+       console.log(parent);
+       return connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password])
      })
-      connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, results, fields) {
-                var userInfo = {
-                    "sid": results[0].SID,
-                    "pid": results[0].PID,
-                    "waiver_complete": 0,
-                    "permission_complete": 0
-                }
-                connection.query('INSERT INTO registration_forms SET ?', userInfo, function (error, results, fields) {
-                    //some basic error trapping implemented
-                    if (error) {
-                        console.log("error ocurred", error);
-                        console.log("error ocurred there is the data: " + results.userID + " " + users.firstname + " " + users.lastname);
-                        response.send({
-                            "code": 400,
-                            "failed": "error ocurred"
-                        })
-                    } else {
-                        console.log('The solution is: ', );
-                        response.send({
-                            "code": 200,
-                            "success": "user registered sucessfully"
-                        });
-                    }
-                })
-            })
+     .then(rows => {
+       var student = rows;
+       var userInfo = {
+           "SID": student[0].SID,
+           "PID": student[0].PID,
+           "waiver_complete": 0,
+           "permission_complete": 0
+         }
+         console.log(student);
+
+        return connection.query('INSERT INTO registration_forms SET ?', userInfo)
+     })
+     .then(() => {
+       console.log(request.session);
+       response.render('index', {
+       acctype: request.session.acctype,
+       sessionD: request.session
+     });
+     return connection.close();
+   })
+     // .catch( err => {
+     //   response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+     // });
+
     });
 
 //registration method for db
@@ -264,7 +269,6 @@ app.post('/auth', function(request, response) {
         else{
           request.session.hasPermission = true;
         }
-        return connection.close();
        })
        .then(() => {
          console.log(request.session);
@@ -275,41 +279,6 @@ app.post('/auth', function(request, response) {
        })
 });
 
-function get_student_info(data, callback){
-
-
-  connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
-   {
-    if (results.length > 0) {
-        console.log(results[0].acctype);
-        callback(results[0]);
-    }})
-}
-
-function checkin_student(data, callback){
-
-
-  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
-   {
-      if (results.length > 0) {
-       console.log('this.sql', this.sql);
-        console.log(results.affectedRows);
-       callback(data.firstname);
-     }
-});}
-function checkout_student(data, callback){
-
-
-  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
-   {
-      if (results.length > 0) {
-       console.log('this.sql', this.sql);
-        console.log(results.affectedRows);
-       callback(data.firstname);
-     }
-});}
-
-//usage
 
 
 
@@ -443,11 +412,56 @@ app.get('/checkout', function(request, response) {
 
 
 
+
 //registration route
 app.use(registration);
 app.use('/registration', registration);
 app.use('/test', registration);
 app.use('/uploadfile', registration);
+
+
+
+
+
+
+
+
+
+// function get_student_info(data, callback){
+//
+//
+//   connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
+//    {
+//     if (results.length > 0) {
+//         console.log(results[0].acctype);
+//         callback(results[0]);
+//     }})
+// }
+//
+// function checkin_student(data, callback){
+//
+//
+//   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+//    {
+//       if (results.length > 0) {
+//        console.log('this.sql', this.sql);
+//         console.log(results.affectedRows);
+//        callback(data.firstname);
+//      }
+// });}
+// function checkout_student(data, callback){
+//
+//
+//   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+//    {
+//       if (results.length > 0) {
+//        console.log('this.sql', this.sql);
+//         console.log(results.affectedRows);
+//        callback(data.firstname);
+//      }
+// });}
+//
+// //usage
 
 
 
