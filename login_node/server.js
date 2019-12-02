@@ -116,7 +116,9 @@ app.get('/signup', function (request, response) {
 //sending sign up oapge
 app.get('/announcements', function (request, response) {
   app.use(express.static('./views/public_javascript/announcements'));
-  response.sendFile(path.join(__dirname + '/views/announcements.html'));
+  if (request.session.loggedin && request.session.acctype=="Admin") {
+    response.sendFile(path.join(__dirname + '/views/announcements.html'));
+  }
 });
 
 app.post('/createannouncement', function(request, response) { // needs lots of work
@@ -142,7 +144,9 @@ app.post('/createannouncement', function(request, response) { // needs lots of w
 
 //sending sign up oapge
 app.get('/studentsignup', function (request, response) {
+  if (request.session.loggedin && request.session.acctype=="Parent") {
   response.render(path.join(__dirname + '/views/studentsignup'));
+}
 });
 
 //redirecting to create survey
