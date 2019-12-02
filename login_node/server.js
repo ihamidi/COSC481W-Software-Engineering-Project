@@ -292,19 +292,24 @@ app.post('/auth', function(request, response) {
        })
        .then(rows => {
         var times=[];
-         if(rows.length>0){
-         for (i = 0; i < rows.length; i++) {
-           if(rows[i].InOrOut==0)
-             times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked In";
-           else {
-             times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked Out";
-           }
-           console.log(request.session.times);
+        if(rows.length>0){
+        for (i = 0; i < rows.length; i++) {
+          if(rows[i].InOrOut==0)
+            times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked In";
+          else {
+            times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked Out";
+          }
+          console.log(request.session.times);
 
-         }
-         request.session.times=times;
-         console.log(request.session.times);
-       }
+        }
+        request.session.times=times;
+        console.log(request.session.times);
+      }
+      else{
+        request.session.times="no times";
+
+      }
+
          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
        })
        .then(rows => {
@@ -326,9 +331,9 @@ app.post('/auth', function(request, response) {
        .then(() => {
          console.log(request.session);
          response.render('index', {
-         acctype: request.session.acctype,
-         sessionD: request.session,
-         times: request.session.times
+           acctype: request.session.acctype,
+           sessionD: request.session,
+           times: request.session.times
        });
        })
 });
@@ -526,6 +531,7 @@ app.get('/loadAnounce', function (request, response)
 	{
 		fs.unlinkSync('./views/viewannouncements.html');
   }
+<<<<<<< HEAD
 
   arr=[];
   const fd = fs.openSync('./views/viewannouncements.html', 'a' );		
@@ -549,13 +555,22 @@ app.get('/loadAnounce', function (request, response)
 
 /*
   
+=======
+
+
+
+>>>>>>> 3ccc7af61ef57a1a089f8b9636ad231824035f50
   fileToRead = "./views/announcements";
   arr=[];
 const directoryPath = path.join(__dirname, fileToRead);
   fs.readdirSync(directoryPath).forEach(fl => {
+<<<<<<< HEAD
     if(path.extname(fl)==".txt"){
     arr.push(fl);  
     }
+=======
+    arr.push(fl);
+>>>>>>> 3ccc7af61ef57a1a089f8b9636ad231824035f50
 });
 fd = fs.openSync('./veiw/viewannouncements.html', 'a');
 
