@@ -98,8 +98,11 @@ app.get('/', function(request, response){
   else {
     app.use(express.static('./views/css'));
     response.render('index', {
-        acctype: request.session.acctype,
-        session: request.session
+      acctype: request.session.acctype,
+      checkedIn: request.session.checkedIn,
+      checkedOut: request.session.checkedOut,
+      times: request.session.times,
+      sessionD: request.session
     });
   }
 });
@@ -210,9 +213,12 @@ app.post('/studentreg', function (request, response) {
      .then(() => {
        console.log(request.session);
        response.render('index', {
-       acctype: request.session.acctype,
-       sessionD: request.session
-     });
+         acctype: request.session.acctype,
+         checkedIn: request.session.checkedIn,
+         checkedOut: request.session.checkedOut,
+         sessionD: request.session,
+         times: request.session.times
+       });
      return connection.close();
    })
      // .catch( err => {
@@ -326,7 +332,34 @@ app.post('/studentauth', function(request, response) {
 
               request.session.checkedIn=true;
             }
+            if(timestamp[0].InOrOut==0)
+            {
+
+              request.session.checkedOut=true;
+            }
           }
+          return connection.query('SELECT * FROM timestamps WHERE SID = ?', [request.session.studentID] )
+        })
+        .then(rows => {
+          if(rows.length>0){
+          var times=[];
+          for (i = 0; i < rows.length; i++) {
+            if(rows[i].InOrOut==0)
+              times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked In";
+            else {
+              times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked Out";
+            }
+            console.log(request.session.times);
+
+          }
+          request.session.times=times;
+          console.log(request.session.times);
+        }
+        else{
+          request.session.times[0]="no times";
+
+        }
+
           return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
         })
         .then(() => {
@@ -334,7 +367,9 @@ app.post('/studentauth', function(request, response) {
           response.render('index', {
             acctype: request.session.acctype,
             checkedIn: request.session.checkedIn,
-            sessionD: request.session
+            checkedOut: request.session.checkedOut,
+            sessionD: request.session,
+            times: request.session.times
           });
         })
         .catch( err => {
@@ -526,7 +561,9 @@ app.get('/checkin', function(request, response) {
  response.render('index', {
    acctype: request.session.acctype,
    checkedIn: true,
-   sessionD: request.session
+   checkedOut: request.session.checkedOut,
+   sessionD: request.session,
+   times: request.session.times
  });
 
   }
@@ -547,10 +584,14 @@ app.get('/checkout', function(request, response) {
    };
    checkout_student(checkout, function(result){
    });
+
+   request.session.checkedOut = true;
    response.render('index', {
      acctype: request.session.acctype,
-     checkedIn: false,
-     sessionD: request.session
+     checkedIn: true,
+     checkedOut: request.session.checkedOut,
+     sessionD: request.session,
+     times: request.session.times
    });
 
   }
@@ -574,6 +615,33 @@ app.use('/uploadfile', registration);
 
 
 
+function checkin_student(data, callback){
+
+
+  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+   {
+      if (results.length > 0) {
+       console.log('this.sql', this.sql);
+        console.log(results.affectedRows);
+        request.session.checkedIn=true;
+       callback(data.firstname);
+     }
+});}
+function checkout_student(data, callback){
+
+
+  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+   {
+      if (results.length > 0) {
+       console.log('this.sql', this.sql);
+        console.log(results.affectedRows);
+        request.session.checkedOut=true;
+
+       callback(data.firstname);
+     }
+});}
+
+
 
 
 
@@ -588,30 +656,9 @@ app.use('/uploadfile', registration);
 //     }})
 // }
 //
-// function checkin_student(data, callback){
-//
-//
-//   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
-//    {
-//       if (results.length > 0) {
-//        console.log('this.sql', this.sql);
-//         console.log(results.affectedRows);
-//        callback(data.firstname);
-//      }
-// });}
-// function checkout_student(data, callback){
-//
-//
-//   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
-//    {
-//       if (results.length > 0) {
-//        console.log('this.sql', this.sql);
-//         console.log(results.affectedRows);
-//        callback(data.firstname);
-//      }
-// });}
-//
-// //usage
+
+
+//usage
 
 
 

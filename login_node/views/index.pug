@@ -6,7 +6,7 @@ head
 
 	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
 	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
-	
+
 
 body.bits-body
 	nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
@@ -42,7 +42,8 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu2') Take Survey
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu3') Announcements
-
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#menu4') Timestamps
 
 			.tab-content
 				#home.tab-pane.fade.in.active
@@ -59,9 +60,13 @@ body.bits-body
 				#menu1.tab-pane.fade
 					h2.bits-text Check Out
 					div
-						p.bits-text Click here to check out
-						form(action='checkout' method='GET')
-							button.btn.btn-default(type='submit') Check Out
+					if !checkedOut
+							p.bits-text Click here to check out
+							form(action='checkout' method='GET')
+								button.btn.btn-default(type='submit') Check Out
+					else
+						p.bits-text You have already checked out today
+
 
 				#menu2.tab-pane.fade
 					h2.bits-text Take Survey
@@ -73,13 +78,20 @@ body.bits-body
 						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
-				
+
 				#menu3.tab-pane.fade
-						h2.bits-text Announcements
-						div
+					h2.bits-text Announcements
+					div
 						form(action='loadAnounce' method='GET')
 							button.btn.btn-default(type='submit' value='announcements') Announcements
-						
+
+				#menu4.tab-pane.fade
+					h2.bits-text Timestmaps
+					div
+					ul
+						each val in times
+							li= val
+
 
 		else if acctype === 'Parent'
 			ul.nav.nav-tabs
