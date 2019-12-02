@@ -13,7 +13,7 @@ var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 +'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
 +'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
 +'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
-+'\n</head> <body style="background-color:#c2ab82">';
++'\n</head> <body style="background-color:#5EB2F2">';
 var foot='\n</body>\n</html>';
 var fileToRead="";
 var arr = [];
@@ -292,24 +292,19 @@ app.post('/auth', function(request, response) {
        })
        .then(rows => {
         var times=[];
-        if(rows.length>0){
-        for (i = 0; i < rows.length; i++) {
-          if(rows[i].InOrOut==0)
-            times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked In";
-          else {
-            times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked Out";
-          }
-          console.log(request.session.times);
+         if(rows.length>0){
+         for (i = 0; i < rows.length; i++) {
+           if(rows[i].InOrOut==0)
+             times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked In";
+           else {
+             times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked Out";
+           }
+           console.log(request.session.times);
 
-        }
-        request.session.times=times;
-        console.log(request.session.times);
-      }
-      else{
-        request.session.times="no times";
-
-      }
-
+         }
+         request.session.times=times;
+         console.log(request.session.times);
+       }
          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
        })
        .then(rows => {
@@ -331,9 +326,9 @@ app.post('/auth', function(request, response) {
        .then(() => {
          console.log(request.session);
          response.render('index', {
-           acctype: request.session.acctype,
-           sessionD: request.session,
-           times: request.session.times
+         acctype: request.session.acctype,
+         sessionD: request.session,
+         times: request.session.times
        });
        })
 });
@@ -531,7 +526,6 @@ app.get('/loadAnounce', function (request, response)
 	{
 		fs.unlinkSync('./views/viewannouncements.html');
   }
-<<<<<<< HEAD
 
   arr=[];
   const fd = fs.openSync('./views/viewannouncements.html', 'a' );		
@@ -549,49 +543,10 @@ app.get('/loadAnounce', function (request, response)
   });
   fs.writeSync(fd, foot ,'utf8')    
   fs.closeSync(fd)
-  //app.use(express.static('./views/announcements/readAnn'));
-
   
-
-/*
-  
-=======
-
-
-
->>>>>>> 3ccc7af61ef57a1a089f8b9636ad231824035f50
-  fileToRead = "./views/announcements";
-  arr=[];
-const directoryPath = path.join(__dirname, fileToRead);
-  fs.readdirSync(directoryPath).forEach(fl => {
-<<<<<<< HEAD
-    if(path.extname(fl)==".txt"){
-    arr.push(fl);  
-    }
-=======
-    arr.push(fl);
->>>>>>> 3ccc7af61ef57a1a089f8b9636ad231824035f50
-});
-fd = fs.openSync('./veiw/viewannouncements.html', 'a');
-
-
-fs.writeSync(fd, head ,'utf8');
-
-
-for(var i=0; i<arr.length;i++){
-
-   content = fs.readFileSync(arr[i], 'utf8');
-   fs.writeSync(fd, content ,'utf8') ;
-
-}
-fs.writeSync(fd, foot ,'utf8');
-fs.closeSync(fd);
-
-*/
  response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 
 });
-
 
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
