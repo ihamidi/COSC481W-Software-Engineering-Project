@@ -10,7 +10,7 @@ const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 /* THIS CODE MAY BE BROKEN
 const testFolder = './views/surveys';
-var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
+var ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 +'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
 +'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
 +'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
@@ -342,6 +342,31 @@ app.post('/studentauth', function(request, response) {
         })
 });
 
+
+
+//authorization method after user submits
+app.post('/adminauth', function(request, response) {
+  var data = {
+     username: request.body.username,
+     password: request.body.password
+ };
+ connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?',                 [data.username, data.password])
+       .then(rows => {
+         var parent = rows;
+         request.session.acctype = parent[0].acctype;
+         request.session.PID = parent[0].PID;
+         request.session.loggedin = true;
+         var parent = rows;
+       })
+       .then(() => {
+         console.log(request.session);
+         response.render('index', {
+         acctype: request.session.acctype,
+         sessionD: request.session
+       });
+       })
+});
+
 /* THIS CODE MAY BE BROKEN
 app.get('/PresurveyParent', function (request, response)
 {
@@ -439,7 +464,7 @@ app.get('/loadAnounce', function (request, response)
 });
 fd = fs.openSync('./views/viewannouncements.html', 'a');
 
-fs.writeSync(fd, head ,'utf8')
+fs.writeSync(fd,  ,'utf8')
 
 
 for(var i=0; i<arr.length;i++){
