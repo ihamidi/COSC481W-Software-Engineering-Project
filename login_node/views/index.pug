@@ -39,9 +39,9 @@ body.bits-body
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Check Out
 				li
-					a(data-toggle='tab' href='#menu2') Take Survey
+					a.bits-tabs-item(data-toggle='tab' href='#menu2') Take Survey
 				li
-					a(data-toggle='tab' href='#menu3') Announcements
+					a.bits-tabs-item(data-toggle='tab' href='#menu3') Announcements
 
 
 			.tab-content
@@ -73,15 +73,12 @@ body.bits-body
 						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
-						div
 				
 				#menu3.tab-pane.fade
 						h2.bits-text Announcements
 						div
 						form(action='loadAnounce' method='GET')
-							button.btn.btn-default(type='submit' value='announcements')
- 
-						div
+							button.btn.btn-default(type='submit' value='announcements') Announcements
 						
 
 		else if acctype === 'Parent'
