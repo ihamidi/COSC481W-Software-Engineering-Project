@@ -84,7 +84,7 @@ body.bits-body
 					div
 						form(action='loadAnounce' method='GET')
 							button.btn.btn-default(type='submit' value='announcements') Announcements
-						
+
 				#menu4.tab-pane.fade
 					h2.bits-text Timestamps
 					div
@@ -137,9 +137,10 @@ body.bits-body
 					div
 						p.bits-text Click here to download Check a students timesheet
 						div
-						ul
-							each val in times
-								li= val
+						if (val !== undefined)
+							ul
+								each val in times
+									li= val
 
 
 						form(action='registration' method='GET')
@@ -166,7 +167,7 @@ body.bits-body
 					div
 						form(action='loadAnounce' method='GET')
 							button.btn.btn-default(type='submit' value='announcements') Announcements
-						
+
 
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
