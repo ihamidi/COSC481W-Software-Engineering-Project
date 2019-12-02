@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const pug = require('pug');
 const registration = require('./studentManagement.js');
+const picUploader = require ('./pictureUploader.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 const testFolder = './views/surveys';
@@ -558,6 +559,12 @@ app.use(registration);
 app.use('/registration', registration);
 app.use('/test', registration);
 app.use('/uploadfile', registration);
+
+//Picture Uploader that hopefull works?
+app.use(picUploader);
+app.use('/getFiles' , picUploader);
+app.use('/setPicNumber' , picUploader);
+app.use('/uploadpicture' , picUploader);
 
 
 
