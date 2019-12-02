@@ -196,9 +196,15 @@ body.bits-body
 					h2.bits-text Modify Student
 					div
 						p.bits-text Modify a Student's information
-						form(action='registration' method='GET')
-							button.btn.btn-default(type='submit') Modify
-			h3.bits-text Welcome Admin
+						div.bits-div
+							form(action='registration' method='GET')
+								button.btn.btn-default(type='submit') Modify
+						hr(style='border: 5px solid white; border-radius: 5px;')
+						p.bits-text Delete a Form
+						div.bits-div
+							form(action='modForm' method='GET')
+								input#name.form-control(type='text', placeholder='Enter a file name' name='name')
+								button.btn.btn-default(type='submit'  style='width: 300px' name='delete') Delete
 
 
 		else
