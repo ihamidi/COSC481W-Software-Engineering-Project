@@ -8,15 +8,7 @@ const pug = require('pug');
 const registration = require('./studentManagement.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
-const testFolder = './views/surveys';
-var head='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
-+'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
-+'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
-+'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
-+'\n</head> <body style="background-color:#c2ab82">';
-var foot='\n</body>\n</html>';
-var fileToRead="";
-var arr = [];
+
 //giving clousql credentials
 // var connection = mysql.createConnection({
 //   host     : '34.66.160.101',
@@ -172,7 +164,7 @@ app.post('/studentreg', function (request, response) {
     //var today = new Date();     //can be used later
     //defining user as many parts from form
     users = {
-        "pid": request.session.PID,
+        "pid": request.session.userid,
         "firstname": request.body.firstname,
         "lastname": request.body.lastname,
         "grade": request.body.grade,
@@ -183,25 +175,36 @@ app.post('/studentreg', function (request, response) {
         "acctype": "Student"
 
     }
-    console.log(users)
     //Inserting the user into accounts table
-    connection.query('INSERT INTO student_accounts SET ?', users)
-    .then(() => {
-      return connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password])
-    })
-    .then(rows => {
-      var userInfo = {
-        "sid": rows[0].SID,
-        "pid": rows[0].PID,
-        "waiver_complete": 0,
-        "permission_complete": 0
-    }
-    return connection.query('INSERT INTO registration_forms SET ?', userInfo);
-  })
-  .then(() => {
-    return connection.close();
-  })  
-});
+    connection.query('INSERT INTO student_accounts SET ?', users, function (error, results, fields) {
+
+     })
+      connection.query('SELECT SID, PID FROM student_accounts WHERE username = ? AND password = ?', [users.username, users.password], function (error, results, fields) {
+                var userInfo = {
+                    "sid": results[0].SID,
+                    "pid": results[0].PID,
+                    "waiver_complete": 0,
+                    "permission_complete": 0
+                }
+                connection.query('INSERT INTO registration_forms SET ?', userInfo, function (error, results, fields) {
+                    //some basic error trapping implemented
+                    if (error) {
+                        console.log("error ocurred", error);
+                        console.log("error ocurred there is the data: " + results.userID + " " + users.firstname + " " + users.lastname);
+                        response.send({
+                            "code": 400,
+                            "failed": "error ocurred"
+                        })
+                    } else {
+                        console.log('The solution is: ', );
+                        response.send({
+                            "code": 200,
+                            "success": "user registered sucessfully"
+                        });
+                    }
+                })
+            })
+    });
 
 //registration method for db
 app.post('/reg', function (request, response) {
@@ -232,7 +235,7 @@ app.post('/auth', function(request, response) {
      username: request.body.username,
      password: request.body.password
  };
- connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', [data.username, data.password])
+ connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?',                 [data.username, data.password])
        .then(rows => {
          var parent = rows;
          request.session.acctype = parent[0].acctype;
@@ -243,14 +246,8 @@ app.post('/auth', function(request, response) {
        })
        .then(rows => {
          var student = rows;
-         if (student.length > 0) {
-           request.session.studentID = student[0].SID;
-           request.session.studentName = student[0].firstname;
-           request.session.studentLast = student[0].lastname;
-         }
-         else {
-           request.session.studentID = 1;
-         }
+         request.session.studentID = student[0].SID;
+         request.session.studentName = student[0].firstname;
          return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
        })
        .then(rows => {
@@ -267,20 +264,42 @@ app.post('/auth', function(request, response) {
         else{
           request.session.hasPermission = true;
         }
-        return;
+        return connection.close();
        })
        .then(() => {
          console.log(request.session);
          response.render('index', {
          acctype: request.session.acctype,
-         sessionD: request.session,
-         hasWaiver: request.session.hasWaiver,
-         hasPermission: request.session.hasPermission
+         sessionD: request.session
        });
        })
 });
 
+function get_student_info(data, callback){
+
+
+  connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
+   {
+    if (results.length > 0) {
+        console.log(results[0].acctype);
+        callback(results[0]);
+    }})
+}
+
 function checkin_student(data, callback){
+
+
+  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
+   {
+      if (results.length > 0) {
+       console.log('this.sql', this.sql);
+        console.log(results.affectedRows);
+       callback(data.firstname);
+     }
+});}
+function checkout_student(data, callback){
+
+
   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
    {
       if (results.length > 0) {
@@ -290,15 +309,13 @@ function checkin_student(data, callback){
      }
 });}
 
-function checkout_student(data, callback){
-  connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
-   {
-      if (results.length > 0) {
-       console.log('this.sql', this.sql);
-        console.log(results.affectedRows);
-       callback(data.firstname);
-     }
-});}
+//usage
+
+
+
+
+
+
 
 //authorization method after user submits
 app.post('/studentauth', function(request, response) {
@@ -307,7 +324,7 @@ app.post('/studentauth', function(request, response) {
      password: request.body.password
  };
  var today = new Date();
- var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+ var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate().toString().padStart(2, "0");
 
     connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
         .then(rows => {
@@ -318,13 +335,16 @@ app.post('/studentauth', function(request, response) {
           request.session.lastname = student[0].lastname;
           request.session.studentID = student[0].SID;
           request.session.acctype = student[0].acctype;
-          return connection.query('SELECT * FROM timestamps WHERE SID = ?', [request.session.studentID])
+          console.log(date);
+          return connection.query('SELECT * FROM timestamps WHERE SID = ? AND timestamp LIKE ?', [request.session.studentID, date + '%'] )
         })
         .then(rows => {
+          console.log(rows[0]);
           var timestamp = rows;
-          if (results.length > 0) {
-            if(timestamp[0].currdate.includes(date)&& timestmap[0].InOrOut==0)
+          if (timestamp.length > 0) {
+            if(timestamp[0].InOrOut==0)
             {
+
               request.session.checkedIn=true;
             }
           }
@@ -417,118 +437,10 @@ app.get('/checkout', function(request, response) {
   }
 );
 
-app.get('/PresurveyParent', function (request, response)
-{
-	if (fs.existsSync('./views/presurveyParent.html'))
-	{
-		fs.unlinkSync('./views/presurveyParent.html');
-	}
-	fileToRead = "./views/surveys/p_presurvey.txt";
-	fd = fs.openSync('./views/presurveyParent.html', 'a');
-
-	fs.writeSync(fd, head, 'utf8')
-	content = fs.readFileSync(fileToRead, 'utf8');
-	fs.writeSync(fd, content + foot, 'utf8')
-
-	fs.closeSync(fd)
 
 
-	response.sendFile(path.join(__dirname + '/views/presurveyParent.html'));
-
-});
-
-app.get('/PostsurveyParent', function (request, response)
-{
-	if (fs.existsSync('./views/postsurveyParent.html'))
-	{
-		fs.unlinkSync('./views/postsurveyParent.html');
-	}
-	fileToRead = "./views/surveys/p_postsurvey.txt";
-	fd = fs.openSync('./views/postsurveyParent.html', 'a');
-
-	fs.writeSync(fd, head, 'utf8')
-	content = fs.readFileSync(fileToRead, 'utf8');
-	fs.writeSync(fd, content + foot, 'utf8')
-
-	fs.closeSync(fd)
 
 
-	response.sendFile(path.join(__dirname + '/views/postsurveyParent.html'));
-
-});
-
-app.get('/PresurveyStudent', function (request, response)
-{
-	if (fs.existsSync('./views/presurveyStudent.html'))
-	{
-		fs.unlinkSync('./views/presurveyStudent.html');
-	}
-	fileToRead = "./views/surveys/s_presurvey.txt";
-	fd = fs.openSync('./views/presurveyStudent.html', 'a');
-
-	fs.writeSync(fd, head, 'utf8')
-	content = fs.readFileSync(fileToRead, 'utf8');
-	fs.writeSync(fd, content + foot, 'utf8')
-
-	fs.closeSync(fd)
-	response.sendFile(path.join(__dirname + '/views/presurveyStudent.html'));
-});
-
-app.get('/PostsurveyStudent', function (request, response)
-{
-	if (fs.existsSync('./views/postsurveyStudent.html'))
-	{
-		fs.unlinkSync('./views/postsurveyStudent.html');
-	}
-	fileToRead = "./views/surveys/s_postsurvey.txt";
-	fd = fs.openSync('./views/postsurveyStudent.html', 'a');
-
-	fs.writeSync(fd, head, 'utf8')
-	content = fs.readFileSync(fileToRead, 'utf8');
-	fs.writeSync(fd, content + foot, 'utf8')
-
-	fs.closeSync(fd)
-
-	response.sendFile(path.join(__dirname + '/views/postsurveyStudent.html'));
-});
-
-app.get('/loadAnounce', function (request, response)
-{
-  if (fs.existsSync('./views/viewannouncements.html'))
-	{
-		fs.unlinkSync('./views/viewannouncements.html');
-  }
-  
-
-  
-  fileToRead = "./views/announcements";
-
-  const directoryPath = path.join(__dirname, fileToRead);
-
-  fs.readdirSync(fileToRead).forEach(fl => {
-
-
-    arr.push(fl);
-    
-});
-fd = fs.openSync('./views/viewannouncements.html', 'a');
-
-fs.writeSync(fd, head ,'utf8')    
-
-
-for(var i=0; i<arr.length;i++){
-
-   content = fs.readFileSync(arr[i], 'utf8');
-   fs.writeSync(fd, content ,'utf8') 
-
-}
-fs.writeSync(fd, foot ,'utf8')    
-
-fs.closeSync(fd)
-
-
-	response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
-});
 
 
 //registration route
