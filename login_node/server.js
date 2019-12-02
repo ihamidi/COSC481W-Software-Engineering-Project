@@ -443,7 +443,7 @@ app.post('/adminauth', function(request, response) {
        })
 });
 
-/* THIS CODE MAY BE BROKEN
+
 app.get('/PresurveyParent', function (request, response)
 {
 	if (fs.existsSync('./views/presurveyParent.html'))
@@ -525,38 +525,34 @@ app.get('/loadAnounce', function (request, response)
 	{
 		fs.unlinkSync('./views/viewannouncements.html');
   }
+  
 
-
-
+  
   fileToRead = "./views/announcements";
-
-  const directoryPath = path.join(__dirname, fileToRead);
-
-  fs.readdirSync(fileToRead).forEach(fl => {
-
-
-    arr.push(fl);
-
+  arr=[];
+const directoryPath = path.join(__dirname, fileToRead);
+  fs.readdirSync(directoryPath).forEach(fl => {
+    arr.push(fl);  
 });
 fd = fs.openSync('./views/viewannouncements.html', 'a');
 
-fs.writeSync(fd,  ,'utf8')
+fs.writeSync(fd, head ,'utf8');
 
 
 for(var i=0; i<arr.length;i++){
 
    content = fs.readFileSync(arr[i], 'utf8');
-   fs.writeSync(fd, content ,'utf8')
+   fs.writeSync(fd, content ,'utf8') ;
 
 }
-fs.writeSync(fd, foot ,'utf8')
+fs.writeSync(fd, foot ,'utf8');
+fs.closeSync(fd);
 
-fs.closeSync(fd)
 
+  response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 
-	response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 });
-*/
+
 
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
