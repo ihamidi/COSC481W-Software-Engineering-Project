@@ -192,9 +192,12 @@ app.post('/studentreg', function (request, response) {
         "acctype": "Student"
 
     }
+    var rptpassword= request.body.rptpassword;
+
     console.log(users);
     //Inserting the user into accounts table
-
+    if(users.email.includes("@gmail.com") && users.password.length>=8 &&  users.password== rptpassword )
+    {
     connection.query('INSERT INTO student_accounts SET ?', users)
      .then(rows => {
        var parent = rows;
@@ -224,10 +227,15 @@ app.post('/studentreg', function (request, response) {
          times: request.session.times
        });
      return connection.close();
-   })
-     // .catch( err => {
-     //   response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
-     // });
+    })
+    .catch( err => {
+      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+    });
+  }
+  else {
+    response.send('HIT BACK, TRY AGAIN ERROR IN signup ');
+  }
+
 
     });
 
