@@ -84,7 +84,7 @@ body.bits-body
 					div
 						form(action='loadAnounce' method='GET')
 							button.btn.btn-default(type='submit' value='announcements') Announcements
-
+						
 				#menu4.tab-pane.fade
 					h2.bits-text Timestamps
 					div
@@ -103,6 +103,8 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu2') Timestamps
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu3') Take Survey
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#menu4') Announcements
 			.tab-content
 				#home.tab-pane.fade.in.active
 					h2.bits-text Registration
@@ -159,6 +161,12 @@ body.bits-body
 							input(type='submit' value='Postsurvey')
 
 						div
+				#menu4.tab-pane.fade
+					h2.bits-text Announcements
+					div
+						form(action='loadAnounce' method='GET')
+							button.btn.btn-default(type='submit' value='announcements') Announcements
+						
 
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs

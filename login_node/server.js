@@ -8,16 +8,17 @@ const pug = require('pug');
 const registration = require('./studentManagement.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
-/* THIS CODE MAY BE BROKEN
 const testFolder = './views/surveys';
-var ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
+var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 +'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
 +'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
 +'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
 +'\n</head> <body style="background-color:#c2ab82">';
 var foot='\n</body>\n</html>';
 var fileToRead="";
-var arr = [];*/
+var arr = [];
+//var readAnn = require('./views/announcements/annReader');
+
 
 //giving clousql credentials
 // var connection = mysql.createConnection({
@@ -131,7 +132,7 @@ app.post('/createannouncement', function(request, response) { // needs lots of w
 
   	console.log("Attempting to write " + filename);
 
-    fs.writeFile(path.join(__dirname + '/views/announcements/' + filename), announcementDiv, (err) => {
+    fs.writeFile(path.join(__dirname + '/' + filename), announcementDiv, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 
@@ -450,7 +451,7 @@ app.get('/PresurveyParent', function (request, response)
 	{
 		fs.unlinkSync('./views/presurveyParent.html');
 	}
-	fileToRead = "./views/surveys/p_presurvey.txt";
+	fileToRead = "./views/surveys/Parent_presurvey.txt";
 	fd = fs.openSync('./views/presurveyParent.html', 'a');
 
 	fs.writeSync(fd, head, 'utf8')
@@ -470,7 +471,7 @@ app.get('/PostsurveyParent', function (request, response)
 	{
 		fs.unlinkSync('./views/postsurveyParent.html');
 	}
-	fileToRead = "./views/surveys/p_postsurvey.txt";
+	fileToRead = "./views/surveys/Parent_postsurvey.txt";
 	fd = fs.openSync('./views/postsurveyParent.html', 'a');
 
 	fs.writeSync(fd, head, 'utf8')
@@ -490,7 +491,7 @@ app.get('/PresurveyStudent', function (request, response)
 	{
 		fs.unlinkSync('./views/presurveyStudent.html');
 	}
-	fileToRead = "./views/surveys/s_presurvey.txt";
+	fileToRead = "./views/surveys/Student_presurvey.txt";
 	fd = fs.openSync('./views/presurveyStudent.html', 'a');
 
 	fs.writeSync(fd, head, 'utf8')
@@ -507,7 +508,7 @@ app.get('/PostsurveyStudent', function (request, response)
 	{
 		fs.unlinkSync('./views/postsurveyStudent.html');
 	}
-	fileToRead = "./views/surveys/s_postsurvey.txt";
+	fileToRead = "./views/surveys/Student_postsurvey.txt";
 	fd = fs.openSync('./views/postsurveyStudent.html', 'a');
 
 	fs.writeSync(fd, head, 'utf8')
@@ -525,16 +526,39 @@ app.get('/loadAnounce', function (request, response)
 	{
 		fs.unlinkSync('./views/viewannouncements.html');
   }
+
+  arr=[];
+  const fd = fs.openSync('./views/viewannouncements.html', 'a' );		
+  fs.writeSync(fd, head ,'utf8')   
+  fs.readdirSync("./").forEach(fl => {
+    if(path.extname(fl)==".txt"){
+
+    console.log(fl);
+    content = fs.readFileSync(fl, 'utf8');
+    fs.writeSync(fd, content ,'utf8') 
+      console.log('Im in announcement folder');
+
+    }
+
+  });
+  fs.writeSync(fd, foot ,'utf8')    
+  fs.closeSync(fd)
+  //app.use(express.static('./views/announcements/readAnn'));
+
   
 
+/*
   
   fileToRead = "./views/announcements";
   arr=[];
 const directoryPath = path.join(__dirname, fileToRead);
   fs.readdirSync(directoryPath).forEach(fl => {
+    if(path.extname(fl)==".txt"){
     arr.push(fl);  
+    }
 });
-fd = fs.openSync('./views/viewannouncements.html', 'a');
+fd = fs.openSync('./veiw/viewannouncements.html', 'a');
+
 
 fs.writeSync(fd, head ,'utf8');
 
@@ -548,8 +572,8 @@ for(var i=0; i<arr.length;i++){
 fs.writeSync(fd, foot ,'utf8');
 fs.closeSync(fd);
 
-
-  response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
+*/
+ response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 
 });
 
@@ -563,7 +587,7 @@ app.post('/createsurvey', function(request, response) {
   console.log("Survey type: " + surveyType);
 	console.log("Survey div: " + surveyDiv);
 
-  var filename = surveyType + "-" + surveyName + ".txt";
+  var filename = surveyType + "_" + surveyName + ".txt";
 
   	console.log("Attempting to write " + filename);
 
