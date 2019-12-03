@@ -7,8 +7,10 @@ const path = require('path');
 const pug = require('pug');
 const registration = require('./studentManagement.js');
 const picUploader = require ('./pictureUploader.js');
+const mailer = require ('./mailer.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
+const nodemailer = require("nodemailer");
 const testFolder = './views/surveys';
 var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 +'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
@@ -18,6 +20,7 @@ var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 var foot='\n</body>\n</html>';
 var fileToRead="";
 var arr = [];
+
 //var readAnn = require('./views/announcements/annReader');
 
 
@@ -303,7 +306,7 @@ app.post('/auth', function(request, response) {
                times[i]=rows[i].firstname+" "+rows[i].lastname+" "+rows[i].timestamp+" Checked Out";
              }
              console.log(request.session.times);
-  
+
            }
            request.session.times=times;
            console.log(request.session.times);
@@ -541,22 +544,22 @@ app.get('/loadAnounce', function (request, response)
   }
 
   arr=[];
-  const fd = fs.openSync('./views/viewannouncements.html', 'a' );		
-  fs.writeSync(fd, head ,'utf8')   
+  const fd = fs.openSync('./views/viewannouncements.html', 'a' );
+  fs.writeSync(fd, head ,'utf8')
   fs.readdirSync("./").forEach(fl => {
     if(path.extname(fl)==".txt"){
 
     console.log(fl);
     content = fs.readFileSync(fl, 'utf8');
-    fs.writeSync(fd, content ,'utf8') 
+    fs.writeSync(fd, content ,'utf8')
       console.log('Im in announcement folder');
 
     }
 
   });
-  fs.writeSync(fd, foot ,'utf8')    
+  fs.writeSync(fd, foot ,'utf8')
   fs.closeSync(fd)
-  
+
  response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 
 });
@@ -671,6 +674,12 @@ app.use(picUploader);
 app.use('/getFiles' , picUploader);
 app.use('/setPicNumber' , picUploader);
 app.use('/uploadpicture' , picUploader);
+
+//Node mailer that hopefull works?
+app.use(mailer);
+app.use('/ConfigureMail' , mailer);
+app.use('/sendMail' , mailer);
+// app.use('/uploadpicture' , picUploader);
 
 
 
