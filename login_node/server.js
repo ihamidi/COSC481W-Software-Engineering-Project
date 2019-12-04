@@ -561,6 +561,7 @@ app.get('/loadAnounce', function (request, response)
   fs.writeSync(fd, foot ,'utf8')
   fs.closeSync(fd)
 
+ app.use(express.static('./views/css'));
  response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 
 });
