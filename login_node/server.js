@@ -546,7 +546,7 @@ app.get('/loadAnounce', function (request, response)
   arr=[];
   const fd = fs.openSync('./views/viewannouncements.html', 'a' );
   fs.writeSync(fd, head ,'utf8')
-  fs.readdirSync("./").forEach(fl => {
+  fs.readdirSync("./views/announcements").forEach(fl => {
     if(path.extname(fl)==".txt"){
 
     console.log(fl);
