@@ -419,7 +419,8 @@ app.post('/studentauth', function(request, response) {
             checkedIn: request.session.checkedIn,
             checkedOut: request.session.checkedOut,
             sessionD: request.session,
-            times: request.session.times
+            times: request.session.times,
+            testvariable: 'Test Message'
           });
         })
         .catch( err => {
