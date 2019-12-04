@@ -476,7 +476,7 @@ app.get('/PresurveyParent', function (request, response)
 
 	fs.closeSync(fd)
 
-
+  app.use(express.static('./views/css'));
 	response.sendFile(path.join(__dirname + '/views/presurveyParent.html'));
 
 });
@@ -496,7 +496,7 @@ app.get('/PostsurveyParent', function (request, response)
 
 	fs.closeSync(fd)
 
-
+  app.use(express.static('./views/css'));
 	response.sendFile(path.join(__dirname + '/views/postsurveyParent.html'));
 
 });
@@ -515,6 +515,7 @@ app.get('/PresurveyStudent', function (request, response)
 	fs.writeSync(fd, content + foot, 'utf8')
 
 	fs.closeSync(fd)
+  app.use(express.static('./views/css'));
 	response.sendFile(path.join(__dirname + '/views/presurveyStudent.html'));
 });
 
@@ -532,7 +533,7 @@ app.get('/PostsurveyStudent', function (request, response)
 	fs.writeSync(fd, content + foot, 'utf8')
 
 	fs.closeSync(fd)
-
+  app.use(express.static('./views/css'));
 	response.sendFile(path.join(__dirname + '/views/postsurveyStudent.html'));
 });
 
