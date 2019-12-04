@@ -10,8 +10,6 @@ const picUploader = require ('./pictureUploader.js');
 const mailer = require ('./mailer.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
-const nodemailer = require("nodemailer");
-const testFolder = './views/surveys';
 var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 +'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
 +'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
@@ -19,18 +17,6 @@ var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes Login</title>'
 +'\n</head> <body style="background-color:#5EB2F2">';
 var foot='\n</body>\n</html>';
 var fileToRead="";
-var arr = [];
-
-//var readAnn = require('./views/announcements/annReader');
-
-
-//giving clousql credentials
-// var connection = mysql.createConnection({
-//   host     : '34.66.160.101',
-// 	user     : 'root',
-// 	password : 'fiveguys',
-// 	database : 'swing_demo'
-// });
 
 class Database {
   constructor( config ) {
@@ -165,8 +151,6 @@ app.get('/createsurvey', function (request, response) {
     }
 });
 
-
-
 //logout function, destroys session and redirects home
 app.get('/logout', function (request, response) {
     request.session.destroy();
@@ -181,6 +165,7 @@ app.get('/timestamp', function (request, response) {
         console.log(results[0]);
     })
 });
+
 //registration method for db
 app.post('/studentreg', function (request, response) {
     //var today = new Date();     //can be used later
@@ -240,8 +225,6 @@ app.post('/studentreg', function (request, response) {
   else {
     response.send('HIT BACK, TRY AGAIN ERROR IN signup ');
   }
-
-
     });
 
 //registration method for db
@@ -262,9 +245,6 @@ app.post('/reg', function (request, response) {
         response.redirect('/');
 });
 
-
-
-
 //authorization method after user submits
 app.post('/auth', function(request, response) {
   var data = {
@@ -283,8 +263,14 @@ app.post('/auth', function(request, response) {
        .then(rows => {
          if(rows.length > 0){
           var student = rows;
-          request.session.studentID = student[0].SID;
-          request.session.studentName = student[0].firstname;
+          var studentID = [];
+          var studentName = [];
+          for(i = 0; i < student.length; i++){
+          studentID[i] = student[i].SID;
+          studentName[i] = student[i].firstname;
+          }
+          request.session.studentID = studentID;
+          request.session.firstName = studentName;
           var allstuds=[];
           for (i = 0; i < rows.length; i++) {
             allstuds[i]=student[i].SID;
@@ -311,7 +297,7 @@ app.post('/auth', function(request, response) {
            request.session.times=times;
            console.log(request.session.times);
          }
-           return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
+           return connection.query('SELECT * FROM registration_forms WHERE SID IN (?) ORDER BY ?', [request.session.studentID, "firstname"]);
         }
         else {
           return;
@@ -347,6 +333,9 @@ app.post('/auth', function(request, response) {
          hasPermission: request.session.hasPermission
        });
        })
+       .catch( err => {
+        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      });
 });
 
 
@@ -658,13 +647,6 @@ app.get('/checkout', function(request, response) {
   }
 );
 
-
-
-
-
-
-
-
 //registration route
 app.use(registration);
 app.use('/registration', registration);
@@ -684,10 +666,6 @@ app.use('/sendMail' , mailer);
 // app.use('/uploadpicture' , picUploader);
 
 
-
-
-
-
 function checkin_student(data, callback){
 
 
@@ -701,8 +679,6 @@ function checkin_student(data, callback){
      }
 });}
 function checkout_student(data, callback){
-
-
   connection.query('INSERT INTO timestamps SET ?', 				[data], function(error, results, fields)
    {
       if (results.length > 0) {
@@ -713,28 +689,6 @@ function checkout_student(data, callback){
        callback(data.firstname);
      }
 });}
-
-
-
-
-
-// function get_student_info(data, callback){
-//
-//
-//   connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password], function(error, results, fields)
-//    {
-//     if (results.length > 0) {
-//         console.log(results[0].acctype);
-//         callback(results[0]);
-//     }})
-// }
-//
-
-
-//usage
-
-
-
 
 //registration.js is a required module and it is using the port 3000, So i set it to port 30000
 //Izhak Hamidi

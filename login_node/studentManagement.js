@@ -5,13 +5,39 @@ var mysql = require('mysql');
 const multer  = require('multer');
 const router = express.Router();
 
+class Database {
+  constructor( config ) {
+      console.log("Database connected");
+      this.connection = mysql.createConnection( config );
+  }
+  query( sql, args ) {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.query( sql, args, ( err, rows ) => {
+              if ( err )
+                  return reject( err );
+              resolve( rows );
+          } );
+      } );
+  }
+  close() {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.end( err => {
+              if ( err )
+                  return reject( err );
+              resolve();
+          } );
+      } );
+  }
+}
 
-var connection = mysql.createConnection({
+var config = {
   host     : '34.66.160.101',
 	user     : 'root',
 	password : 'fiveguys',
-	database : 'swing_demo' //change to BitsAndBytes when testing using current schema
-});
+	database : 'swing_demo'
+};
+
+const connection = new Database(config);
 
 router.get('/registration', function (req, res) {
     const file = `${__dirname}/forms/Cat.pdf`;
@@ -41,24 +67,18 @@ var storage = multer.diskStorage({
       error.httpStatusCode = 400
       return next(error)
     }
-    connection.query('UPDATE registration_forms SET permission_complete = ? WHERE SID = ?', [1, req.session.studentID], function (error, results, fields) {
-      if (error) {
-          console.log("error ocurred", error);
-          res.send({
-              "code": 400,
-              "failed": "error ocurred"
-          })
-      } else {
-          console.log('The solution is: ', results);
-          res.render('index', {
-            acctype: req.session.acctype,
-            sessionD: req.session,
-            hasWaiver: req.session.hasWaiver,
-            hasPermission: true
-        });
-      }
-  })
-
+    connection.query('UPDATE registration_forms SET permission_complete = ? WHERE SID = ?', [1, req.session.studentID])
+    .then(() => {
+      res.render('index', {
+        acctype: req.session.acctype,
+        sessionD: req.session,
+        hasWaiver: req.session.hasWaiver,
+        hasPermission: true
+    });
+    })
+    .catch(err => {
+      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+    });
   })
 
   router.post('/uploadwaiver', upload.single('waiver'), (req, res, next) => {
