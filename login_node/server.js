@@ -357,6 +357,8 @@ app.post('/studentauth', function(request, response) {
  var today = new Date();
  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate().toString().padStart(2, "0");
 
+ console.log("load_announcements() =  "+ load_announcements());
+
     connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
         .then(rows => {
           var student = rows;
@@ -420,7 +422,7 @@ app.post('/studentauth', function(request, response) {
             checkedOut: request.session.checkedOut,
             sessionD: request.session,
             times: request.session.times,
-            testvariable: 'Test Message'
+            testvariable: load_announcements()
           });
         })
         .catch( err => {
@@ -558,6 +560,23 @@ app.get('/loadAnounce', function (request, response)
  response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
 
 });
+
+function load_announcements(){
+  arr=[];
+  fs.readdirSync("./views/announcements").forEach(fl => {
+    if(path.extname(fl)==".txt"){
+
+    console.log(fl);
+    content = fs.readFileSync(fl, 'utf8');
+      arr.push(content);
+
+    }
+
+  });
+    console.log("arr = " + arr);
+    return arr;
+
+};
 
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
