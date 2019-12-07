@@ -273,7 +273,7 @@ app.post('/auth', function(request, response) {
           studentName[i] = student[i].firstname;
           }
           request.session.studentID = studentID;
-          request.session.firstName = studentName;
+          request.session.studentName = studentName;
           var allstuds=[];
           for (i = 0; i < rows.length; i++) {
             allstuds[i]=student[i].SID;
@@ -327,13 +327,14 @@ app.post('/auth', function(request, response) {
         }
        })
        .then(() => {
-         console.log(request.session);
+         console.log(request.session.studentName)
          response.render('index', {
          acctype: request.session.acctype,
-         sessionD: request.session,
          times: request.session.times,
+         parentid: request.session.PID,
          hasWaiver: request.session.hasWaiver,
-         hasPermission: request.session.hasPermission
+         hasPermission: request.session.hasPermission,
+         studentname: request.session.studentName
        });
        })
        .catch( err => {
@@ -341,8 +342,52 @@ app.post('/auth', function(request, response) {
       });
 });
 
-
-
+app.post('/forminfo', function(request, response) {
+ var selectedstudent = request.body.selectedstudent;
+ request.session.selected = selectedstudent;
+ connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [selectedstudent])
+       
+       .then(rows => {
+           if(rows != undefined){
+            studentID = rows[0].SID;
+            return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [studentID]);
+           }
+       })
+       .then(rows => {
+         if(rows != undefined){
+          var formStatus = rows[0];
+          if(formStatus.waiver_complete == 0){
+            request.session.hasWaiver = false;
+          }
+          else{
+            request.session.hasWaiver = true;
+          }
+          if(formStatus.permission_complete == 0){
+            request.session.hasPermission = false;
+          }
+          else{
+            request.session.hasPermission = true;
+          }
+         }
+        else{
+          return;
+        }
+       })
+       .then(() => {
+         response.render('index', {
+         acctype: request.session.acctype,
+         times: request.session.times,
+         parentid: request.session.PID,
+         hasWaiver: request.session.hasWaiver,
+         hasPermission: request.session.hasPermission,
+         studentname: request.session.studentName,
+         selectedstudent: request.session.selectedstudent
+       });
+       })
+       .catch( err => {
+        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      });
+});
 
 
 

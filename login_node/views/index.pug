@@ -116,17 +116,25 @@ body.bits-body
 							button.btn.btn-default(type='submit') Cat
 						form(action='test' method='GET')
 							button.btn.btn-default(type='submit') Test
-						if !hasPermission
-							div
-							p.bits-text Upload Permission Slip:
-							form(action='/uploadpermission' enctype='multipart/form-data' method='POST')
-								input(type='file' name='permission' style='align: center')
-								button.btn.btn-default(type='submit') Upload a File
-						if !hasWaiver
-							p.bits-text Upload Waiver:
-							form(action='/uploadwaiver' enctype='multipart/form-data' method='POST')
-								input(type='file' name='waiver' style='align: center')
-								button.btn.btn-default(type='submit') Upload a File
+						br
+						form(action='forminfo' method='POST')
+						if(studentname !== undefined)
+							select(id='selectedstudent')
+								each val in studentname
+									option= val
+							button.btn.btn-default(type='submit') Select Student
+						if(selectedstudent != undefined)
+							if !hasPermission
+								div
+								p.bits-text Upload Permission Slip:
+								form(action='/uploadpermission' enctype='multipart/form-data' method='POST')
+									input(type='file' name='permission' style='align: center')
+									button.btn.btn-default(type='submit') Upload a File
+							if !hasWaiver
+								p.bits-text Upload Waiver:
+								form(action='/uploadwaiver' enctype='multipart/form-data' method='POST')
+									input(type='file' name='waiver' style='align: center')
+									button.btn.btn-default(type='submit') Upload a File
 				#menu1.tab-pane.fade
 					h2.bits-text Sign up a student
 					div
