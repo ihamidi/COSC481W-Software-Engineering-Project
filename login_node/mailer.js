@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-
+var content;
 
 
 
@@ -22,8 +22,8 @@ function maintest() {
         from: 'fiveguyscosc@gmail.com',
         to: 'hamidiizhak@gmail.com',
         subject: 'Message title',
-        text: 'Plaintext version of the message',
-        html: '<p>HTML version of the message</p>'
+        text: content,
+        html: '<p>'+content+' HTML Version</p>'
       };
 
       console.log('Credentials obtained, sending message...');
@@ -63,8 +63,14 @@ function maintest() {
 }
 
 
-router.get('/ConfigureMail', function (req,res){
-  	res.render('picturespage.pug',{picnumber: picnumber});
+router.post('/ConfigureMail', function (req,res){
+  console.log(req.body)
+  let promise = new Promise(function(resolve, reject) {
+      content=req.body.emailcontent
+      console.log(req.body.emailcontent)
+    setTimeout(() => resolve("done"), 3000);
+  });
+  promise.then(result => res.redirect('/sendMail'));
 });
 
 
@@ -95,9 +101,6 @@ var message = {
 // 	password : 'fiveguys',
 // 	database : 'swing_demo' //change to BitsAndBytes when testing using current schema
 // });
-
-
-
 
 
 
