@@ -4,44 +4,36 @@ var path = require('path');
 var mysql = require('mysql');
 var loop = require('node-while-loop');
 var exists = require( 'utils-fs-exists' );
-var picnumber=1;
+var picnumber=0;
 const multer  = require('multer');
 const router = express.Router();
 
 router.get('/getFiles', function (req,res){
- loop.while(function () {
-    return exists('./views/Pictures/picture'+picnumber,checkIfExists);
-}, function () {
-    picnumber++;
-})
-    console.log(__dirname);
 	res.render('picturespage.pug',{picnumber: picnumber,__dirname: __dirname});
 });
-   function checkIfExists( bool ) {
-    if ( bool ) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
 
-
-router.get('/setPicNumber',function (req,res) {
-	res.render('picturespage.pug',{picnumber: picnumber});
+router.get('/loadGallery',function (req,res){
+	function checkIfExists( bool ) {
+		if ( bool ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	 loop.while(function () {
+		return exists(__dirname+'./views/Pictures/picture'+picnumber,checkIfExists);
+	}, function () {
+		picnumber++;
+		console.log(picnumber)
+	})
+	res.render('picturespage.pug',{picnumber: picnumber,__dirname: __dirname});
 });
 
-
-var connection = mysql.createConnection({
-  host     : '34.66.160.101',
-	user     : 'root',
-	password : 'fiveguys',
-	database : 'swing_demo' //change to BitsAndBytes when testing using current schema
-});
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './views/Pictures')
+      cb(null, __dirname+'/views/Pictures')
     },
     filename: function (req, file, cb) {
       cb(null, file.fieldname + picnumber)
@@ -75,7 +67,7 @@ var storage = multer.diskStorage({
   })
 
   });
-  
 
-  
+
+
   module.exports = router
