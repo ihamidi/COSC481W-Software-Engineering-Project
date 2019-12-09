@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-var content;
+var content,subject;
 
 
 
@@ -21,7 +21,7 @@ function maintest() {
       var message = {
         from: 'fiveguyscosc@gmail.com',
         to: 'hamidiizhak@gmail.com',
-        subject: 'Message title',
+        subject: subject,
         text: content,
         html: '<p>'+content+' HTML Version</p>'
       };
@@ -67,18 +67,20 @@ router.post('/ConfigureMail', function (req,res){
   console.log(req.body)
   let promise = new Promise(function(resolve, reject) {
       content=req.body.emailcontent
-      console.log(req.body.emailcontent)
+      subject=req.body.subject
+      // console.log(req.body.emailcontent)
     setTimeout(() => resolve("done"), 3000);
   });
-  promise.then(result => res.redirect('/sendMail'));
+  promise.then(result => res.redirect('/Mail'));
 });
 
 
 
 
-router.get('/sendMail',function (req,res) {
+router.get('/Mail',function (req,res) {
   maintest();
-  res.redirect('/');
+  res.render(path.join(__dirname + '/views/AdminEmailConfig'));
+  // res.redirect('/');
 
 });
 
