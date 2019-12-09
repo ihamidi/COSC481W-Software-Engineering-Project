@@ -154,6 +154,16 @@ app.get('/createsurvey', function (request, response) {
     }
 });
 
+app.get('/photos', function (request, response) {
+    console.log(request.session.username + " " + request.session.acctype);
+    //still figuring out how to xcompare the acctype to "Admin"
+    if (request.session.loggedin && request.session.acctype) {
+        app.use(express.static('./views/css'));
+        app.use(express.static('./views/Pictures/'));
+        response.render(path.join(__dirname + '/views/picturespage'));
+    }
+});
+
 //logout function, destroys session and redirects home
 app.get('/logout', function (request, response) {
     request.session.destroy();
@@ -346,7 +356,7 @@ app.post('/forminfo', function(request, response) {
  var selectedstudent = request.body.selectedstudent;
  request.session.selected = selectedstudent;
  connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [selectedstudent])
-       
+
        .then(rows => {
            if(rows != undefined){
             studentID = rows[0].SID;
