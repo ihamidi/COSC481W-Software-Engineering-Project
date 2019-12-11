@@ -9,6 +9,41 @@ const router = express.Router();
 
 var content,subject;
 
+//databse stuf+++++++++++++++++++++++++++++++++++++
+class Database {
+  constructor( config ) {
+      console.log("Database connected");
+      this.connection = mysql.createConnection( config );
+  }
+  query( sql, args ) {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.query( sql, args, ( err, rows ) => {
+              if ( err )
+                  return reject( err );
+              resolve( rows );
+          } );
+      } );
+  }
+  close() {
+      return new Promise( ( resolve, reject ) => {
+          this.connection.end( err => {
+              if ( err )
+                  return reject( err );
+              resolve();
+          } );
+      } );
+  }
+}
+var config = {
+  host     : '34.66.160.101',
+	user     : 'root',
+	password : 'fiveguys',
+	database : 'swing_demo'
+};
+
+const connection = new Database(config);
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -78,10 +113,45 @@ router.post('/ConfigureMail', function (req,res){
 
 
 router.get('/Mail',function (req,res) {
-  maintest();
-  res.render(path.join(__dirname + '/views/AdminEmailConfig'));
+  var adult_emails=[];
+  var student_emails=[];
+  connection.query('SELECT email FROM adult_accounts')
+        .then(rows => {
+          if(rows != undefined){
+             for (i = 0; i < rows.length; i++) {
+                 adult_emails[i]=rows[i].email;
+             }
+
+          }
+         else{
+           return;
+         }
+          return connection.query('SELECT email FROM student_accounts')
+        })
+        .then(rows => {
+          if(rows != undefined){
+            student_emails=rows;
+          }
+         else{
+           return;
+         }
+          res.render(path.join(__dirname + '/views/AdminEmailConfig'), {
+            acctype: req.session.acctype,
+            adult_emails: adult_emails,
+            student_emails: student_emails
+          });
+
+        })
   // res.redirect('/');
 
+});
+
+
+
+router.get('/SendMail',function (req,res) {
+  maintest();
+  res.redirect('/');
+  // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
 });
 
 
