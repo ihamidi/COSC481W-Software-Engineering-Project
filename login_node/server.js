@@ -125,7 +125,7 @@ app.post('/createannouncement', function(request, response) { // needs lots of w
 
   	console.log("Attempting to write " + filename);
 
-    fs.writeFile(path.join(__dirname + '/' + filename), announcementDiv, (err) => {
+    fs.writeFile(path.join(__dirname + '/views/announcements/' + filename), announcementDiv, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 
@@ -477,7 +477,7 @@ app.post('/studentauth', function(request, response) {
             checkedOut: request.session.checkedOut,
             sessionD: request.session,
             times: request.session.times,
-            testvariable: load_announcements()
+            announcements: load_announcements()
           });
         })
         .catch( err => {
@@ -618,17 +618,18 @@ app.get('/loadAnounce', function (request, response)
 
 function load_announcements(){
   arr=[];
-  fs.readdirSync("./views/announcements").forEach(fl => {
+  fs.readdirSync(path.join(__dirname + '/views/announcements/')).forEach(fl => {
     if(path.extname(fl)==".txt"){
 
     console.log(fl);
-    content = fs.readFileSync(fl, 'utf8');
+    content = fs.readFileSync(path.join(__dirname + '/views/announcements/' + fl), 'utf8');
       arr.push(content);
 
     }
 
   });
     console.log("arr = " + arr);
+
     return arr;
 
 };
