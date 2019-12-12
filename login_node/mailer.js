@@ -5,7 +5,7 @@ var mysql = require('mysql');
 const nodemailer = require("nodemailer");
 const router = express.Router();
 
-
+var adultmaillist,studentmaillist;
 
 var content,subject;
 
@@ -50,12 +50,12 @@ const connection = new Database(config);
 
 
 // async..await is not allowed in global scope, must use a wrapper
-function maintest() {
+function ParentSend() {
 
 
       var message = {
         from: 'fiveguyscosc@gmail.com',
-        to: 'hamidiizhak@gmail.com',
+        to: adultmaillist,
         subject: subject,
         text: content,
         html: '<p>'+content+' HTML Version</p>'
@@ -98,6 +98,108 @@ function maintest() {
 }
 
 
+function StudentSend() {
+
+
+      var message = {
+        from: 'fiveguyscosc@gmail.com',
+        to: studentmaillist+",hamidiizhak@gmail.com",
+        subject: subject,
+        text: content,
+        html: '<p>'+content+' HTML Version</p>'
+      };
+
+      console.log('Credentials obtained, sending message...');
+
+      // NB! Store the account object values somewhere if you want
+      // to re-use the same account for future mail deliveries
+
+      // Create a SMTP transporter object
+      const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          secure: false,
+          auth: {
+              user: 'fiveguyscosc@gmail.com',
+              pass: 'mcchicken'
+          }
+      });
+
+      transporter.sendMail(message, (error, info) => {
+           if (error) {
+               console.log('Error occurred');
+               console.log(error);
+               return process.exit(1);
+           }
+
+           console.log('Message sent successfully!');
+           console.log(nodemailer.getTestMessageUrl(info));
+
+       });
+
+
+
+
+
+
+
+  console.log("sent")
+}
+
+
+
+function AllSend() {
+
+
+      var message = {
+        from: 'fiveguyscosc@gmail.com',
+        to: adultmaillist+studentmaillist+",hamidiizhak@gmail.com",
+        subject: subject,
+        text: content,
+        html: '<p>'+content+' HTML Version</p>'
+      };
+
+      console.log('Credentials obtained, sending message...');
+
+      // NB! Store the account object values somewhere if you want
+      // to re-use the same account for future mail deliveries
+
+      // Create a SMTP transporter object
+      const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          secure: false,
+          auth: {
+              user: 'fiveguyscosc@gmail.com',
+              pass: 'mcchicken'
+          }
+      });
+
+      transporter.sendMail(message, (error, info) => {
+           if (error) {
+               console.log('Error occurred');
+               console.log(error);
+               return process.exit(1);
+           }
+
+           console.log('Message sent successfully!');
+           console.log(nodemailer.getTestMessageUrl(info));
+
+       });
+
+
+
+
+
+
+
+  console.log("sent")
+}
+
+
+
+
+
+
+
 router.post('/ConfigureMail', function (req,res){
   console.log(req.body)
   let promise = new Promise(function(resolve, reject) {
@@ -120,8 +222,8 @@ router.get('/Mail',function (req,res) {
           if(rows != undefined){
              for (i = 0; i < rows.length; i++) {
                  adult_emails[i]=rows[i].email;
+                 adultmaillist=adultmaillist+","+rows[i].email
              }
-
           }
          else{
            return;
@@ -130,7 +232,11 @@ router.get('/Mail',function (req,res) {
         })
         .then(rows => {
           if(rows != undefined){
-            student_emails=rows;
+            for (i = 0; i < rows.length; i++) {
+                student_emails[i]=rows[i].email;
+                studentmaillist=studentmaillist+","+rows[i].email
+
+            }
           }
          else{
            return;
@@ -148,12 +254,21 @@ router.get('/Mail',function (req,res) {
 
 
 
-router.get('/SendMail',function (req,res) {
-  maintest();
+router.get('/SendParentMail',function (req,res) {
+  ParentSend();
   res.redirect('/');
   // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
 });
-
+router.get('/SendStudentMail',function (req,res) {
+  StudentSend();
+  res.redirect('/');
+  // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
+});
+router.get('/SendAllMail',function (req,res) {
+  AllSend();
+  res.redirect('/');
+  // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
+});
 
 var message = {
     from: 'sender@server.com',

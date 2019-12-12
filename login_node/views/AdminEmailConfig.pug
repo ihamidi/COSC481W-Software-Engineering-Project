@@ -37,13 +37,12 @@ body.bits-body
 			div
 				p.bits-text Send an Email
 				div.bits-div
-					form(action='SendMail' method='POST')
-					each val in adult_emails
-						input(type='checkbox' name='agreement' unchecked)
-						p=val
-						br
-					button.btn.btn-default(type='submit') Select Recipients
-
+					form(action='SendParentMail' method='GET')
+						button.btn.btn-default(type='submit') Send to Parents
+					form(action='SendStudentMail' method='GET')
+						button.btn.btn-default(type='submit') Send to Students
+					form(action='SendAllMail' method='GET')
+						button.btn.btn-default(type='submit') Send to All
 
 		else
 			h2 Please login to view contents
