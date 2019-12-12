@@ -55,7 +55,7 @@ function ParentSend() {
 
       var message = {
         from: 'fiveguyscosc@gmail.com',
-        to: adultmaillist,
+        to: adultmaillist+",fiveguyscosc@gmail.com",
         subject: subject,
         text: content,
         html: '<p>'+content+' HTML Version</p>'
@@ -103,7 +103,7 @@ function StudentSend() {
 
       var message = {
         from: 'fiveguyscosc@gmail.com',
-        to: studentmaillist+",hamidiizhak@gmail.com",
+        to: studentmaillist+",fiveguyscosc@gmail.com",
         subject: subject,
         text: content,
         html: '<p>'+content+' HTML Version</p>'
@@ -152,7 +152,7 @@ function AllSend() {
 
       var message = {
         from: 'fiveguyscosc@gmail.com',
-        to: adultmaillist+studentmaillist+",hamidiizhak@gmail.com",
+        to: adultmaillist+studentmaillist+",fiveguyscosc@gmail.com",
         subject: subject,
         text: content,
         html: '<p>'+content+' HTML Version</p>'
@@ -243,8 +243,7 @@ router.get('/Mail',function (req,res) {
          }
           res.render(path.join(__dirname + '/views/AdminEmailConfig'), {
             acctype: req.session.acctype,
-            adult_emails: adult_emails,
-            student_emails: student_emails
+            maillist: adult_emails.concat(student_emails)
           });
 
         })

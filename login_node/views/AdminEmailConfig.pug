@@ -43,6 +43,13 @@ body.bits-body
 						button.btn.btn-default(type='submit') Send to Students
 					form(action='SendAllMail' method='GET')
 						button.btn.btn-default(type='submit') Send to All
+					br
+					br
+					form(action='SendMail' method='GET')
+						select(name="mailto" placeholder="Select.." class="form-control" width="200%")
+							each val in maillist
+								option(value=val) #{val}
+						button.btn.btn-default(type='submit') Send to This Individual
 
 		else
 			h2 Please login to view contents
