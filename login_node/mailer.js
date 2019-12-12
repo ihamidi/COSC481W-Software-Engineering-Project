@@ -5,11 +5,11 @@ var mysql = require('mysql');
 const nodemailer = require("nodemailer");
 const router = express.Router();
 
-var adultmaillist,studentmaillist;
+var adultmaillist,studentmaillist, mail_person;
 
 var content,subject;
 
-//databse stuf+++++++++++++++++++++++++++++++++++++
+//databse stuff+++++++++++++++++++++++++++++++++++++
 class Database {
   constructor( config ) {
       console.log("Database connected");
@@ -145,7 +145,45 @@ function StudentSend() {
   console.log("sent")
 }
 
+function IndividualSend() {
 
+
+      var message = {
+        from: 'fiveguyscosc@gmail.com',
+        to: mail_person,
+        subject: subject,
+        text: content,
+        html: '<p>'+content+' HTML Version</p>'
+      };
+
+      console.log('Credentials obtained, sending message to ' +mail_person);
+
+      // NB! Store the account object values somewhere if you want
+      // to re-use the same account for future mail deliveries
+
+      // Create a SMTP transporter object
+      const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          secure: false,
+          auth: {
+              user: 'fiveguyscosc@gmail.com',
+              pass: 'mcchicken'
+          }
+      });
+
+      transporter.sendMail(message, (error, info) => {
+           if (error) {
+               console.log('Error occurred');
+               console.log(error);
+               return process.exit(1);
+           }
+
+           console.log('Message sent successfully!');
+           console.log(nodemailer.getTestMessageUrl(info));
+
+       });
+  console.log("sent")
+}
 
 function AllSend() {
 
@@ -184,13 +222,6 @@ function AllSend() {
            console.log(nodemailer.getTestMessageUrl(info));
 
        });
-
-
-
-
-
-
-
   console.log("sent")
 }
 
@@ -201,7 +232,6 @@ function AllSend() {
 
 
 router.post('/ConfigureMail', function (req,res){
-  console.log(req.body)
   let promise = new Promise(function(resolve, reject) {
       content=req.body.emailcontent
       subject=req.body.subject
@@ -265,6 +295,18 @@ router.get('/SendStudentMail',function (req,res) {
 });
 router.get('/SendAllMail',function (req,res) {
   AllSend();
+  res.redirect('/');
+  // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
+});
+router.post('/SendIndividualMail',function (req,res) {
+
+  let promise = new Promise(function(resolve, reject) {
+    mail_person=req.body.personmail;
+    console.log(mail_person)
+    setTimeout(() => resolve("done"), 3000);
+  });
+  promise.then(result => IndividualSend());
+
   res.redirect('/');
   // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
 });
