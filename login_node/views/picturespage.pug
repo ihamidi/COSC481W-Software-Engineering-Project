@@ -11,10 +11,8 @@ html
 		h2.container Pictures
 		form#Picturesdemo.container
 		form(action='/uploadPicture', enctype='multipart/form-data', method='POST')
-			input(type='file', name='myFile')
+			input(type='file', name='picture')
 			input(type='submit', value='Upload a file')
-			p Written with love by #{picnumber}
-		form(action='/loadGallery', enctype='multipart/form-data', method='POST')
 
 		script.
 			var pictures=document.getElementById(picnumber);
