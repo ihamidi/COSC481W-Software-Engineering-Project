@@ -735,9 +735,9 @@ app.use('/uploadfile', registration);
 
 //Picture Uploader that hopefull works?
 app.use(picUploader);
-app.use('/getFiles' , picUploader);
-app.use('/setPicNumber' , picUploader);
-app.use('/uploadpicture' , picUploader);
+// app.use('/getFiles' , picUploader);
+// app.use('/setPicNumber' , picUploader);
+app.use('/uploadPicture' , picUploader);
 
 //Node mailer that hopefull works?
 app.use(mailer);
