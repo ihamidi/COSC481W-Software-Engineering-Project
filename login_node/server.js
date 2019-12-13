@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-const dbConnection = require('./database.js');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -355,15 +354,16 @@ app.post('/auth', function(request, response) {
 app.post('/forminfo', function(request, response) {
  var selectedstudent = request.body.selectedstudent;
  request.session.selected = selectedstudent;
- connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [selectedstudent])
-
+ connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
        .then(rows => {
-           if(rows != undefined){
+           if(rows != undefined && rows.length > 0){
             studentID = rows[0].SID;
+            console.log(studentID)
             return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [studentID]);
            }
        })
        .then(rows => {
+         console.log(rows[0] + "next");
          if(rows != undefined){
           var formStatus = rows[0];
           if(formStatus.waiver_complete == 0){
@@ -395,6 +395,7 @@ app.post('/forminfo', function(request, response) {
        });
        })
        .catch( err => {
+         console.log(err);
         response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
       });
 });

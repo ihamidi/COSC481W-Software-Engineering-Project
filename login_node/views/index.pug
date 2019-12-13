@@ -121,11 +121,11 @@ body.bits-body
 						form(action='test' method='GET')
 							button.btn.btn-default(type='submit') Test
 						br
-						form(action='forminfo' method='POST')
+						form(action='forminfo' method='POST' id="selectedstudent")
 							if(studentname !== undefined)
-								select(id='selectedstudent')
+								select(class='selectedstudent' name='selectedstudent')
 									each val in studentname
-										option= val
+										option(value=val)= val
 							button.btn.btn-default(type='submit') Select Student
 						if(selectedstudent != undefined)
 							if !hasPermission

@@ -7,7 +7,6 @@ const router = express.Router();
 
 class Database {
   constructor( config ) {
-      console.log("Database connected");
       this.connection = mysql.createConnection( config );
   }
   query( sql, args ) {
