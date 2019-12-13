@@ -32,6 +32,9 @@ function createAnnouncement(){
                 + minutes + " " + ampm;
 
 
+  contentTitle.setAttribute("class", "bits-text");
+  date.setAttribute("class", "bits-text");
+  
 
   contentTitle.textContent = title;
   date.textContent = datetime;

@@ -104,6 +104,18 @@ a.bits-tabs-item:visited {
 
 }
 
+pre{
+  border: none;
+  color: white;
+  background-color: #5EB2F2;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
 #name{
    width:300px;
 }

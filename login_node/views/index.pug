@@ -86,7 +86,9 @@ body.bits-body
 					div
 						form(action='loadAnounce' method='GET')
 							button.btn.btn-default(type='submit' value='announcements') Announcements
-					p.bits-text !{testvariable}
+						div(style='align: center')
+							each announcement in announcements
+								div !{announcement}
 
 				#menu4.tab-pane.fade
 					h2.bits-text Timestamps
@@ -120,10 +122,10 @@ body.bits-body
 							button.btn.btn-default(type='submit') Test
 						br
 						form(action='forminfo' method='POST')
-						if(studentname !== undefined)
-							select(id='selectedstudent')
-								each val in studentname
-									option= val
+							if(studentname !== undefined)
+								select(id='selectedstudent')
+									each val in studentname
+										option= val
 							button.btn.btn-default(type='submit') Select Student
 						if(selectedstudent != undefined)
 							if !hasPermission
