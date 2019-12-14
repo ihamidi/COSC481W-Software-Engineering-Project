@@ -717,19 +717,63 @@ app.get('/checkin', function(request, response) {
   }
 );
 
-app.get('/modForm', function (request, response) {
-  if (request.session.loggedin && request.session.acctype=="Admin") {
-     // var myText = req.query.mytext; //mytext is the name of your input box
-     // console.log(myText);
-     var item = req.body.userSearchInput;
-     console.log(item);
-      if (fs.existsSync('./uploads/'+item))
-      {
-        fs.unlinkSync('./uploads/'+item);
-      }
+app.get('/modForm', function (req, response) {
+  if (req.session.loggedin && req.session.acctype=="Admin") {
+  
+    var dir;
+   var fullName= req.query.name;
+   var email= req.query.email.trim().toLowerCase();
+   var rad= req.query.type.toLowerCase();
+   console.log(email);
+   console.log(rad);
+
+   var string = fullName.split(" "); 
+
+   var firName=string[0].trim().toLowerCase();
+   var lasName=string[1].trim().toLowerCase();
+   var name=firName+"_"+lasName;
+
+    console.log(name);
+
+     if(rad=="waiver")
+    {
+	  if (fs.existsSync('./uploads/waivers/'+"waiver-"+name))
+	  {
+    fs.unlinkSync('./uploads/waivers/'+"waiver-"+name);
+    response.end(head+"<h1 align:center>Waiver Form For "+firName+" "+lasName+" Was Deleted</h1>"+foot1);
+  }
+   }
+   if(rad=="registration")
+    {
+      
+        if (fs.existsSync('./uploads/registration/'+"permission-"+name))
+        {
+        fs.unlinkSync('./uploads/registration/'+"permission-"+name);
+        response.end(head+"<h1 align:center>Registration Form For "+firName+" "+lasName+" Was Deleted</h1>"+foot1);
+        }
+   }
+   connection.query('SELECT * FROM adult_accounts WHERE email = ? AND lastname = ?',  [email,lasName])
+   .then(rows => {
+                var parent = rows;
+                request.session.PID = parent[0].PID;
+                return connection.query('SELECT * FROM student_accounts WHERE PID = ? AND firstname', [request.session.PID, firName])
+              })
+              .then(rows => {
+                if(rows.length > 0){
+                  var student = rows;
+                  var studentID = [];
+                  var studentName = [];
+                  for(i = 0; i < student.length; i++){
+                  studentID[i] = student[i].SID;
+                  studentName[i] = student[i].firstname;
+                  }
+                  request.session.studentID = studentID;
+                  return connection.query('UPDATE registration_forms SET registration=0 WHERE SID=? ', [request.session.studentID]);
+  
+                }else{return;}
+              })  
   }
 });
-
 //check out method
 app.get('/checkout', function(request, response) {
   var today = new Date();
