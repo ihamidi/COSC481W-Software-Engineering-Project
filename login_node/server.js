@@ -131,7 +131,7 @@ app.post('/createannouncement', function(request, response) { // needs lots of w
     // success case, the file was saved
     console.log('Announcement saved!');
   });
-
+  response.redirect('/');
 });
 
 
@@ -343,7 +343,8 @@ app.post('/auth', function(request, response) {
          parentid: request.session.PID,
          hasWaiver: request.session.hasWaiver,
          hasPermission: request.session.hasPermission,
-         studentname: request.session.studentName
+         studentname: request.session.studentName,
+         announcements: load_announcements()
        });
        })
        .catch( err => {
@@ -412,8 +413,6 @@ app.post('/studentauth', function(request, response) {
  };
  var today = new Date();
  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate().toString().padStart(2, "0");
-
- console.log("load_announcements() =  "+ load_announcements());
 
     connection.query('SELECT * FROM student_accounts WHERE username = ? AND password = ?', 				[data.username, data.password])
         .then(rows => {
@@ -506,7 +505,8 @@ app.post('/adminauth', function(request, response) {
          console.log(request.session);
          response.render('index', {
          acctype: request.session.acctype,
-         sessionD: request.session
+         sessionD: request.session,
+         announcements: load_announcements()
        });
        })
 });
@@ -617,22 +617,45 @@ app.get('/loadAnounce', function (request, response)
 
 });
 
+
+/*
+arr=[];
+fs.readdirSync(path.join(__dirname + '/views/announcements/')).forEach(fl => {
+  if(path.extname(fl)==".txt"){
+
+  console.log(fl);
+  content = fs.readFileSync(path.join(__dirname + '/views/announcements/' + fl), 'utf8');
+    arr.push(content);
+
+  }
+
+});
+  console.log("arr = " + arr);
+
+  return arr;
+*/
 function load_announcements(){
-  arr=[];
-  fs.readdirSync(path.join(__dirname + '/views/announcements/')).forEach(fl => {
-    if(path.extname(fl)==".txt"){
+  var dir = path.join(__dirname + '/views/announcements/');
+  var announcements = [];
 
-    console.log(fl);
-    content = fs.readFileSync(path.join(__dirname + '/views/announcements/' + fl), 'utf8');
-      arr.push(content);
+  var files = fs.readdirSync(dir)
+              .map(function(v) {
+                  return { name:v,
+                           time:fs.statSync(dir + v).mtime.getTime()
+                         };
+               })
+               .sort(function(a, b) { return b.time - a.time; })
+               .map(function(v) { return v.name; });
 
+  console.log(files);
+
+  files.forEach(file => {
+    if(path.extname(dir + file)==".txt"){
+      content = fs.readFileSync((dir + file), 'utf8');
+      announcements.push(content);
     }
-
   });
-    console.log("arr = " + arr);
-
-    return arr;
-
+  return announcements;
 };
 
 // createsurvey method when admin submits survey

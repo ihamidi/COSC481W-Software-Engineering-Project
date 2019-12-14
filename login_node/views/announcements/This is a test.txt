@@ -1,5 +1,0 @@
-<h3 class="bits-text">This is a test</h3><small class="bits-text">12/12/2019 - 1:35 PM</small><pre>This is a test to see how well the pre tag works as a means of maintaining formatting while also wrapping text when necessary. I'm hoping it's good enough but we will soon see. 
-This is the second line.
-
-This is the third line.
-This is the forth line. Hopefully this works properly as intended, but there's only one way to find out. That's what I'm trying to discover right now, is how well it works, maybe this will be a new line?</pre>

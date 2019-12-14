@@ -37,14 +37,14 @@
 
 
 
-<form class="container bits-primary bits-border-rounded" style="width:80%" id='newAnnouncement' action="createannouncement" method="post">
+<form class="container bits-primary bits-border-rounded" style="width:80%" id='newAnnouncement' onsubmit="return createAnnouncement()" action="createannouncement" method="post">
   <h2 class="bits-text">Create Announcement</h2>
   <div class="form-group">
     <label class="bits-text" for="title">Title</label>
     <input name="title" type="text" class="form-control" id="title" placeholder="Enter Title"></div>
     <div class="form-group">
       <label class="bits-text" for="content">Announcement</label>
-      <textarea class="form-control" id="content" placeholder="Enter Announcement"></textarea>
+      <textarea class="form-control" id="content" placeholder="Enter Announcement" style="height: 200px"></textarea>
     </div>
     <div class="form-group">
       <!--<label for="myFile">Upload Photo</label>
@@ -64,7 +64,7 @@
   <input type="submit" value="Submit">
 </form>
 <input type="file" id="myFile">-->
-<div id='currentAnnouncements' class="container"></div>
+<div id='currentAnnouncements' class="container bits-primary bits-border-rounded"></div>
 <script src="newAnnouncement.js"></script>
 <script src="fileUploadButton.js"></script>
 <!-- These are bootstrap scripts that should be left at the bottom of the page. -->

@@ -100,21 +100,13 @@ a.bits-tabs-item:visited {
   text-align: center;
   width: 70px;
   text-decoration: none;
-
-
 }
 
-pre{
-  border: none;
-  color: white;
-  background-color: #5EB2F2;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word;
+p {
+    word-break: break-word;
+    white-space: normal;
 }
+
 
 #name{
    width:300px;

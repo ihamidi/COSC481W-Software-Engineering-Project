@@ -84,8 +84,6 @@ body.bits-body
 				#menu3.tab-pane.fade.in.active
 					h2.bits-text Announcements
 					div
-						form(action='loadAnounce' method='GET')
-							button.btn.btn-default(type='submit' value='announcements') Announcements
 						div(style='align: center')
 							each announcement in announcements
 								div !{announcement}
@@ -181,6 +179,9 @@ body.bits-body
 					div
 						form(action='loadAnounce' method='GET')
 							button.btn.btn-default(type='submit' value='announcements') Announcements
+						div(style='align: center')
+							each announcement in announcements
+								div !{announcement}
 							
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
@@ -202,10 +203,12 @@ body.bits-body
 				#menu1.tab-pane.fade.in.active
 					h2.bits-text Announcements
 					div
-						p.bits-text Click here to create an announcements
 						form(action='announcements' method='GET')
-							button.btn.btn-default(type='submit') Announcements
-						div
+							button.btn.btn-default(type='submit') Create New Announcement
+						div(style='align: center')
+							each announcement in announcements
+								div !{announcement}
+							
 				#menu2.tab-pane.fade
 					h2.bits-text Modify Student
 					div
