@@ -95,7 +95,8 @@ app.get('/', function(request, response){
       checkedIn: request.session.checkedIn,
       checkedOut: request.session.checkedOut,
       times: request.session.times,
-      sessionD: request.session
+      sessionD: request.session,
+      announcements: load_announcements()
     });
   }
 });
@@ -226,7 +227,8 @@ app.post('/studentreg', function (request, response) {
          checkedIn: request.session.checkedIn,
          checkedOut: request.session.checkedOut,
          sessionD: request.session,
-         times: request.session.times
+         times: request.session.times,
+         announcements: load_announcements()
        });
      return connection.close();
     })
@@ -392,7 +394,8 @@ app.post('/forminfo', function(request, response) {
          hasWaiver: request.session.hasWaiver,
          hasPermission: request.session.hasPermission,
          studentname: request.session.studentName,
-         selectedstudent: request.session.selectedstudent
+         selectedstudent: request.session.selectedstudent,
+         announcements: load_announcements()
        });
        })
        .catch( err => {
@@ -703,7 +706,8 @@ app.get('/checkin', function(request, response) {
    checkedIn: true,
    checkedOut: request.session.checkedOut,
    sessionD: request.session,
-   times: request.session.times
+   times: request.session.times,
+   announcements: load_announcements()
  });
 
   }
@@ -744,7 +748,8 @@ app.get('/checkout', function(request, response) {
      checkedIn: true,
      checkedOut: request.session.checkedOut,
      sessionD: request.session,
-     times: request.session.times
+     times: request.session.times,
+     announcements: load_announcements()
    });
 
   }

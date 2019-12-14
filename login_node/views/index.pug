@@ -177,8 +177,6 @@ body.bits-body
 				#menu4.tab-pane.fade
 					h2.bits-text Announcements
 					div
-						form(action='loadAnounce' method='GET')
-							button.btn.btn-default(type='submit' value='announcements') Announcements
 						div(style='align: center')
 							each announcement in announcements
 								div !{announcement}
@@ -186,9 +184,9 @@ body.bits-body
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
 				li.active
-					a.bits-tabs-item(data-toggle='tab' href='#home') Create survey
-				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Announcements
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#home') Create survey
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu2') Modify Student
 				li

@@ -1,0 +1,1 @@
+<h2 class="bits-text">Bring Sunscreen</h2><small class="bits-text">12/14/2019 - 4:24 PM</small><p class="bits-text">We will be spending some time outside looking at trees so that we can discuss binary trees later. The sun will be bright, don't get burned.</p>
