@@ -7,7 +7,7 @@ const router = express.Router();
 
 var adultmaillist,studentmaillist, mail_person;
 
-var content,subject;
+var content="",subject="";
 
 //databse stuff+++++++++++++++++++++++++++++++++++++
 class Database {
@@ -49,6 +49,19 @@ const connection = new Database(config);
 
 
 
+
+
+
+
+
+//
+//
+//
+// Each one of these functions is controleld by a buton the admin sees on theri screen
+//
+//
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // async..await is not allowed in global scope, must use a wrapper
 function ParentSend() {
 
@@ -224,7 +237,7 @@ function AllSend() {
        });
   console.log("sent")
 }
-
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -273,7 +286,9 @@ router.get('/Mail',function (req,res) {
          }
           res.render(path.join(__dirname + '/views/AdminEmailConfig'), {
             acctype: req.session.acctype,
-            maillist: adult_emails.concat(student_emails)
+            maillist: adult_emails.concat(student_emails),
+            content: content,
+            subject: subject
           });
 
         })
