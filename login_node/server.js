@@ -222,7 +222,9 @@ app.post('/studentreg', function (request, response) {
     //  return connection.close();
     })
     .catch( err => {
-      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      response.render('error', {
+        error: err
+      })
     });
   }
   else {
@@ -318,7 +320,9 @@ app.post('/auth', function(request, response) {
        });
        })
        .catch( err => {
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -374,8 +378,9 @@ app.post('/forminfo', function(request, response) {
        });
        })
        .catch( err => {
-         console.log(err);
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -459,7 +464,9 @@ app.post('/studentauth', function(request, response) {
           });
         })
         .catch( err => {
-          response.redirect('/');
+          response.render('error', {
+            error: err
+          })
         })
 });
 

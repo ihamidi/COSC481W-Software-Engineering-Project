@@ -82,7 +82,9 @@ var storage = multer.diskStorage({
     });
     })
     .catch(err => {
-      res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      res.render('error', {
+        error: err
+      })
     });
   })
 
@@ -109,7 +111,9 @@ var storage = multer.diskStorage({
   });
   })
   .catch(err => {
-    res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+    res.render('error', {
+      error: err
+    })
   });
 })
 
