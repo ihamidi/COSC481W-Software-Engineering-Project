@@ -172,8 +172,6 @@ app.get('/timestamp', function (request, response) {
 
 //registration method for db
 app.post('/studentreg', function (request, response) {
-    //var today = new Date();     //can be used later
-    //defining user as many parts from form
     users = {
         "PID": request.session.PID,
         "firstname": request.body.firstname,
@@ -187,7 +185,7 @@ app.post('/studentreg', function (request, response) {
 
     }
     var rptpassword= request.body.rptpassword;
-
+    request.session.studentName.push(users.firstname);
     console.log(users);
     //Inserting the user into accounts table
     if(users.email.includes("@gmail.com") && users.password.length>=8 &&  users.password== rptpassword )
@@ -212,16 +210,16 @@ app.post('/studentreg', function (request, response) {
         return connection.query('INSERT INTO registration_forms SET ?', userInfo)
      })
      .then(() => {
-       console.log(request.session);
+       console.log(request.session.studentName);
        response.render('index', {
          acctype: request.session.acctype,
          checkedIn: request.session.checkedIn,
          checkedOut: request.session.checkedOut,
-         sessionD: request.session,
          times: request.session.times,
+         studentname: request.session.studentName,
          announcements: load_announcements()
        });
-     return connection.close();
+    //  return connection.close();
     })
     .catch( err => {
       response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
