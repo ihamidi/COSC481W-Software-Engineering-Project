@@ -68,15 +68,20 @@ var storage = multer.diskStorage({
     }
     connection.query('UPDATE registration_forms SET permission_complete = ? WHERE SID = ?', [1, req.session.studentID])
     .then(() => {
+      console.log("uploaded")
       res.render('index', {
-        acctype: req.session.acctype,
-        sessionD: req.session,
-        hasWaiver: req.session.hasWaiver,
-        hasPermission: true
+         acctype: req.session.acctype,
+         times: req.session.times,
+         parentid: req.session.PID,
+         hasWaiver: req.session.hasWaiver,
+         hasPermission: true,
+         studentname: req.session.studentName,
+         selectedstudent: req.session.selected,
+         announcements: load_announcements()
     });
     })
     .catch(err => {
-      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
     });
   })
 
@@ -88,21 +93,22 @@ var storage = multer.diskStorage({
       error.httpStatusCode = 400
       return next(error)
     }
-  connection.query('UPDATE registration_forms SET waiver_complete = ? WHERE SID = ?', [1, req.session.studentID], function (error, results, fields) {
-    if (error) {
-        console.log("error ocurred", error);
-        res.send({
-            "code": 400,
-            "failed": "error ocurred"
-        })
-    } else {
-        res.render('index', {
-          acctype: req.session.acctype,
-          sessionD: req.session,
-          hasWaiver: true,
-          hasPermission: req.session.hasPermission
-      });
-    }
+  connection.query('UPDATE registration_forms SET waiver_complete = ? WHERE SID = ?', [1, req.session.studentID])
+  .then(() => {
+    console.log("uploaded waiver")
+    res.render('index', {
+       acctype: req.session.acctype,
+       times: req.session.times,
+       parentid: req.session.PID,
+       hasWaiver: req.session.hasWaiver,
+       hasPermission: true,
+       studentname: req.session.studentName,
+       selectedstudent: req.session.selected,
+       announcements: load_announcements()
+  });
+  })
+  .catch(err => {
+    res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
   });
 })
 

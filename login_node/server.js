@@ -310,29 +310,8 @@ app.post('/auth', function(request, response) {
            request.session.times=times;
            console.log(request.session.times);
          }
-           return connection.query('SELECT * FROM registration_forms WHERE SID IN (?) ORDER BY ?', [request.session.studentID, "firstname"]);
         }
         else {
-          return;
-        }
-       })
-       .then(rows => {
-         if(rows != undefined){
-          var formStatus = rows[0];
-          if(formStatus.waiver_complete == 0){
-            request.session.hasWaiver = false;
-          }
-          else{
-            request.session.hasWaiver = true;
-          }
-          if(formStatus.permission_complete == 0){
-            request.session.hasPermission = false;
-          }
-          else{
-            request.session.hasPermission = true;
-          }
-         }
-        else{
           return;
         }
        })
@@ -366,7 +345,7 @@ app.post('/forminfo', function(request, response) {
        .then(rows => {
            if(rows != undefined && rows.length > 0){
             studentID = rows[0].SID;
-            console.log(studentID)
+            request.session.studentID = studentID;
             return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [studentID]);
            }
        })
