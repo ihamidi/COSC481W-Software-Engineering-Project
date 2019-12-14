@@ -54,7 +54,7 @@ var storage = multer.diskStorage({
       cb(null, 'uploads');
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + req.session.studentName + '_' + req.session.studentlastname);
+      cb(null, file.fieldname + '-' + req.session.selected + '_' + req.session.studentlastname);
     }
   })
 
@@ -82,7 +82,9 @@ var storage = multer.diskStorage({
     });
     })
     .catch(err => {
-      res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      res.render('error', {
+        error: err
+      })
     });
   })
 
@@ -109,7 +111,9 @@ var storage = multer.diskStorage({
   });
   })
   .catch(err => {
-    res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+    res.render('error', {
+      error: err
+    })
   });
 })
 

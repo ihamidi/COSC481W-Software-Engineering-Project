@@ -173,8 +173,6 @@ app.get('/timestamp', function (request, response) {
 
 //registration method for db
 app.post('/studentreg', function (request, response) {
-    //var today = new Date();     //can be used later
-    //defining user as many parts from form
     users = {
         "PID": request.session.PID,
         "firstname": request.body.firstname,
@@ -188,7 +186,7 @@ app.post('/studentreg', function (request, response) {
 
     }
     var rptpassword= request.body.rptpassword;
-
+    request.session.studentName.push(users.firstname);
     console.log(users);
     //Inserting the user into accounts table
     if(users.email.includes("@gmail.com") && users.password.length>=8 &&  users.password== rptpassword )
@@ -213,20 +211,22 @@ app.post('/studentreg', function (request, response) {
         return connection.query('INSERT INTO registration_forms SET ?', userInfo)
      })
      .then(() => {
-       console.log(request.session);
+       console.log(request.session.studentName);
        app.use(express.static('./views/Pictures'));
        response.render('index', {
          acctype: request.session.acctype,
          checkedIn: request.session.checkedIn,
          checkedOut: request.session.checkedOut,
-         sessionD: request.session,
          times: request.session.times,
+         studentname: request.session.studentName,
          announcements: load_announcements()
        });
-     return connection.close();
+    //  return connection.close();
     })
     .catch( err => {
-      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      response.render('error', {
+        error: err
+      })
     });
   }
   else {
@@ -323,7 +323,9 @@ app.post('/auth', function(request, response) {
        });
        })
        .catch( err => {
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -336,12 +338,13 @@ app.post('/forminfo', function(request, response) {
  var selectedstudent = request.body.selectedstudent;
  request.session.selected = selectedstudent;
  console.log(request.session.PID)
- connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
+ connection.query('SELECT * FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
        .then(rows => {
            if(rows != undefined && rows.length > 0){
-            studentID = rows[0].SID;
-            request.session.studentID = studentID;
-            return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [studentID]);
+            student = rows[0];
+            request.session.studentID = student.SID;
+            request.session.studentlastname = student.lastname;
+            return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
            }
        })
        .then(rows => {
@@ -379,8 +382,9 @@ app.post('/forminfo', function(request, response) {
        });
        })
        .catch( err => {
-         console.log(err);
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -465,7 +469,9 @@ app.post('/studentauth', function(request, response) {
           });
         })
         .catch( err => {
-          response.redirect('/');
+          response.render('error', {
+            error: err
+          })
         })
 });
 
