@@ -10,16 +10,6 @@ const mailer = require ('./mailer.js');
 const modifier = require ('./modifier.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
-var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes</title>'
-+'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
-+'\n<link rel="stylesheet" type="text/css" href="sitewide.css">'
-+'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
-+'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
-+'\n</head> <body class="bits-body">';
-+'\n<form class="form-login" action="saveSurvey " method="get">';
-var foot='\n<button type="submit" class="form-control"style=" width: 100px;" name="saveSurveyButton">Submit</button></form></body>\n</html>';
-var foot1='\n</body>\n</html>';
-var fileToRead="";
 
 class Database {
   constructor( config ) {
@@ -577,52 +567,6 @@ app.get('/PostsurveyStudent', function (request, response)
 	response.sendFile(path.join(__dirname + '/views/postsurveyStudent.html'));
 });
 
-app.get('/loadAnounce', function (request, response)
-{
-  if (fs.existsSync('./views/viewannouncements.html'))
-	{
-		fs.unlinkSync('./views/viewannouncements.html');
-  }
-
-  arr=[];
-  const fd = fs.openSync('./views/viewannouncements.html', 'a' );
-  fs.writeSync(fd, head ,'utf8')
-  fs.readdirSync("./views/announcements").forEach(fl => {
-    if(path.extname(fl)==".txt"){
-
-    console.log(fl);
-    content = fs.readFileSync(fl, 'utf8');
-    fs.writeSync(fd, content ,'utf8')
-      console.log('Im in announcement folder');
-
-    }
-
-  });
-  fs.writeSync(fd, foot1 ,'utf8')
-  fs.closeSync(fd)
-
- app.use(express.static('./views/css'));
- response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
-
-});
-
-
-/*
-arr=[];
-fs.readdirSync(path.join(__dirname + '/views/announcements/')).forEach(fl => {
-  if(path.extname(fl)==".txt"){
-
-  console.log(fl);
-  content = fs.readFileSync(path.join(__dirname + '/views/announcements/' + fl), 'utf8');
-    arr.push(content);
-
-  }
-
-});
-  console.log("arr = " + arr);
-
-  return arr;
-*/
 function load_announcements(){
   var dir = path.join(__dirname + '/views/announcements/');
   var announcements = [];
