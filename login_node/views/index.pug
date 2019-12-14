@@ -126,6 +126,7 @@ body.bits-body
 										option(value=val)= val
 							button.btn.btn-default(type='submit') Select Student
 						if(selectedstudent != undefined)
+							h3.bits-text= selectedstudent
 							if !hasPermission
 								div
 								p.bits-text Upload Permission Slip:
@@ -180,7 +181,7 @@ body.bits-body
 						div(style='align: center')
 							each announcement in announcements
 								div !{announcement}
-							
+
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
 				li.active
@@ -206,20 +207,29 @@ body.bits-body
 						div(style='align: center')
 							each announcement in announcements
 								div !{announcement}
-							
+
 				#menu2.tab-pane.fade
 					h2.bits-text Modify Student
 					div
 						p.bits-text Modify a Student's information
 						div.bits-div
-							form(action='registration' method='GET')
+							form(action='ModifyStudent' method='GET')
 								button.btn.btn-default(type='submit') Modify
 						hr(style='border: 5px solid white; border-radius: 5px;')
 						p.bits-text Delete a Form
 						div.bits-div
 							form(action='modForm' method='GET')
-								input#name.form-control(type='text', placeholder='Enter a file name' name='name')
-								button.btn.btn-default(type='submit'  style='width: 300px' name='delete') Delete
+								input.form-control(type='text',  style='width: 350px' placeholder='Enter student first and last name' name='name')
+								input.form-control(type='text',  style='width: 350px' placeholder='Enter partent email' name='email')
+								input.form-control(type='text',  style='width: 350px' placeholder='Type of form' name='type')
+								button.btn.btn-default(type='submit'  style='width: 200px' name='delete') Delete
+
+//								input.form-control(type='radio' name='file' value='1')
+//								| Form
+//								input.form-control(type='radio' name='file' value='2')
+//								| Waiver
+
+
 				#menu3.tab-pane.fade
 					h2.bits-text Configure Email message
 					div

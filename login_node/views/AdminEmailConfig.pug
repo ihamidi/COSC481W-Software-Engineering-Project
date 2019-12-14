@@ -34,22 +34,27 @@ body.bits-body
 		#container.col
 		if acctype === 'Admin'
 			h2.bits-text Configure Email message
-			div
+			.container
+				.row
+					.col-sm
+						p Subject: #{subject}
+						p Content: #{content}
+					.col-sm
+						div.bits-div
+							form(action='SendParentMail' method='GET')
+								button.btn.btn-default(type='submit') Send to Parents
+							form(action='SendStudentMail' method='GET')
+								button.btn.btn-default(type='submit') Send to Students
+							form(action='SendAllMail' method='GET')
+								button.btn.btn-default(type='submit') Send to All
+							br
+							br
+							form(action='SendIndividualMail' method='POST')
+								select(name="personmail" placeholder="Select.." class="form-control" width="200%")
+									each val in maillist
+										option(value=val) #{val}
+								button.btn.btn-default(type='submit') Send to This Individual
 				p.bits-text Send an Email
-				div.bits-div
-					form(action='SendParentMail' method='GET')
-						button.btn.btn-default(type='submit') Send to Parents
-					form(action='SendStudentMail' method='GET')
-						button.btn.btn-default(type='submit') Send to Students
-					form(action='SendAllMail' method='GET')
-						button.btn.btn-default(type='submit') Send to All
-					br
-					br
-					form(action='SendIndividualMail' method='POST')
-						select(name="personmail" placeholder="Select.." class="form-control" width="200%")
-							each val in maillist
-								option(value=val) #{val}
-						button.btn.btn-default(type='submit') Send to This Individual
 
 		else
 			h2 Please login to view contents

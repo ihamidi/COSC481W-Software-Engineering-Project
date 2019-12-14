@@ -7,6 +7,7 @@ const pug = require('pug');
 const registration = require('./studentManagement.js');
 const picUploader = require ('./pictureUploader.js');
 const mailer = require ('./mailer.js');
+const modifier = require ('./modifier.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes</title>'
@@ -311,29 +312,8 @@ app.post('/auth', function(request, response) {
            request.session.times=times;
            console.log(request.session.times);
          }
-           return connection.query('SELECT * FROM registration_forms WHERE SID IN (?) ORDER BY ?', [request.session.studentID, "firstname"]);
         }
         else {
-          return;
-        }
-       })
-       .then(rows => {
-         if(rows != undefined){
-          var formStatus = rows[0];
-          if(formStatus.waiver_complete == 0){
-            request.session.hasWaiver = false;
-          }
-          else{
-            request.session.hasWaiver = true;
-          }
-          if(formStatus.permission_complete == 0){
-            request.session.hasPermission = false;
-          }
-          else{
-            request.session.hasPermission = true;
-          }
-         }
-        else{
           return;
         }
        })
@@ -354,19 +334,25 @@ app.post('/auth', function(request, response) {
       });
 });
 
+
+
+
+
+
 app.post('/forminfo', function(request, response) {
  var selectedstudent = request.body.selectedstudent;
  request.session.selected = selectedstudent;
+ console.log(request.session.PID)
  connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
        .then(rows => {
            if(rows != undefined && rows.length > 0){
             studentID = rows[0].SID;
-            console.log(studentID)
+            request.session.studentID = studentID;
             return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [studentID]);
            }
        })
        .then(rows => {
-         console.log(rows[0] + "next");
+         console.log(rows + "next");
          if(rows != undefined){
           var formStatus = rows[0];
           if(formStatus.waiver_complete == 0){
@@ -394,7 +380,7 @@ app.post('/forminfo', function(request, response) {
          hasWaiver: request.session.hasWaiver,
          hasPermission: request.session.hasPermission,
          studentname: request.session.studentName,
-         selectedstudent: request.session.selectedstudent,
+         selectedstudent: request.session.selected,
          announcements: load_announcements()
        });
        })
@@ -713,19 +699,63 @@ app.get('/checkin', function(request, response) {
   }
 );
 
-app.get('/modForm', function (request, response) {
-  if (request.session.loggedin && request.session.acctype=="Admin") {
-     // var myText = req.query.mytext; //mytext is the name of your input box
-     // console.log(myText);
-     var item = req.body.userSearchInput;
-     console.log(item);
-      if (fs.existsSync('./uploads/'+item))
-      {
-        fs.unlinkSync('./uploads/'+item);
-      }
+app.get('/modForm', function (req, response) {
+  if (req.session.loggedin && req.session.acctype=="Admin") {
+
+    var dir;
+   var fullName= req.query.name;
+   var email= req.query.email.trim().toLowerCase();
+   var rad= req.query.type.toLowerCase();
+   console.log(email);
+   console.log(rad);
+
+   var string = fullName.split(" ");
+
+   var firName=string[0].trim().toLowerCase();
+   var lasName=string[1].trim().toLowerCase();
+   var name=firName+"_"+lasName;
+
+    console.log(name);
+
+     if(rad=="waiver")
+    {
+	  if (fs.existsSync('./uploads/waivers/'+"waiver-"+name))
+	  {
+    fs.unlinkSync('./uploads/waivers/'+"waiver-"+name);
+    response.end(head+"<h1 align:center>Waiver Form For "+firName+" "+lasName+" Was Deleted</h1>"+foot1);
+  }
+   }
+   if(rad=="registration")
+    {
+
+        if (fs.existsSync('./uploads/registration/'+"permission-"+name))
+        {
+        fs.unlinkSync('./uploads/registration/'+"permission-"+name);
+        response.end(head+"<h1 align:center>Registration Form For "+firName+" "+lasName+" Was Deleted</h1>"+foot1);
+        }
+   }
+   connection.query('SELECT * FROM adult_accounts WHERE email = ? AND lastname = ?',  [email,lasName])
+   .then(rows => {
+                var parent = rows;
+                request.session.PID = parent[0].PID;
+                return connection.query('SELECT * FROM student_accounts WHERE PID = ? AND firstname', [request.session.PID, firName])
+              })
+              .then(rows => {
+                if(rows.length > 0){
+                  var student = rows;
+                  var studentID = [];
+                  var studentName = [];
+                  for(i = 0; i < student.length; i++){
+                  studentID[i] = student[i].SID;
+                  studentName[i] = student[i].firstname;
+                  }
+                  request.session.studentID = studentID;
+                  return connection.query('UPDATE registration_forms SET registration=0 WHERE SID=? ', [request.session.studentID]);
+
+                }else{return;}
+              })
   }
 });
-
 //check out method
 app.get('/checkout', function(request, response) {
   var today = new Date();
@@ -771,6 +801,11 @@ app.use('/uploadPicture' , picUploader);
 app.use(mailer);
 app.use('/ConfigureMail' , mailer);
 app.use('/sendMail' , mailer);
+// app.use('/uploadpicture' , picUploader);
+
+app.use(modifier);
+app.use('/ModifyStudnet' , modifier);
+
 // app.use('/uploadpicture' , picUploader);
 
 

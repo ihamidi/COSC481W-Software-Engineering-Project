@@ -4,6 +4,7 @@ var path = require('path');
 var mysql = require('mysql');
 const multer  = require('multer');
 const router = express.Router();
+const fs = require('fs');
 
 class Database {
   constructor( config ) {
@@ -68,15 +69,20 @@ var storage = multer.diskStorage({
     }
     connection.query('UPDATE registration_forms SET permission_complete = ? WHERE SID = ?', [1, req.session.studentID])
     .then(() => {
+      console.log("uploaded")
       res.render('index', {
-        acctype: req.session.acctype,
-        sessionD: req.session,
-        hasWaiver: req.session.hasWaiver,
-        hasPermission: true
+         acctype: req.session.acctype,
+         times: req.session.times,
+         parentid: req.session.PID,
+         hasWaiver: req.session.hasWaiver,
+         hasPermission: true,
+         studentname: req.session.studentName,
+         selectedstudent: req.session.selected,
+         announcements: load_announcements()
     });
     })
     .catch(err => {
-      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
     });
   })
 
@@ -88,22 +94,48 @@ var storage = multer.diskStorage({
       error.httpStatusCode = 400
       return next(error)
     }
-  connection.query('UPDATE registration_forms SET waiver_complete = ? WHERE SID = ?', [1, req.session.studentID], function (error, results, fields) {
-    if (error) {
-        console.log("error ocurred", error);
-        res.send({
-            "code": 400,
-            "failed": "error ocurred"
-        })
-    } else {
-        res.render('index', {
-          acctype: req.session.acctype,
-          sessionD: req.session,
-          hasWaiver: true,
-          hasPermission: req.session.hasPermission
-      });
-    }
+  connection.query('UPDATE registration_forms SET waiver_complete = ? WHERE SID = ?', [1, req.session.studentID])
+  .then(() => {
+    console.log("uploaded waiver")
+    res.render('index', {
+       acctype: req.session.acctype,
+       times: req.session.times,
+       parentid: req.session.PID,
+       hasWaiver: req.session.hasWaiver,
+       hasPermission: true,
+       studentname: req.session.studentName,
+       selectedstudent: req.session.selected,
+       announcements: load_announcements()
+  });
+  })
+  .catch(err => {
+    res.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
   });
 })
+
+function load_announcements(){
+  var dir = path.join(__dirname + '/views/announcements/');
+  var announcements = [];
+
+  var files = fs.readdirSync(dir)
+              .map(function(v) {
+                  return { name:v,
+                           time:fs.statSync(dir + v).mtime.getTime()
+                         };
+               })
+               .sort(function(a, b) { return b.time - a.time; })
+               .map(function(v) { return v.name; });
+
+  console.log(files);
+
+  files.forEach(file => {
+    if(path.extname(dir + file)==".txt"){
+      content = fs.readFileSync((dir + file), 'utf8');
+      announcements.push(content);
+    }
+  });
+  return announcements;
+};
+
 
   module.exports = router
