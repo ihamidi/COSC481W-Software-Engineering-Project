@@ -182,7 +182,7 @@ body.bits-body
 						div(style='align: center')
 							each announcement in announcements
 								div !{announcement}
-							
+
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
 				li.active
@@ -208,13 +208,13 @@ body.bits-body
 						div(style='align: center')
 							each announcement in announcements
 								div !{announcement}
-							
+
 				#menu2.tab-pane.fade
 					h2.bits-text Modify Student
 					div
 						p.bits-text Modify a Student's information
 						div.bits-div
-							form(action='registration' method='GET')
+							form(action='ModifyStudent' method='GET')
 								button.btn.btn-default(type='submit') Modify
 						hr(style='border: 5px solid white; border-radius: 5px;')
 						p.bits-text Delete a Form
