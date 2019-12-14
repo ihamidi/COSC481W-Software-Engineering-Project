@@ -54,7 +54,7 @@ var storage = multer.diskStorage({
       cb(null, 'uploads');
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + req.session.studentName + req.session.studentLast) + req.session.studentID;
+      cb(null, file.fieldname + '-' + req.session.studentName + '_' + req.session.studentlastname);
     }
   })
 
@@ -101,8 +101,8 @@ var storage = multer.diskStorage({
        acctype: req.session.acctype,
        times: req.session.times,
        parentid: req.session.PID,
-       hasWaiver: req.session.hasWaiver,
-       hasPermission: true,
+       hasWaiver: true,
+       hasPermission: req.session.hasPermission,
        studentname: req.session.studentName,
        selectedstudent: req.session.selected,
        announcements: load_announcements()
