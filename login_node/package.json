@@ -24,6 +24,7 @@
     "node-readfiles": "^0.2.0",
     "node-while-loop": "^1.0.4",
     "nodemailer": "^6.3.1",
+    "nodemon": "^2.0.2",
     "pug": "^2.0.4",
     "utils-fs-exists": "^1.0.1"
   }

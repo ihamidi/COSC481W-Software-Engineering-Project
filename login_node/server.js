@@ -371,7 +371,7 @@ app.post('/forminfo', function(request, response) {
            }
        })
        .then(rows => {
-         console.log(rows[0] + "next");
+         console.log(rows + "next");
          if(rows != undefined){
           var formStatus = rows[0];
           if(formStatus.waiver_complete == 0){
@@ -399,7 +399,7 @@ app.post('/forminfo', function(request, response) {
          hasWaiver: request.session.hasWaiver,
          hasPermission: request.session.hasPermission,
          studentname: request.session.studentName,
-         selectedstudent: request.session.selectedstudent,
+         selectedstudent: request.session.selected,
          announcements: load_announcements()
        });
        })

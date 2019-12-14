@@ -126,6 +126,7 @@ body.bits-body
 										option(value=val)= val
 							button.btn.btn-default(type='submit') Select Student
 						if(selectedstudent != undefined)
+							h3.bits-text= selectedstudent
 							if !hasPermission
 								div
 								p.bits-text Upload Permission Slip:
