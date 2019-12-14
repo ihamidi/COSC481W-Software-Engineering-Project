@@ -352,9 +352,15 @@ app.post('/auth', function(request, response) {
       });
 });
 
+
+
+
+
+
 app.post('/forminfo', function(request, response) {
  var selectedstudent = request.body.selectedstudent;
  request.session.selected = selectedstudent;
+ console.log(request.session.PID)
  connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
        .then(rows => {
            if(rows != undefined && rows.length > 0){
@@ -392,7 +398,8 @@ app.post('/forminfo', function(request, response) {
          hasWaiver: request.session.hasWaiver,
          hasPermission: request.session.hasPermission,
          studentname: request.session.studentName,
-         selectedstudent: request.session.selectedstudent
+         selectedstudent: request.session.selectedstudent,
+         announcements: load_announcements()
        });
        })
        .catch( err => {
