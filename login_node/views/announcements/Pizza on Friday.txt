@@ -1,0 +1,8 @@
+<h2 class="bits-text">Pizza on Friday</h2><small class="bits-text">12/14/2019 - 5:12 PM</small><br><p class="bits-text">This Friday we will be having a pizza party!<br>
+<br>
+There pizza options will be...<br>
+-Pepperoni<br>
+-Hawaiian<br>
+-Vegan<br>
+<br>
+Come prepared to answer this question, do pineapples belong on pizza?</p>

@@ -1,0 +1,2 @@
+<h2 class="bits-text">Photo Support has Been Added!</h2><small class="bits-text">12/14/2019 - 6:01 PM</small><br><p class="bits-text">Wow, can you see these shapes?<br>
+Shapes: <img src="picture2.JPG"></p>

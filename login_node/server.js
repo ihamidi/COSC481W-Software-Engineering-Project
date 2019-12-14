@@ -81,6 +81,7 @@ app.get('/', function(request, response){
    }
   else {
     app.use(express.static('./views/css'));
+    app.use(express.static('./views/Pictures'));
     response.render('index', {
       acctype: request.session.acctype,
       checkedIn: request.session.checkedIn,
@@ -213,6 +214,7 @@ app.post('/studentreg', function (request, response) {
      })
      .then(() => {
        console.log(request.session);
+       app.use(express.static('./views/Pictures'));
        response.render('index', {
          acctype: request.session.acctype,
          checkedIn: request.session.checkedIn,
@@ -309,6 +311,7 @@ app.post('/auth', function(request, response) {
        })
        .then(() => {
          console.log(request.session.studentName)
+         app.use(express.static('./views/Pictures'));
          response.render('index', {
          acctype: request.session.acctype,
          times: request.session.times,
@@ -363,6 +366,7 @@ app.post('/forminfo', function(request, response) {
         }
        })
        .then(() => {
+         app.use(express.static('./views/Pictures'));
          response.render('index', {
          acctype: request.session.acctype,
          times: request.session.times,
@@ -450,6 +454,7 @@ app.post('/studentauth', function(request, response) {
         })
         .then(() => {
           console.log(request.session);
+          app.use(express.static('./views/Pictures'));
           response.render('index', {
             acctype: request.session.acctype,
             checkedIn: request.session.checkedIn,
@@ -482,6 +487,7 @@ app.post('/adminauth', function(request, response) {
        })
        .then(() => {
          console.log(request.session);
+         app.use(express.static('./views/Pictures'));
          response.render('index', {
          acctype: request.session.acctype,
          sessionD: request.session,
@@ -631,6 +637,7 @@ app.get('/checkin', function(request, response) {
 
 
  });
+ app.use(express.static('./views/Pictures'));
  response.render('index', {
    acctype: request.session.acctype,
    checkedIn: true,
@@ -717,6 +724,7 @@ app.get('/checkout', function(request, response) {
    });
 
    request.session.checkedOut = true;
+   app.use(express.static('./views/Pictures'));
    response.render('index', {
      acctype: request.session.acctype,
      checkedIn: true,

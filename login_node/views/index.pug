@@ -200,12 +200,13 @@ body.bits-body
 						form(action='createsurvey' method='GET')
 							button.btn.btn-default(type='submit') Create Survey
 				#menu1.tab-pane.fade.in.active
-					h2.bits-text Announcements
+					h2.bits-text View the Latest Announcements
 					div
 						form(action='announcements' method='GET')
-							button.btn.btn-default(type='submit') Create New Announcement
-						div(style='align: center')
+							button.btn.btn-default(type='submit') Create New
+						div.text-left.bits-announcements
 							each announcement in announcements
+								hr
 								div !{announcement}
 
 				#menu2.tab-pane.fade

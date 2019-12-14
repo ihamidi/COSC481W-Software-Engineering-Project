@@ -102,11 +102,20 @@ a.bits-tabs-item:visited {
   text-decoration: none;
 }
 
+.bits-announcements{
+  padding: 30px;
+}
+
+
 p {
     word-break: break-word;
     white-space: normal;
 }
 
+img {
+  max-width:50%;
+  max-height:50%;
+}
 
 #name{
    width:300px;

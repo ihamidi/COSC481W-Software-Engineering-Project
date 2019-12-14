@@ -12,6 +12,7 @@ function createAnnouncement(){
   var announcementBox = document.getElementById("announcementBox");
   var currentdate = new Date();
   var minutes = currentdate.getMinutes();
+  var linebreak = document.createElement('br');
 
 
   if (currentdate.getHours() >= 12) {
@@ -39,11 +40,13 @@ function createAnnouncement(){
 
   contentTitle.textContent = title;
   date.textContent = datetime;
-  paragraph.textContent = content;
+  paragraph.innerHTML = content;
   paragraph.innerHTML = paragraph.innerHTML.replace(/\n/g,'<br>\n');
 
   announcement.appendChild(contentTitle);
   announcement.appendChild(date);
+  announcement.appendChild(linebreak);
+  announcement.appendChild(linebreak);
   announcement.appendChild(paragraph);
 
   var announcementHiddenInput = document.getElementById('hiddenAnnouncementInput');
