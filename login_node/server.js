@@ -10,6 +10,16 @@ const mailer = require ('./mailer.js');
 const modifier = require ('./modifier.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
+var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes</title>'
++'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
++'\n<link rel="stylesheet" type="text/css" href="sitewide.css">'
++'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
++'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
++'\n</head> <body class="bits-body">';
++'\n<form class="form-login" action="saveSurvey " method="get">';
+var foot='\n<button type="submit" class="form-control"style=" width: 100px;" name="saveSurveyButton">Submit</button></form></body>\n</html>';
+var foot1='\n</body>\n</html>';
+var fileToRead="";
 
 class Database {
   constructor( config ) {
@@ -81,14 +91,12 @@ app.get('/', function(request, response){
    }
   else {
     app.use(express.static('./views/css'));
-    app.use(express.static('./views/Pictures'));
     response.render('index', {
       acctype: request.session.acctype,
       checkedIn: request.session.checkedIn,
       checkedOut: request.session.checkedOut,
       times: request.session.times,
-      sessionD: request.session,
-      announcements: load_announcements()
+      sessionD: request.session
     });
   }
 });
@@ -173,6 +181,8 @@ app.get('/timestamp', function (request, response) {
 
 //registration method for db
 app.post('/studentreg', function (request, response) {
+    //var today = new Date();     //can be used later
+    //defining user as many parts from form
     users = {
         "PID": request.session.PID,
         "firstname": request.body.firstname,
@@ -186,7 +196,7 @@ app.post('/studentreg', function (request, response) {
 
     }
     var rptpassword= request.body.rptpassword;
-    request.session.studentName.push(users.firstname);
+
     console.log(users);
     //Inserting the user into accounts table
     if(users.email.includes("@gmail.com") && users.password.length>=8 &&  users.password== rptpassword )
@@ -211,22 +221,18 @@ app.post('/studentreg', function (request, response) {
         return connection.query('INSERT INTO registration_forms SET ?', userInfo)
      })
      .then(() => {
-       console.log(request.session.studentName);
-       app.use(express.static('./views/Pictures'));
+       console.log(request.session);
        response.render('index', {
          acctype: request.session.acctype,
          checkedIn: request.session.checkedIn,
          checkedOut: request.session.checkedOut,
-         times: request.session.times,
-         studentname: request.session.studentName,
-         announcements: load_announcements()
+         sessionD: request.session,
+         times: request.session.times
        });
-    //  return connection.close();
+     return connection.close();
     })
     .catch( err => {
-      response.render('error', {
-        error: err
-      })
+      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
     });
   }
   else {
@@ -258,7 +264,7 @@ app.post('/auth', function(request, response) {
      username: request.body.username,
      password: request.body.password
  };
- connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?',                 [data.username, data.password])
+ connection.query('SELECT * FROM adult_accounts WHERE username = ? AND password = ?', [data.username, data.password])
        .then(rows => {
          var parent = rows;
          request.session.acctype = parent[0].acctype;
@@ -311,7 +317,6 @@ app.post('/auth', function(request, response) {
        })
        .then(() => {
          console.log(request.session.studentName)
-         app.use(express.static('./views/Pictures'));
          response.render('index', {
          acctype: request.session.acctype,
          times: request.session.times,
@@ -323,9 +328,7 @@ app.post('/auth', function(request, response) {
        });
        })
        .catch( err => {
-        response.render('error', {
-          error: err
-        })
+        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
       });
 });
 
@@ -338,13 +341,12 @@ app.post('/forminfo', function(request, response) {
  var selectedstudent = request.body.selectedstudent;
  request.session.selected = selectedstudent;
  console.log(request.session.PID)
- connection.query('SELECT * FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
+ connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
        .then(rows => {
            if(rows != undefined && rows.length > 0){
-            student = rows[0];
-            request.session.studentID = student.SID;
-            request.session.studentlastname = student.lastname;
-            return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
+            studentID = rows[0].SID;
+            request.session.studentID = studentID;
+            return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [studentID]);
            }
        })
        .then(rows => {
@@ -369,7 +371,6 @@ app.post('/forminfo', function(request, response) {
         }
        })
        .then(() => {
-         app.use(express.static('./views/Pictures'));
          response.render('index', {
          acctype: request.session.acctype,
          times: request.session.times,
@@ -382,13 +383,10 @@ app.post('/forminfo', function(request, response) {
        });
        })
        .catch( err => {
-        response.render('error', {
-          error: err
-        })
+         console.log(err);
+        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
       });
 });
-
-
 
 
 
@@ -458,7 +456,6 @@ app.post('/studentauth', function(request, response) {
         })
         .then(() => {
           console.log(request.session);
-          app.use(express.static('./views/Pictures'));
           response.render('index', {
             acctype: request.session.acctype,
             checkedIn: request.session.checkedIn,
@@ -469,9 +466,7 @@ app.post('/studentauth', function(request, response) {
           });
         })
         .catch( err => {
-          response.render('error', {
-            error: err
-          })
+          response.redirect('/');
         })
 });
 
@@ -493,7 +488,6 @@ app.post('/adminauth', function(request, response) {
        })
        .then(() => {
          console.log(request.session);
-         app.use(express.static('./views/Pictures'));
          response.render('index', {
          acctype: request.session.acctype,
          sessionD: request.session,
@@ -579,6 +573,52 @@ app.get('/PostsurveyStudent', function (request, response)
 	response.sendFile(path.join(__dirname + '/views/postsurveyStudent.html'));
 });
 
+app.get('/loadAnounce', function (request, response)
+{
+  if (fs.existsSync('./views/viewannouncements.html'))
+	{
+		fs.unlinkSync('./views/viewannouncements.html');
+  }
+
+  arr=[];
+  const fd = fs.openSync('./views/viewannouncements.html', 'a' );
+  fs.writeSync(fd, head ,'utf8')
+  fs.readdirSync("./views/announcements").forEach(fl => {
+    if(path.extname(fl)==".txt"){
+
+    console.log(fl);
+    content = fs.readFileSync(fl, 'utf8');
+    fs.writeSync(fd, content ,'utf8')
+      console.log('Im in announcement folder');
+
+    }
+
+  });
+  fs.writeSync(fd, foot1 ,'utf8')
+  fs.closeSync(fd)
+
+ app.use(express.static('./views/css'));
+ response.sendFile(path.join(__dirname + '/views/viewannouncements.html'));
+
+});
+
+
+/*
+arr=[];
+fs.readdirSync(path.join(__dirname + '/views/announcements/')).forEach(fl => {
+  if(path.extname(fl)==".txt"){
+
+  console.log(fl);
+  content = fs.readFileSync(path.join(__dirname + '/views/announcements/' + fl), 'utf8');
+    arr.push(content);
+
+  }
+
+});
+  console.log("arr = " + arr);
+
+  return arr;
+*/
 function load_announcements(){
   var dir = path.join(__dirname + '/views/announcements/');
   var announcements = [];
@@ -643,14 +683,12 @@ app.get('/checkin', function(request, response) {
 
 
  });
- app.use(express.static('./views/Pictures'));
  response.render('index', {
    acctype: request.session.acctype,
    checkedIn: true,
    checkedOut: request.session.checkedOut,
    sessionD: request.session,
-   times: request.session.times,
-   announcements: load_announcements()
+   times: request.session.times
  });
 
   }
@@ -658,15 +696,15 @@ app.get('/checkin', function(request, response) {
 
 app.get('/modForm', function (req, response) {
   if (req.session.loggedin && req.session.acctype=="Admin") {
-
+  
     var dir;
    var fullName= req.query.name;
-   var email= req.query.email.trim().toLowerCase();
+ //  var email= req.query.email.trim().toLowerCase();
    var rad= req.query.type.toLowerCase();
-   console.log(email);
+ //  console.log(email);
    console.log(rad);
 
-   var string = fullName.split(" ");
+   var string = fullName.split(" "); 
 
    var firName=string[0].trim().toLowerCase();
    var lasName=string[1].trim().toLowerCase();
@@ -682,36 +720,44 @@ app.get('/modForm', function (req, response) {
     response.end(head+"<h1 align:center>Waiver Form For "+firName+" "+lasName+" Was Deleted</h1>"+foot1);
   }
    }
-   if(rad=="registration")
+   if(rad=="permission")
     {
-
-        if (fs.existsSync('./uploads/registration/'+"permission-"+name))
+      
+        if (fs.existsSync('./uploads/permissions/'+"permission-"+name))
         {
-        fs.unlinkSync('./uploads/registration/'+"permission-"+name);
-        response.end(head+"<h1 align:center>Registration Form For "+firName+" "+lasName+" Was Deleted</h1>"+foot1);
+        fs.unlinkSync('./uploads/permissions/'+"permission-"+name);
+        response.end(head+"<h1 align:center>Permission Form For "+firName+" "+lasName+" Was Deleted</h1>"+foot1);
         }
    }
-   connection.query('SELECT * FROM adult_accounts WHERE email = ? AND lastname = ?',  [email,lasName])
-   .then(rows => {
-                var parent = rows;
-                request.session.PID = parent[0].PID;
-                return connection.query('SELECT * FROM student_accounts WHERE PID = ? AND firstname', [request.session.PID, firName])
-              })
-              .then(rows => {
-                if(rows.length > 0){
-                  var student = rows;
-                  var studentID = [];
-                  var studentName = [];
-                  for(i = 0; i < student.length; i++){
-                  studentID[i] = student[i].SID;
-                  studentName[i] = student[i].firstname;
-                  }
-                  request.session.studentID = studentID;
-                  return connection.query('UPDATE registration_forms SET registration=0 WHERE SID=? ', [request.session.studentID]);
+   var sid;
+   var pid;          
 
-                }else{return;}
-              })
-  }
+  //  connection.query('SELECT * FROM registration_forms', (err,rows) => {
+  //   if(err) throw err;
+  
+  //   console.log('Data received from Db:\n');
+  //   console.log(rows);
+  // });
+    connection.query('SELECT * FROM student_accounts WHERE firstname LIKE \''+firName+'%\' AND lastname LIKE\''+lasName+'%\'')
+   .then(rows => {
+   // console.log(rows);
+   sid=rows[0].SID;
+   pid=rows[0].PID;
+   console.log(sid);
+   console.log(pid);
+   if(rad=="waiver")
+   return connection.query('UPDATE registration_forms SET waiver_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]); 
+   if(rad=="permission")
+   return connection.query('UPDATE registration_forms SET permission_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]); 
+
+  })
+  .catch( err => {
+    console.log(err);
+   response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+  });
+  console.log(req.session.SID);
+
+}
 });
 //check out method
 app.get('/checkout', function(request, response) {
@@ -730,14 +776,12 @@ app.get('/checkout', function(request, response) {
    });
 
    request.session.checkedOut = true;
-   app.use(express.static('./views/Pictures'));
    response.render('index', {
      acctype: request.session.acctype,
      checkedIn: true,
      checkedOut: request.session.checkedOut,
      sessionD: request.session,
-     times: request.session.times,
-     announcements: load_announcements()
+     times: request.session.times
    });
 
   }
