@@ -49,18 +49,29 @@ router.get('/test', function (req, res) {
   res.download(file); // Set disposition and send it.
 });
 
-var storage = multer.diskStorage({
+var waiverstorage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads');
+      cb(null, 'uploads/waivers');
     },
     filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + req.session.selected + '_' + req.session.studentlastname);
     }
   })
 
-  var upload = multer({ storage: storage })
+  var uploadwaiver = multer({ storage: waiverstorage })
 
-  router.post('/uploadpermission', upload.single('permission'), (req, res, next) => {
+  var permissionstorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/permission');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + req.session.selected + '_' + req.session.studentlastname);
+    }
+  })
+
+  var uploadpermission = multer({ storage: permissionstorage })
+
+  router.post('/uploadpermission', uploadpermission.single('permission'), (req, res, next) => {
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
@@ -88,7 +99,7 @@ var storage = multer.diskStorage({
     });
   })
 
-  router.post('/uploadwaiver', upload.single('waiver'), (req, res, next) => {
+  router.post('/uploadwaiver', uploadwaiver.single('waiver'), (req, res, next) => {
     console.log(req.session);
     const file = req.file
     if (!file) {

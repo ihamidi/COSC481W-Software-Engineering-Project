@@ -342,12 +342,13 @@ app.post('/forminfo', function(request, response) {
  var selectedstudent = request.body.selectedstudent;
  request.session.selected = selectedstudent;
  console.log(request.session.PID)
- connection.query('SELECT SID FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
+ connection.query('SELECT * FROM student_accounts WHERE PID = ? AND firstname = ?', [request.session.PID, request.session.selected])
        .then(rows => {
            if(rows != undefined && rows.length > 0){
-            studentID = rows[0].SID;
-            request.session.studentID = studentID;
-            return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [studentID]);
+            student = rows[0];
+            request.session.studentID = student.SID;
+            request.session.studentlastname = student.lastname;
+            return connection.query('SELECT * FROM registration_forms WHERE SID = ?', [request.session.studentID]);
            }
        })
        .then(rows => {
