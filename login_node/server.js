@@ -114,7 +114,9 @@ app.get('/signup', function (request, response) {
 app.get('/announcements', function (request, response) {
   app.use(express.static('./views/public_javascript/announcements'));
   if (request.session.loggedin && request.session.acctype=="Admin") {
-    response.sendFile(path.join(__dirname + '/views/announcements.html'));
+    response.render('announcements', {
+    photos: load_photos()
+  });
   }
 });
 
