@@ -240,11 +240,15 @@ app.post('/studentreg', function (request, response) {
      return connection.close();
     })
     .catch( err => {
-      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      response.render('error', {
+        error: err
+      })
     });
   }
   else {
-    response.send('HIT BACK, TRY AGAIN ERROR IN signup ');
+    response.render('error', {
+      error: "Error in Signup, please try again"
+    })
   }
     });
 
@@ -337,7 +341,9 @@ app.post('/auth', function(request, response) {
        });
        })
        .catch( err => {
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -393,8 +399,9 @@ app.post('/forminfo', function(request, response) {
        });
        })
        .catch( err => {
-         console.log(err);
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -776,8 +783,9 @@ app.get('/modForm', function (req, response) {
    return connection.query('UPDATE registration_forms SET permission_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]);
   })
   .catch( err => {
-    console.log(err);
-   response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+    response.render('error', {
+      error: err
+    })
   });
   console.log(req.session.SID);
 
