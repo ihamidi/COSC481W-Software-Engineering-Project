@@ -96,6 +96,7 @@ router.get('/ModifyStudent',function (req,res) {
                  last_name[i]=rows[i].lastname;
                  full_name[i]=first_name[i]+" "+last_name[i]
              }
+             req.session.fullname = full_name;
           }
          else{
            return;
@@ -107,6 +108,7 @@ router.get('/ModifyStudent',function (req,res) {
              for (i = 0; i < rows.length; i++) {
                fields[i]=rows[i].Field;
              }
+             req.session.fields = fields
           }
          else{
            return;
@@ -115,8 +117,8 @@ router.get('/ModifyStudent',function (req,res) {
         .then(() => {
           res.render(path.join(__dirname + '/views/AdminModifyStudent'), {
             acctype: req.session.acctype,
-            full_name: full_name,
-            fields: fields
+            full_name: req.session.fullname,
+            fields: req.session.fields = fields
           });
 
         })
@@ -125,16 +127,17 @@ router.get('/ModifyStudent',function (req,res) {
 });
 
 
-router.get('/ChosenStudent',function (req,res) {
-  var selectedStudent=request.session.studenttomodify;
-  var selectedField=request.session.fieldname;
-  var fieldvalue=request.session.fieldname.valuetoupdate;
+router.post('/ChosenStudent',function (request,res) {
+  var selectedStudent=request.body.studenttomodify;
+  console.log(selectedStudent);
+  var fieldvalue=request.body.valuetoupdate;
+  console.log(fieldvalue);
   var studentname=selectedStudent.split(" ");
   var studentfirst = studentname[0];
   connection.query('SELECT * FROM student_accounts WHERE firstname=?', [studentfirst])
         .then(rows => {
           if(rows != undefined){
-            var StudentID=rows[0].SID;
+            request.session.selectedStudentID=rows[0].SID;
           }
          else{
            return;
@@ -142,34 +145,31 @@ router.get('/ChosenStudent',function (req,res) {
           return connection.query('SHOW COLUMNS FROM student_accounts')
         })
         .then(rows => {
+          var editFielt = fieldvalue[0];
+          var newValue = fieldvalue[1];
           if(rows != undefined){
-            if(fieldvalue=="SID")
+            if(editFielt=="SID")
             {
-              var studentID=fieldvalue;
-              return connection.query('UPDATE student_accounts SET SID=? WHERE SID=? ')
+              return connection.query('UPDATE student_accounts SET SID=? WHERE SID=?', [newValue, request.session.selectedStudentID])
             }
-            else if(fieldvalue=="firstname")
+            else if(editFielt=="firstname")
             {
-              var firtname=fieldvalue;
-              return connection.query('UPDATE student_accounts SET firstname=? WHERE SID=? ')
+              return connection.query('UPDATE student_accounts SET firstname=? WHERE SID=? ', [newValue, request.session.selectedStudentID])
 
             }
-            else if(fieldvalue=="lastname")
+            else if(editFielt=="lastname")
             {
-              var lastname=fieldvalue;
-              return connection.query('UPDATE student_accounts SET lastname=? WHERE SID=?"')
+              return connection.query('UPDATE student_accounts SET lastname=? WHERE SID=?', [newValue, request.session.selectedStudentID])
 
             }
-            else if(fieldvalue=="email")
+            else if(editFielt=="email")
             {
-              var email=fieldvalue;
-              return connection.query('UPDATE student_accounts SET email=? WHERE SID=? ')
+              return connection.query('UPDATE student_accounts SET email=? WHERE SID=? ', [newValue, request.session.selectedStudentID])
 
             }
-            else if(fieldvalue=="grade")
+            else if(editFielt=="grade")
             {
-              var grade=fieldvalue;
-              return connection.query('UPDATE student_accounts SET GRADE=? WHERE SID=? ')
+              return connection.query('UPDATE student_accounts SET GRADE=? WHERE SID=? ', [newValue, request.session.selectedStudentID])
 
             }
           }
@@ -177,61 +177,48 @@ router.get('/ChosenStudent',function (req,res) {
            return;
          }
         })
-//         .then(() => {
-//           res.render(path.join(__dirname + '/views/AdminModifyStudent'), {
-//             acctype: req.session.acctype,
-//             full_name: full_name,
-//             fields: fields
-//           });
-//
-//         })
-//   // res.redirect('/');
-//
+        .then(() => {
+          res.render(path.join(__dirname + '/views/AdminModifyStudent'), {
+            acctype: request.session.acctype,
+            full_name: request.session.fullname,
+            fields: request.session.fields
+          });
+
+        })
+        .catch(err =>{
+          res.render('error', {
+            error: err
+          })
+        })
 });
 
+router.post('/deletestudent',function (request,res) {
+  var selectedStudent=request.body.studenttomodify;
+  var studentname=selectedStudent.split(" ");
+  var studentfirst = studentname[0];
+  connection.query('SELECT * FROM student_accounts WHERE firstname=?', [studentfirst])
+        .then(rows => {
+          if(rows != undefined){
+            request.session.selectedStudentID=rows[0].SID;
+          }
+         else{
+           return;
+         }
+          return connection.query('DELETE FROM student_accounts WHERE SID = ?', [request.session.selectedStudentID]);
+        })
+        .then(() => {
+          res.render(path.join(__dirname + '/views/AdminModifyStudent'), {
+            acctype: request.session.acctype,
+            full_name: request.session.fullname,
+            fields: request.session.fields
+          });
 
-
-
-
-// router.get('/SendParentMail',function (req,res) {
-//   ParentSend();
-//   res.redirect('/');
-//   // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
-// });
-// router.get('/SendStudentMail',function (req,res) {
-//   StudentSend();
-//   res.redirect('/');
-//   // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
-// });
-// router.get('/SendAllMail',function (req,res) {
-//   AllSend();
-//   res.redirect('/');
-//   // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
-// });
-// router.post('/SendIndividualMail',function (req,res) {
-//
-//   let promise = new Promise(function(resolve, reject) {
-//     mail_person=req.body.personmail;
-//     console.log(mail_person)
-//     setTimeout(() => resolve("done"), 3000);
-//   });
-//   promise.then(result => IndividualSend());
-//
-//   res.redirect('/');
-//   // res.render(path.join(__dirname + '/views/AdminEmailConfig'));
-// });
-
-
-
-
-
-// var connection = mysql.createConnection({
-//   host     : '34.66.160.101',
-// 	user     : 'root',
-// 	password : 'fiveguys',
-// 	database : 'swing_demo' //change to BitsAndBytes when testing using current schema
-// });
-
-
+        })
+        .catch(err =>{
+          res.render('error', {
+            error: err
+          })
+        })
+  });
 
   module.exports = router;
