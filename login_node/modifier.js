@@ -189,10 +189,8 @@ router.post('/deletestudent',function (request,res) {
           return connection.query('DELETE FROM student_accounts WHERE SID = ?', [request.session.selectedStudentID]);
         })
         .then(() => {
-          res.render(path.join(__dirname + '/views/AdminModifyStudent'), {
-            acctype: request.session.acctype,
-            full_name: request.session.fullname,
-            fields: request.session.fields
+          res.render(path.join(__dirname + '/views/modified'), {
+            acctype: request.session.acctype
           });
         })
         .catch(err =>{
