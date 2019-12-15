@@ -47,7 +47,13 @@ body.bits-body
 							input#name.form-control(type='text', placeholder='Enter New Value' name='valuetoupdate')
 
 							button.btn.btn-default(type='submit') Modify
+							
+						form(action='deletestudent' method='POST')
+							select(name="studenttodelete" placeholder="Select.." class="form-control" width="200%")
+								each val in full_name
+									option(value=val) #{val}
 
+							button.btn.btn-default(type='submit') Delete Account
 					.col-sm
 						div.bits-div
 

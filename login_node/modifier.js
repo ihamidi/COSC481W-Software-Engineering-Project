@@ -65,24 +65,6 @@ const connection = new Database(config);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-
-
-
-// router.post('/ModifyStudent', function (req,res){
-//   let promise = new Promise(function(resolve, reject) {
-//       content=req.body.emailcontent
-//       subject=req.body.subject
-//       // console.log(req.body.emailcontent)
-//     setTimeout(() => resolve("done"), 3000);
-//   });
-//   promise.then(result => res.redirect('/Mail'));
-// });
-
-
-
-
 router.get('/ModifyStudent',function (req,res) {
   var first_name=[];
   var last_name=[];
@@ -193,7 +175,7 @@ router.post('/ChosenStudent',function (request,res) {
 });
 
 router.post('/deletestudent',function (request,res) {
-  var selectedStudent=request.body.studenttomodify;
+  var selectedStudent=request.body.studenttodelete;
   var studentname=selectedStudent.split(" ");
   var studentfirst = studentname[0];
   connection.query('SELECT * FROM student_accounts WHERE firstname=?', [studentfirst])
@@ -212,7 +194,6 @@ router.post('/deletestudent',function (request,res) {
             full_name: request.session.fullname,
             fields: request.session.fields
           });
-
         })
         .catch(err =>{
           res.render('error', {
