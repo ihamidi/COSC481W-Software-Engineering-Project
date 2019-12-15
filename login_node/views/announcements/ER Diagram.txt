@@ -1,0 +1,2 @@
+<h2 class="bits-text">ER Diagram</h2><small class="bits-text">12/15/2019 - 5:32 PM</small><br><p class="bits-text">Please study this before the camp starts.<br>
+<img src="picture5.jpg"></p>
