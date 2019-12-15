@@ -125,6 +125,73 @@ router.get('/ModifyStudent',function (req,res) {
 });
 
 
+router.get('/ChosenStudent',function (req,res) {
+  var selectedStudent=request.session.studenttomodify;
+  var selectedField=request.session.fieldname;
+  var fieldvalue=request.session.fieldname.valuetoupdate;
+  var studentname=selectedStudent.split(" ");
+  var studentfirst = studentname[0];
+  connection.query('SELECT * FROM student_accounts WHERE firstname=?'[studentfirst])
+        .then(rows => {
+          if(rows != undefined){
+            var StudentID=rows[0].SID;
+          }
+         else{
+           return;
+         }
+          return connection.query('SHOW COLUMNS FROM student_accounts')
+        })
+        .then(rows => {
+          if(rows != undefined){
+            if(fieldvalue=="SID")
+            {
+              var studentID=fieldvalue;
+              return connection.query('UPDATE student_accounts SET SID=? WHERE SID=? ')
+            }
+            else if(fieldvalue=="firstname")
+            {
+              var firtname=fieldvalue;
+              return connection.query('UPDATE student_accounts SET firstname=? WHERE SID=? ')
+
+            }
+            else if(fieldvalue=="lastname")
+            {
+              var lastname=fieldvalue;
+              return connection.query('UPDATE student_accounts SET lastname=? WHERE SID=?"')
+
+            }
+            else if(fieldvalue=="email")
+            {
+              var email=fieldvalue;
+              return connection.query('UPDATE student_accounts SET email=? WHERE SID=? ')
+
+            }
+            else if(fieldvalue=="grade")
+            {
+              var grade=fieldvalue;
+              return connection.query('UPDATE student_accounts SET GRADE=? WHERE SID=? ')
+
+            }
+          }
+         else{
+           return;
+         }
+        })
+//         .then(() => {
+//           res.render(path.join(__dirname + '/views/AdminModifyStudent'), {
+//             acctype: req.session.acctype,
+//             full_name: full_name,
+//             fields: fields
+//           });
+//
+//         })
+//   // res.redirect('/');
+//
+});
+
+
+
+
 
 // router.get('/SendParentMail',function (req,res) {
 //   ParentSend();
@@ -167,4 +234,4 @@ router.get('/ModifyStudent',function (req,res) {
 
 
 
-  module.exports = router
+  module.exports = router;
