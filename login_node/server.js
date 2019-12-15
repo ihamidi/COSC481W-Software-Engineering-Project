@@ -699,9 +699,7 @@ app.get('/modForm', function (req, response) {
   
     var dir;
    var fullName= req.query.name;
- //  var email= req.query.email.trim().toLowerCase();
    var rad= req.query.type.toLowerCase();
- //  console.log(email);
    console.log(rad);
 
    var string = fullName.split(" "); 
@@ -731,16 +729,8 @@ app.get('/modForm', function (req, response) {
    }
    var sid;
    var pid;          
-
-  //  connection.query('SELECT * FROM registration_forms', (err,rows) => {
-  //   if(err) throw err;
-  
-  //   console.log('Data received from Db:\n');
-  //   console.log(rows);
-  // });
     connection.query('SELECT * FROM student_accounts WHERE firstname LIKE \''+firName+'%\' AND lastname LIKE\''+lasName+'%\'')
    .then(rows => {
-   // console.log(rows);
    sid=rows[0].SID;
    pid=rows[0].PID;
    console.log(sid);
@@ -749,7 +739,6 @@ app.get('/modForm', function (req, response) {
    return connection.query('UPDATE registration_forms SET waiver_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]); 
    if(rad=="permission")
    return connection.query('UPDATE registration_forms SET permission_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]); 
-
   })
   .catch( err => {
     console.log(err);
