@@ -50,12 +50,21 @@ html
     #announcementBox
     br
     br
+    #currentAnnouncements.container.bits-primary.bits-border-rounded(style='width:80%')
+    br
+    br
+    
+    .container.bits-primary.bits-border-rounded(style='width:80%')
+      each photo in photos
+        hr
+        p.bits-text "&lt;img src=!{photo}&gt;"
+        img(src=photo)
+        br
     //
       <form action="/action_page.php">
       <input type="submit" value="Submit">
       </form>
       <input type="file" id="myFile">
-    #currentAnnouncements.container.bits-primary.bits-border-rounded
     script(src='newAnnouncement.js')
     script(src='fileUploadButton.js')
     // These are bootstrap scripts that should be left at the bottom of the page.
