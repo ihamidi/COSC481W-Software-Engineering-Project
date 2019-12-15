@@ -164,7 +164,8 @@ app.get('/photos', function (request, response) {
         app.use(express.static('./views/css'));
         app.use(express.static('./views/Pictures/'));
         response.render(path.join(__dirname + '/views/picturespage'), {
-          acctype: request.session.acctype
+          acctype: request.session.acctype,
+          photos: load_photos()
         });
     }
 });
