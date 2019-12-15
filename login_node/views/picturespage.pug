@@ -36,23 +36,9 @@ html
 		form(action='/uploadPicture', enctype='multipart/form-data', method='POST')
 			input(type='file', name='picture')
 			input(type='submit', value='Upload a file')
+		each photo in photos
+			img(src=photo width='304' height='228' hspace='20' vspace='20')
 
-		script.
-			var pictures=document.getElementById(picnumber);
-			var pic="picture";
-			function displayGallery() {
-				for(var v=1;v<=2;v++){
-					var x = document.createElement("IMG");
-					var dPrint=document.createElement("p");
-					console.log(pictures);
-					x.setAttribute("src", pic+v+".jpg");
-					x.setAttribute("width", "304");
-					x.setAttribute("height", "228");
-					x.setAttribute("hspace", "20");
-					x.setAttribute("vspace", "20");
-					document.body.appendChild(x);
-				}
-			}
 		script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
 		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')

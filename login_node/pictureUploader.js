@@ -8,6 +8,7 @@ const multer  = require('multer');
 const router = express.Router();
 const fs = require('fs');
 
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, __dirname+'/views/Pictures')
