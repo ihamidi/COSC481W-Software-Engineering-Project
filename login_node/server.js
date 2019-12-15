@@ -92,12 +92,14 @@ app.get('/', function(request, response){
    }
   else {
     app.use(express.static('./views/css'));
+    app.use(express.static('./views/Pictures/'));
     response.render('index', {
       acctype: request.session.acctype,
       checkedIn: request.session.checkedIn,
       checkedOut: request.session.checkedOut,
       times: request.session.times,
-      sessionD: request.session
+      sessionD: request.session,
+      announcements: load_announcements()
     });
   }
 });
@@ -318,6 +320,7 @@ app.post('/auth', function(request, response) {
        })
        .then(() => {
          console.log(request.session.studentName)
+         app.use(express.static('./views/Pictures/'));
          response.render('index', {
          acctype: request.session.acctype,
          times: request.session.times,
@@ -458,6 +461,7 @@ app.post('/studentauth', function(request, response) {
         })
         .then(() => {
           console.log(request.session);
+          app.use(express.static('./views/Pictures/'));
           response.render('index', {
             acctype: request.session.acctype,
             checkedIn: request.session.checkedIn,
@@ -490,6 +494,7 @@ app.post('/adminauth', function(request, response) {
        })
        .then(() => {
          console.log(request.session);
+         app.use(express.static('./views/Pictures/'));
          response.render('index', {
          acctype: request.session.acctype,
          sessionD: request.session,
@@ -698,13 +703,13 @@ app.get('/checkin', function(request, response) {
 
 app.get('/modForm', function (req, response) {
   if (req.session.loggedin && req.session.acctype=="Admin") {
-  
+
     var dir;
    var fullName= req.query.name;
    var rad= req.query.type.toLowerCase();
    console.log(rad);
 
-   var string = fullName.split(" "); 
+   var string = fullName.split(" ");
 
    var firName=string[0].trim().toLowerCase();
    var lasName=string[1].trim().toLowerCase();
@@ -722,7 +727,7 @@ app.get('/modForm', function (req, response) {
    }
    if(rad=="permission")
     {
-      
+
         if (fs.existsSync('./uploads/permissions/'+"permission-"+name))
         {
         fs.unlinkSync('./uploads/permissions/'+"permission-"+name);
@@ -730,7 +735,7 @@ app.get('/modForm', function (req, response) {
         }
    }
    var sid;
-   var pid;          
+   var pid;
     connection.query('SELECT * FROM student_accounts WHERE firstname LIKE \''+firName+'%\' AND lastname LIKE\''+lasName+'%\'')
    .then(rows => {
    sid=rows[0].SID;
@@ -738,9 +743,9 @@ app.get('/modForm', function (req, response) {
    console.log(sid);
    console.log(pid);
    if(rad=="waiver")
-   return connection.query('UPDATE registration_forms SET waiver_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]); 
+   return connection.query('UPDATE registration_forms SET waiver_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]);
    if(rad=="permission")
-   return connection.query('UPDATE registration_forms SET permission_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]); 
+   return connection.query('UPDATE registration_forms SET permission_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]);
   })
   .catch( err => {
     console.log(err);

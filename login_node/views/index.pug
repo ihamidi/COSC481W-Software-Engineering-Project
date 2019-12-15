@@ -82,10 +82,11 @@ body.bits-body
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
 
 				#menu3.tab-pane.fade.in.active
-					h2.bits-text Announcements
+					h2.bits-text View the Latest Announcements
 					div
-						div(style='align: center')
+						div.text-left.bits-announcements
 							each announcement in announcements
+								hr
 								div !{announcement}
 
 				#menu4.tab-pane.fade
@@ -176,10 +177,11 @@ body.bits-body
 
 						div
 				#menu4.tab-pane.fade
-					h2.bits-text Announcements
+					h2.bits-text View the Latest Announcements
 					div
-						div(style='align: center')
+						div.text-left.bits-announcements
 							each announcement in announcements
+								hr
 								div !{announcement}
 
 		else if acctype === 'Admin'
