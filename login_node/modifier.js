@@ -131,7 +131,7 @@ router.get('/ChosenStudent',function (req,res) {
   var fieldvalue=request.session.fieldname.valuetoupdate;
   var studentname=selectedStudent.split(" ");
   var studentfirst = studentname[0];
-  connection.query('SELECT * FROM student_accounts WHERE firstname=?'[studentfirst])
+  connection.query('SELECT * FROM student_accounts WHERE firstname=?', [studentfirst])
         .then(rows => {
           if(rows != undefined){
             var StudentID=rows[0].SID;
