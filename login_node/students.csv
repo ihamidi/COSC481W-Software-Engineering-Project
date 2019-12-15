@@ -1,0 +1,40 @@
+SID,PID,firstname,lastname,username,password,email,school,grade,acctype
+1,,aa,aa,aa,aa,aa,aa,6,Student
+2,,bb,bb,bb,bb,bb,bb,7,Student
+3,,Izhak,Hamidi,regula,WOOPWOOP,shmegula,emu academy,6,Student
+4,5,THISbetter,WORK,AA,AA,AA,AA,6,Student
+5,5,weewoo,weeowwo,woooooo,woooo,woooo,wooo,6,Student
+6,4,kid,kid,kid,kid,kid,kid,6,Student
+7,4,anoter,kid,another,another,another,another,6,Student
+8,,My,Student,my,student,adslfkja,asdlkfja,6,Student
+9,,My,Student,my,student,adslfkja,asdlkfja,6,Student
+10,,My,Student,my,a,my,aldsf,6,Student
+11,,My,Student,my,a,my,aldsf,6,Student
+12,6,Test,Student,stud,a,asdflja,asdkfla,6,Student
+13,7,New,Student,new,new,dfalkjd,sdfls,6,Student
+14,7,Another,Student,another,another,adsfas,asdflka,6,Student
+15,7,Another,Student,another,another,adsfas,asdflka,6,Student
+16,,testa,asdsa,meme,meme,aa,aa,6,Student
+17,,testa,asdsa,meme,meme,aa,aa,6,Student
+18,,testa,asdsa,meme,meme,aa,aa,6,Student
+19,,testarossae,asdsa,DDDD,DDDD,aaASDSADDDDD,aaASD,7,Student
+20,,testarossae,asdsa,DDDD,DDDD,aaASDSADDDDD,aaASD,7,Student
+21,,aaa,aaa,aaa,aaa,aaa,aaa,6,Student
+22,,aa,aa,aa,aa,aa,aa,6,Student
+23,,aa,aa,aa,aa,aa,aa,6,Student
+24,,aa,aa,aa,aa,aa,aa,6,Student
+25,,1,1,1,1,1,1,6,Student
+26,7,aa,aa,aa,aa,aa,aa,6,Student
+27,7,aa,aa,aa,aa,aa,aa,6,Student
+28,7,-p,p,p,pp,p,p,6,Student
+29,7,aa,aa,ddd,afsdfa,afdsa,asdfasdf,6,Student
+30,7,hella,children,dude,please,woah,please,6,Student
+31,4,aaaa,aaaaaaaaa,a,"        ""rptpassword"": request.body.rptpassword,",a@gmail.com,a,6,Student
+32,8,Teddy,Teddy,teddy,12345678,something@gmail.com,sdflkjasdf,6,Student
+33,9,ahmed,madry,amadry,12345678,amadry@gmail.com,emu,6,Student
+34,4,kid2,hatem,kid2,password,kid2@gmail.com,Washtenaw Technical,6,Student
+35,4,Some,Student,idk,12345678,something@gmail.com,School,6,Student
+38,4,Peter,Smith,user,12345678,idk@gmail.com,skol,6,Student
+39,4,Last,One,name,12345678,name@gmail.com,skol,6,Student
+40,4,Please,Work,work,12345678,email@gmail.com,skol,6,Student
+41,4,Student,Sign,idc,12345678,anymore@gmail.com,skol,6,Student

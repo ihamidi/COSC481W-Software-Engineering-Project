@@ -8,6 +8,7 @@ const registration = require('./studentManagement.js');
 const picUploader = require ('./pictureUploader.js');
 const mailer = require ('./mailer.js');
 const modifier = require ('./modifier.js');
+const csv = require ('./studentcsv.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
 var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes</title>'
@@ -781,6 +782,10 @@ app.use(registration);
 app.use('/registration', registration);
 app.use('/test', registration);
 app.use('/uploadfile', registration);
+
+//CSV route
+app.use(csv);
+app.use('/studentcsv', csv);
 
 //Picture Uploader that hopefull works?
 app.use(picUploader);
