@@ -32,10 +32,11 @@ html
 								|  Log Out
 		p#picnumber(hidden='' value='#{picnumber}')
 		h2.container Pictures
-		form#Picturesdemo.container
-		form(action='/uploadPicture', enctype='multipart/form-data', method='POST')
-			input(type='file', name='picture')
-			input(type='submit', value='Upload a file')
+		if acctype == 'Admin'
+			form#Picturesdemo.container
+			form(action='/uploadPicture', enctype='multipart/form-data', method='POST')
+				input(type='file', name='picture')
+				input(type='submit', value='Upload a file')
 		each photo in photos
 			img(src=photo width='304' height='228' hspace='20' vspace='20')
 
