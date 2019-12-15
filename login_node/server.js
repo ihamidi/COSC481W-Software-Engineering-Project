@@ -163,7 +163,9 @@ app.get('/photos', function (request, response) {
     if (request.session.loggedin && request.session.acctype) {
         app.use(express.static('./views/css'));
         app.use(express.static('./views/Pictures/'));
-        response.render(path.join(__dirname + '/views/picturespage'));
+        response.render(path.join(__dirname + '/views/picturespage'), {
+          acctype: request.session.acctype
+        });
     }
 });
 
@@ -648,6 +650,29 @@ function load_announcements(){
     }
   });
   return announcements;
+};
+
+function load_photos(){
+  var dir = path.join(__dirname + '/views/Pictures/');
+  var pictures = [];
+
+  var files = fs.readdirSync(dir)
+              .map(function(v) {
+                  return { name:v,
+                           time:fs.statSync(dir + v).mtime.getTime()
+                         };
+               })
+               .sort(function(a, b) { return b.time - a.time; })
+               .map(function(v) { return v.name; });
+
+  console.log(files);
+
+  files.forEach(file => {
+    if(path.extname(dir + file)==".jpg"){
+      pictures.push(file);
+    }
+  });
+  return pictures;
 };
 
 // createsurvey method when admin submits survey

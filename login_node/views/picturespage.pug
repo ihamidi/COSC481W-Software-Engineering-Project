@@ -1,12 +1,35 @@
 doctype html
 html
 	head
-		meta(charset='utf-8')
-		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-		title Pictures
-		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm', crossorigin='anonymous')
-		link(rel='stylesheet', href='announcements.css')
-	body(onload='displayGallery()')
+		title BitsAndBytes - Pictures
+		link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+		link(rel='stylesheet' type='text/css' href='sitewide.css')
+	
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+	body(onload='displayGallery()').bits-body
+		nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle.bits-navbar-collapse(type="button" data-toggle="collapse" data-target="#myNavbar")
+						span.icon-bar.bits-navbar-collapse-span
+						span.icon-bar.bits-navbar-collapse-span
+						span.icon-bar.bits-navbar-collapse-span
+					a.navbar-brand.bits-text(href="#") BitsAndBytes
+				#myNavbar.collapse.navbar-collapse
+					ul.nav.navbar-nav
+						li
+							a.bits-text(href="/") Home
+						if acctype === 'Admin'
+							li
+								a.bits-text(href="createsurvey") Create Survey
+							li
+								a.bits-text(href="photos") Photos
+					ul.nav.navbar-nav.navbar-right
+						li
+							a.bits-text(href='/logout')
+								span.glyphicon.glyphicon-log-out
+								|  Log Out
 		p#picnumber(hidden='' value='#{picnumber}')
 		h2.container Pictures
 		form#Picturesdemo.container
