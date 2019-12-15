@@ -1,0 +1,73 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Bits and Bytes
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='sitewide.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+  body.bits-body
+    nav.navbar.navbar-inverse.navbar-fluid.bits-border-rounded
+      .container-fluid.bits-navbar
+        .navbar-header
+          button.navbar-toggle.bits-navbar-collapse(type='button', data-toggle='collapse', data-target='#myNavbar')
+            span.icon-bar.bits-navbar-collapse-span
+            span.icon-bar.bits-navbar-collapse-span
+            span.icon-bar.bits-navbar-collapse-span
+          a.navbar-brand.bits-text(href='/') BitsAndBytes
+        #myNavbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a.bits-text(href='/') Home
+            li
+              a.bits-text(href='createsurvey') Create Survey
+            li
+              a.bits-text(href='') Contact
+          ul.nav.navbar-nav.navbar-right
+            li
+              a.bits-text(href='/logout')
+                span.glyphicon.glyphicon-log-out
+                |  Log Out
+    form#newAnnouncement.container.bits-primary.bits-border-rounded(style='width:80%', onsubmit='return createAnnouncement()', action='createannouncement', method='post')
+      h2.bits-text Create Announcement
+      .form-group
+        label.bits-text(for='title') Title
+        input#title.form-control(name='title', type='text', placeholder='Enter Title')
+      .form-group
+        label.bits-text(for='content') Announcement
+        textarea#content.form-control(placeholder='Enter Announcement', style='height: 200px')
+      .form-group
+        //
+          <label for="myFile">Upload Photo</label>
+          <input type="file" class="form-control-file" id="myFile">
+      button.btn.btn-secondary(type='button', onclick='createAnnouncement()') Preview
+      button.btn.btn-primary(type='submit') Submit
+      br
+      br
+      input#hiddenAnnouncementInput(type='hidden', name='finishedAnnouncement', value='null')
+    #announcementBox
+    br
+    br
+    #currentAnnouncements.container.bits-primary.bits-border-rounded(style='width:80%')
+    br
+    br
+    
+    .container.bits-primary.bits-border-rounded(style='width:80%')
+      each photo in photos
+        hr
+        p.bits-text "&lt;img src=!{photo}&gt;"
+        img(src=photo)
+        br
+    //
+      <form action="/action_page.php">
+      <input type="submit" value="Submit">
+      </form>
+      <input type="file" id="myFile">
+    script(src='newAnnouncement.js')
+    script(src='fileUploadButton.js')
+    // These are bootstrap scripts that should be left at the bottom of the page.
+    script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')

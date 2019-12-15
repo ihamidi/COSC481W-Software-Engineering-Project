@@ -1,35 +1,44 @@
 doctype html
 html
 	head
-		meta(charset='utf-8')
-		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-		title Pictures
-		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm', crossorigin='anonymous')
-		link(rel='stylesheet', href='announcements.css')
-	body(onload='displayGallery()')
+		title BitsAndBytes - Pictures
+		link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+		link(rel='stylesheet' type='text/css' href='sitewide.css')
+	
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+	body(onload='displayGallery()').bits-body
+		nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle.bits-navbar-collapse(type="button" data-toggle="collapse" data-target="#myNavbar")
+						span.icon-bar.bits-navbar-collapse-span
+						span.icon-bar.bits-navbar-collapse-span
+						span.icon-bar.bits-navbar-collapse-span
+					a.navbar-brand.bits-text(href="#") BitsAndBytes
+				#myNavbar.collapse.navbar-collapse
+					ul.nav.navbar-nav
+						li
+							a.bits-text(href="/") Home
+						if acctype === 'Admin'
+							li
+								a.bits-text(href="createsurvey") Create Survey
+							li
+								a.bits-text(href="photos") Photos
+					ul.nav.navbar-nav.navbar-right
+						li
+							a.bits-text(href='/logout')
+								span.glyphicon.glyphicon-log-out
+								|  Log Out
 		p#picnumber(hidden='' value='#{picnumber}')
 		h2.container Pictures
 		form#Picturesdemo.container
 		form(action='/uploadPicture', enctype='multipart/form-data', method='POST')
 			input(type='file', name='picture')
 			input(type='submit', value='Upload a file')
+		each photo in photos
+			img(src=photo width='304' height='228' hspace='20' vspace='20')
 
-		script.
-			var pictures=document.getElementById(picnumber);
-			var pic="picture";
-			function displayGallery() {
-				for(var v=1;v<=2;v++){
-					var x = document.createElement("IMG");
-					var dPrint=document.createElement("p");
-					console.log(pictures);
-					x.setAttribute("src", pic+v+".jpg");
-					x.setAttribute("width", "304");
-					x.setAttribute("height", "228");
-					x.setAttribute("hspace", "20");
-					x.setAttribute("vspace", "20");
-					document.body.appendChild(x);
-				}
-			}
 		script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
 		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')
