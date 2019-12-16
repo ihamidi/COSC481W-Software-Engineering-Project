@@ -110,21 +110,21 @@ router.post('/chosenparent',function (request,res) {
           if(rows != undefined){
             if(editFielt=="PID")
             {
-              return connection.query('UPDATE student_accounts SET SID=? WHERE SID=?', [newValue, request.session.selectedParentID])
+              return connection.query('UPDATE adult_accounts SET PID=? WHERE PID=?', [newValue, request.session.selectedParentID])
             }
             else if(editFielt=="firstname")
             {
-              return connection.query('UPDATE student_accounts SET firstname=? WHERE SID=? ', [newValue, request.session.selectedParentID])
+              return connection.query('UPDATE adult_accounts SET firstname=? WHERE PID=? ', [newValue, request.session.selectedParentID])
 
             }
             else if(editFielt=="lastname")
             {
-              return connection.query('UPDATE student_accounts SET lastname=? WHERE SID=?', [newValue, request.session.selectedParentID])
+              return connection.query('UPDATE adult_accounts SET lastname=? WHERE PID=?', [newValue, request.session.selectedParentID])
 
             }
             else if(editFielt=="email")
             {
-              return connection.query('UPDATE student_accounts SET email=? WHERE SID=? ', [newValue, request.session.selectedParentID])
+              return connection.query('UPDATE adult_accounts SET email=? WHERE PID=? ', [newValue, request.session.selectedParentID])
 
             }
           }
@@ -143,20 +143,20 @@ router.post('/chosenparent',function (request,res) {
             })
           })
         })
-        
+
 router.post('/deleteparent',function (request,res) {
-  var selectedStudent=request.body.studenttodelete;
-  var studentname=selectedStudent.split(" ");
-  var studentfirst = studentname[0];
-  connection.query('SELECT * FROM student_accounts WHERE firstname=?', [studentfirst])
+  var selectedParent=request.body.parenttodelete;
+  var parentname=selectedParent.split(" ");
+  var parentfirst = parentname[0];
+  connection.query('SELECT * FROM adult_accounts WHERE firstname=?', [parentfirst])
         .then(rows => {
           if(rows != undefined){
-            request.session.selectedStudentID=rows[0].SID;
+            request.session.selectedParentID=rows[0].PID;
           }
          else{
            return;
          }
-          return connection.query('DELETE FROM student_accounts WHERE SID = ?', [request.session.selectedStudentID]);
+          return connection.query('DELETE FROM adult_accounts WHERE PID = ?', [request.session.selectedParentID]);
         })
         .then(() => {
           res.render(path.join(__dirname + '/views/modifiedparent'), {

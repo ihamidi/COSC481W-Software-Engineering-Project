@@ -49,7 +49,7 @@ body.bits-body
 							button.btn.btn-default(type='submit') Modify
 							
 						form(action='deleteparent' method='POST')
-							select(name="studenttodelete" placeholder="Select.." class="form-control" width="200%")
+							select(name="parenttodelete" placeholder="Select.." class="form-control" width="200%")
 								each val in full_name
 									option(value=val) #{val}
 
