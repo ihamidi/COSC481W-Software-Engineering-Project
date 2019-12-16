@@ -1,0 +1,63 @@
+doctype html
+head
+	title BitsAndBytes Home
+	link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+	link(rel='stylesheet' type='text/css' href='sitewide.css')
+
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+
+
+body.bits-body
+	nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
+		.container-fluid
+			.navbar-header
+				button.navbar-toggle.bits-navbar-collapse(type="button" data-toggle="collapse" data-target="#myNavbar")
+					span.icon-bar.bits-navbar-collapse-span
+					span.icon-bar.bits-navbar-collapse-span
+					span.icon-bar.bits-navbar-collapse-span
+				a.navbar-brand.bits-text(href="#") BitsAndBytes
+			#myNavbar.collapse.navbar-collapse
+				ul.nav.navbar-nav
+					li
+						a.bits-text(href="/") Home
+					if acctype === 'Admin'
+						li
+							a.bits-text(href="createsurvey") Create Survey
+				ul.nav.navbar-nav.navbar-right
+					li
+						a.bits-text(href='/logout')
+							span.glyphicon.glyphicon-log-out
+							|  Log Out
+	.jumbotron.text-center.bits-primary.bits-border-rounded
+		h1.bits-text Home
+		#container.col
+		if acctype === 'Admin'
+			h2.bits-text Choose student to modify
+			.container
+				.row
+					.col-sm
+						form(action='chosenparent' method='POST')
+							select(name="parenttomodify" placeholder="Select.." class="form-control" width="200%")
+								each val in full_name
+									option(value=val) #{val}
+							select(name="valuetoupdate" placeholder="Select.." class="form-control" width="200%")
+								each val in fields
+									option(value=val) #{val}
+							input#name.form-control(type='text', placeholder='Enter New Value' name='valuetoupdate')
+
+							button.btn.btn-default(type='submit') Modify
+							
+						form(action='deleteparent' method='POST')
+							select(name="studenttodelete" placeholder="Select.." class="form-control" width="200%")
+								each val in full_name
+									option(value=val) #{val}
+
+							button.btn.btn-default(type='submit') Delete Account
+					.col-sm
+						div.bits-div
+
+				p.bits-text Modify
+
+		else
+			h2 Please login to view contents

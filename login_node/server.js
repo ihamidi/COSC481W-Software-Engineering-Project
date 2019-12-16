@@ -8,6 +8,7 @@ const registration = require('./studentManagement.js');
 const picUploader = require ('./pictureUploader.js');
 const mailer = require ('./mailer.js');
 const modifier = require ('./modifier.js');
+const modifyParent = require('./parentmodify.js');
 const csv = require ('./studentcsv.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
@@ -843,6 +844,9 @@ app.use('/sendMail' , mailer);
 
 app.use(modifier);
 app.use('/ModifyStudnet' , modifier);
+
+app.use(modifyParent);
+app.use('/modifyparet' , modifyParent);
 
 // app.use('/uploadpicture' , picUploader);
 
