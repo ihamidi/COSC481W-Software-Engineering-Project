@@ -8,6 +8,7 @@ const multer  = require('multer');
 const router = express.Router();
 const fs = require('fs');
 
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, __dirname+'/views/Pictures')
@@ -52,6 +53,7 @@ router.post('/uploadPicture', uploadTo.single('picture'), (req, res) => {
 		error.httpStatusCode = 400
 		return next(error)
 	}
+  res.redirect('/photos');
 });
 
 

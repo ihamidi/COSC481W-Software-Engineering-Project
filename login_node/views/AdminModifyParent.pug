@@ -37,8 +37,8 @@ body.bits-body
 			.container
 				.row
 					.col-sm
-						form(action='ChosenStudent' method='POST')
-							select(name="studenttomodify" placeholder="Select.." class="form-control" width="200%")
+						form(action='chosenparent' method='POST')
+							select(name="parenttomodify" placeholder="Select.." class="form-control" width="200%")
 								each val in full_name
 									option(value=val) #{val}
 							select(name="valuetoupdate" placeholder="Select.." class="form-control" width="200%")
@@ -48,8 +48,8 @@ body.bits-body
 
 							button.btn.btn-default(type='submit') Modify
 							
-						form(action='deletestudent' method='POST')
-							select(name="studenttodelete" placeholder="Select.." class="form-control" width="200%")
+						form(action='deleteparent' method='POST')
+							select(name="parenttodelete" placeholder="Select.." class="form-control" width="200%")
 								each val in full_name
 									option(value=val) #{val}
 

@@ -8,6 +8,7 @@ const registration = require('./studentManagement.js');
 const picUploader = require ('./pictureUploader.js');
 const mailer = require ('./mailer.js');
 const modifier = require ('./modifier.js');
+const modifyParent = require('./parentmodify.js');
 const csv = require ('./studentcsv.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
@@ -92,12 +93,14 @@ app.get('/', function(request, response){
    }
   else {
     app.use(express.static('./views/css'));
+    app.use(express.static('./views/Pictures/'));
     response.render('index', {
       acctype: request.session.acctype,
       checkedIn: request.session.checkedIn,
       checkedOut: request.session.checkedOut,
       times: request.session.times,
-      sessionD: request.session
+      sessionD: request.session,
+      announcements: load_announcements()
     });
   }
 });
@@ -112,7 +115,9 @@ app.get('/signup', function (request, response) {
 app.get('/announcements', function (request, response) {
   app.use(express.static('./views/public_javascript/announcements'));
   if (request.session.loggedin && request.session.acctype=="Admin") {
-    response.sendFile(path.join(__dirname + '/views/announcements.html'));
+    response.render('announcements', {
+    photos: load_photos()
+  });
   }
 });
 
@@ -161,7 +166,10 @@ app.get('/photos', function (request, response) {
     if (request.session.loggedin && request.session.acctype) {
         app.use(express.static('./views/css'));
         app.use(express.static('./views/Pictures/'));
-        response.render(path.join(__dirname + '/views/picturespage'));
+        response.render(path.join(__dirname + '/views/picturespage'), {
+          acctype: request.session.acctype,
+          photos: load_photos()
+        });
     }
 });
 
@@ -233,11 +241,15 @@ app.post('/studentreg', function (request, response) {
      return connection.close();
     })
     .catch( err => {
-      response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+      response.render('error', {
+        error: err
+      })
     });
   }
   else {
-    response.send('HIT BACK, TRY AGAIN ERROR IN signup ');
+    response.render('error', {
+      error: "Error in Signup, please try again"
+    })
   }
     });
 
@@ -318,6 +330,7 @@ app.post('/auth', function(request, response) {
        })
        .then(() => {
          console.log(request.session.studentName)
+         app.use(express.static('./views/Pictures/'));
          response.render('index', {
          acctype: request.session.acctype,
          times: request.session.times,
@@ -329,7 +342,9 @@ app.post('/auth', function(request, response) {
        });
        })
        .catch( err => {
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -385,8 +400,9 @@ app.post('/forminfo', function(request, response) {
        });
        })
        .catch( err => {
-         console.log(err);
-        response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+        response.render('error', {
+          error: err
+        })
       });
 });
 
@@ -458,6 +474,7 @@ app.post('/studentauth', function(request, response) {
         })
         .then(() => {
           console.log(request.session);
+          app.use(express.static('./views/Pictures/'));
           response.render('index', {
             acctype: request.session.acctype,
             checkedIn: request.session.checkedIn,
@@ -490,6 +507,7 @@ app.post('/adminauth', function(request, response) {
        })
        .then(() => {
          console.log(request.session);
+         app.use(express.static('./views/Pictures/'));
          response.render('index', {
           acctype: request.session.acctype,
           sessionD: request.session,
@@ -648,6 +666,29 @@ function load_announcements(){
   return announcements;
 };
 
+function load_photos(){
+  var dir = path.join(__dirname + '/views/Pictures/');
+  var pictures = [];
+
+  var files = fs.readdirSync(dir)
+              .map(function(v) {
+                  return { name:v,
+                           time:fs.statSync(dir + v).mtime.getTime()
+                         };
+               })
+               .sort(function(a, b) { return b.time - a.time; })
+               .map(function(v) { return v.name; });
+
+  console.log(files);
+
+  files.forEach(file => {
+    if(path.extname(dir + file)==".jpg"){
+      pictures.push(file);
+    }
+  });
+  return pictures;
+};
+
 // createsurvey method when admin submits survey
 app.post('/createsurvey', function(request, response) {
   var surveyName = request.body.surveyName;
@@ -746,8 +787,9 @@ app.get('/modForm', function (req, response) {
    return connection.query('UPDATE registration_forms SET permission_complete=? WHERE SID=? AND PID=? ', [0,sid,pid]);
   })
   .catch( err => {
-    console.log(err);
-   response.send('HIT BACK, TRY AGAIN ERROR: '+err+'       '+ connection);
+    response.render('error', {
+      error: err
+    })
   });
   console.log(req.session.SID);
 
@@ -805,6 +847,9 @@ app.use('/sendMail' , mailer);
 
 app.use(modifier);
 app.use('/ModifyStudnet' , modifier);
+
+app.use(modifyParent);
+app.use('/modifyparet' , modifyParent);
 
 // app.use('/uploadpicture' , picUploader);
 

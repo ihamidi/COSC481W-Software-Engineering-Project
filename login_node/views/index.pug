@@ -24,8 +24,8 @@ body.bits-body
 					if acctype === 'Admin'
 						li
 							a.bits-text(href="createsurvey") Create Survey
-						li
-							a.bits-text(href="photos") Photos
+					li
+						a.bits-text(href="photos") Photos
 				ul.nav.navbar-nav.navbar-right
 					li
 						a.bits-text(href='/logout')
@@ -48,6 +48,13 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu4') Timestamps
 
 			.tab-content
+				#menu3.tab-pane.fade.in.active
+					h2.bits-text View the Latest Announcements
+					div
+						div.text-left.bits-announcements
+							each announcement in announcements
+								hr
+								div !{announcement}
 				#home.tab-pane.fade
 					h2.bits-text Check In
 					div
@@ -80,14 +87,6 @@ body.bits-body
 						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
-
-				#menu3.tab-pane.fade.in.active
-					h2.bits-text Announcements
-					div
-						div(style='align: center')
-							each announcement in announcements
-								div !{announcement}
-
 				#menu4.tab-pane.fade
 					h2.bits-text Timestamps
 					div
@@ -110,6 +109,13 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu3') Take Survey
 
 			.tab-content
+				#menu4.tab-pane.fade.in.active
+					h2.bits-text View the Latest Announcements
+					div
+						div.text-left.bits-announcements
+							each announcement in announcements
+								hr
+								div !{announcement}
 				#home.tab-pane.fade
 					h2.bits-text Registration
 					div
@@ -162,8 +168,7 @@ body.bits-body
 							button.btn.btn-default(type='submit') Test
 						div
 
-				#menu3.tab-pane.fade.in.active
-
+				#menu3.tab-pane.fade
 					div
 						p Click here to take the presurvey
 						form(action='PresurveyParent' method='GET')
@@ -175,32 +180,22 @@ body.bits-body
 							input(type='submit' value='Postsurvey')
 
 						div
-				#menu4.tab-pane.fade
-					h2.bits-text Announcements
-					div
-						div(style='align: center')
-							each announcement in announcements
-								div !{announcement}
 
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
 				li.active
 					a.bits-tabs-item(data-toggle='tab' href='#menu1') Announcements
 				li
-					a.bits-tabs-item(data-toggle='tab' href='#home') Create survey
+					a.bits-tabs-item(data-toggle='tab' href='#home') Create Survey
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu2') Modify Student
+				li
+					a.bits-tabs-item(data-toggle='tab' href='#menu5') Modify Parent
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu3') Send Email
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu4') Download CSV
 			.tab-content
-				#home.tab-pane.fade
-					h2.bits-text Registration
-					div
-						p.bits-text Create a survey using the survey creator
-						form(action='createsurvey' method='GET')
-							button.btn.btn-default(type='submit') Create Survey
 				#menu1.tab-pane.fade.in.active
 					h2.bits-text View the Latest Announcements
 					div
@@ -210,21 +205,36 @@ body.bits-body
 							each announcement in announcements
 								hr
 								div !{announcement}
+				#home.tab-pane.fade
+					h2.bits-text Registration
+					div
+						p.bits-text Create a survey using the survey creator
+						form(action='createsurvey' method='GET')
+							button.btn.btn-default(type='submit') Create Survey
 
 				#menu2.tab-pane.fade
 					h2.bits-text Modify Student
 					div
 						p.bits-text Modify a Student's information
 						div.bits-div
-							form(action='ModifyStudent' method='GET')
+							form(action='ModifyStudent' method='GET' style="align: center")
 								button.btn.btn-default(type='submit') Modify
-						hr(style='border: 5px solid white; border-radius: 5px;')
-						p.bits-text Delete a Form
+						hr
+						p.bits-text Delete Waiver or Permission Slip
 						div.bits-div
 							form(action='modForm' method='GET')
 								input.form-control(type='text',  style='width: 350px' placeholder='Enter student first and last name' name='name')
 								input.form-control(type='text',  style='width: 350px' placeholder='Type of form' name='type')
 								button.btn.btn-default(type='submit'  style='width: 200px' name='delete') Delete
+
+				#menu5.tab-pane.fade
+					h2.bits-text Modify Parent
+					div
+						p.bits-text Modify a Parent's information
+						div.bits-div
+							form(action='modifyparent' method='GET' style="align: center")
+								button.btn.btn-default(type='submit') Modify
+
 				#menu4.tab-pane.fade
 					h2.bits-text Download CSV
 					div

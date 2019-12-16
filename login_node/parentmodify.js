@@ -4,7 +4,6 @@ var path = require('path');
 var mysql = require('mysql');
 const router = express.Router();
 
-// var adultmaillist,studentmaillist, mail_person;
 
 var content="",subject="";
 
@@ -44,33 +43,12 @@ const connection = new Database(config);
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-
-
-
-
-
-
-
-//
-//
-//
-// Each one of these functions is controleld by a buton the admin sees on theri screen
-//
-//
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// async..await is not allowed in global scope, must use a wrapper
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-router.get('/ModifyStudent',function (req,res) {
+router.get('/modifyparent',function (req,res) {
   var first_name=[];
   var last_name=[];
   var full_name=[];
   var fields=[];
-  connection.query('SELECT * FROM student_accounts')
+  connection.query('SELECT * FROM adult_accounts')
         .then(rows => {
           if(rows != undefined){
              for (i = 0; i < rows.length; i++) {
@@ -83,7 +61,7 @@ router.get('/ModifyStudent',function (req,res) {
          else{
            return;
          }
-          return connection.query('SHOW COLUMNS FROM student_accounts')
+          return connection.query('SHOW COLUMNS FROM adult_accounts')
         })
         .then(rows => {
           if(rows != undefined){
@@ -97,7 +75,7 @@ router.get('/ModifyStudent',function (req,res) {
          }
         })
         .then(() => {
-          res.render(path.join(__dirname + '/views/AdminModifyStudent'), {
+          res.render(path.join(__dirname + '/views/AdminModifyParent'), {
             acctype: req.session.acctype,
             full_name: req.session.fullname,
             fields: req.session.fields = fields
@@ -109,84 +87,79 @@ router.get('/ModifyStudent',function (req,res) {
 });
 
 
-router.post('/ChosenStudent',function (request,res) {
-  var selectedStudent=request.body.studenttomodify;
-  console.log(selectedStudent);
+router.post('/chosenparent',function (request,res) {
+  var selectedParent=request.body.parenttomodify;
+  console.log(selectedParent);
   var fieldvalue=request.body.valuetoupdate;
   console.log(fieldvalue);
-  var studentname=selectedStudent.split(" ");
-  var studentfirst = studentname[0];
-  connection.query('SELECT * FROM student_accounts WHERE firstname=?', [studentfirst])
+  var parentname=selectedParent.split(" ");
+  var parentfirst = parentname[0];
+  connection.query('SELECT * FROM student_accounts WHERE firstname=?', [parentfirst])
         .then(rows => {
           if(rows != undefined){
-            request.session.selectedStudentID=rows[0].SID;
+            request.session.selectedParentID=rows[0].PID;
           }
          else{
            return;
          }
-          return connection.query('SHOW COLUMNS FROM student_accounts')
+          return connection.query('SHOW COLUMNS FROM adult_accounts')
         })
         .then(rows => {
           var editFielt = fieldvalue[0];
           var newValue = fieldvalue[1];
           if(rows != undefined){
-            if(editFielt=="SID")
+            if(editFielt=="PID")
             {
-              return connection.query('UPDATE student_accounts SET SID=? WHERE SID=?', [newValue, request.session.selectedStudentID])
+              return connection.query('UPDATE adult_accounts SET PID=? WHERE PID=?', [newValue, request.session.selectedParentID])
             }
             else if(editFielt=="firstname")
             {
-              return connection.query('UPDATE student_accounts SET firstname=? WHERE SID=? ', [newValue, request.session.selectedStudentID])
+              return connection.query('UPDATE adult_accounts SET firstname=? WHERE PID=? ', [newValue, request.session.selectedParentID])
 
             }
             else if(editFielt=="lastname")
             {
-              return connection.query('UPDATE student_accounts SET lastname=? WHERE SID=?', [newValue, request.session.selectedStudentID])
+              return connection.query('UPDATE adult_accounts SET lastname=? WHERE PID=?', [newValue, request.session.selectedParentID])
 
             }
             else if(editFielt=="email")
             {
-              return connection.query('UPDATE student_accounts SET email=? WHERE SID=? ', [newValue, request.session.selectedStudentID])
-
-            }
-            else if(editFielt=="grade")
-            {
-              return connection.query('UPDATE student_accounts SET GRADE=? WHERE SID=? ', [newValue, request.session.selectedStudentID])
+              return connection.query('UPDATE adult_accounts SET email=? WHERE PID=? ', [newValue, request.session.selectedParentID])
 
             }
           }
          else{
            return;
          }
+        })
+        .then(() => {
+            res.render(path.join(__dirname + '/views/modifiedparent'), {
+              acctype: request.session.acctype
+            });
+          })
+          .catch(err =>{
+            res.render('error', {
+              error: err
+            })
+          })
+        })
+
+router.post('/deleteparent',function (request,res) {
+  var selectedParent=request.body.parenttodelete;
+  var parentname=selectedParent.split(" ");
+  var parentfirst = parentname[0];
+  connection.query('SELECT * FROM adult_accounts WHERE firstname=?', [parentfirst])
+        .then(rows => {
+          if(rows != undefined){
+            request.session.selectedParentID=rows[0].PID;
+          }
+         else{
+           return;
+         }
+          return connection.query('DELETE FROM adult_accounts WHERE PID = ?', [request.session.selectedParentID]);
         })
         .then(() => {
           res.render(path.join(__dirname + '/views/modifiedparent'), {
-            acctype: request.session.acctype
-          });
-        })
-        .catch(err =>{
-          res.render('error', {
-            error: err
-          })
-        })
-});
-
-router.post('/deletestudent',function (request,res) {
-  var selectedStudent=request.body.studenttodelete;
-  var studentname=selectedStudent.split(" ");
-  var studentfirst = studentname[0];
-  connection.query('SELECT * FROM student_accounts WHERE firstname=?', [studentfirst])
-        .then(rows => {
-          if(rows != undefined){
-            request.session.selectedStudentID=rows[0].SID;
-          }
-         else{
-           return;
-         }
-          return connection.query('DELETE FROM student_accounts WHERE SID = ?', [request.session.selectedStudentID]);
-        })
-        .then(() => {
-          res.render(path.join(__dirname + '/views/modified'), {
             acctype: request.session.acctype
           });
         })
