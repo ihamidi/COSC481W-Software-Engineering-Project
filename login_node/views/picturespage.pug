@@ -6,7 +6,6 @@ html
 		link(rel='stylesheet' type='text/css' href='sitewide.css')
 	
 		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
-		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
 	body(onload='displayGallery()').bits-body
 		nav.navbar.navbar-inverse.bits-border-rounded.bits-navbar
 			.container-fluid
@@ -31,14 +30,16 @@ html
 								span.glyphicon.glyphicon-log-out
 								|  Log Out
 		p#picnumber(hidden='' value='#{picnumber}')
-		h2.container Pictures
-		if acctype == 'Admin'
-			form#Picturesdemo.container
-			form(action='/uploadPicture', enctype='multipart/form-data', method='POST')
-				input(type='file', name='picture')
-				input(type='submit', value='Upload a file')
-		each photo in photos
-			img(src=photo width='304' height='228' hspace='20' vspace='20')
+		.container.bits-primary.bits-border-rounded(style='width:80%')
+			h2.bits-text Photos
+			if acctype == 'Admin'
+				form#Picturesdemo.container
+				form(action='/uploadPicture', enctype='multipart/form-data', method='POST')
+					input.custom-file-input(type='file', name='picture')
+					br
+					button.btn.btn-primary(type='submit', value='Upload a file') Upload
+			each photo in photos
+				img(src=photo width='304' height='228' hspace='20' vspace='20')
 
 		script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')

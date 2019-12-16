@@ -53,6 +53,7 @@ router.post('/uploadPicture', uploadTo.single('picture'), (req, res) => {
 		error.httpStatusCode = 400
 		return next(error)
 	}
+  res.redirect('/photos');
 });
 
 
