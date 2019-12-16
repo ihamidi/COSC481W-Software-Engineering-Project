@@ -62,7 +62,7 @@ var waiverstorage = multer.diskStorage({
 
   var permissionstorage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/permission');
+      cb(null, 'uploads/permissions');
     },
     filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + req.session.selected + '_' + req.session.studentlastname);
@@ -153,4 +153,49 @@ function load_announcements(){
 };
 
 
+var parentStorge = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/parentSurvey');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + req.session.PID);
+  }
+})
+
+var uploadParentsSurv = multer({ storage: parentStorge })
+
+router.post('/uploadParSurv', uploadParentsSurv.single('parent'), (req, res, next) => {
+  console.log(req.session);
+  const file = req.file
+  if (!file) {
+    const error = new Error('Please upload a file')
+    error.httpStatusCode = 400
+    return next(error)
+  }
+  res.redirect('/');
+
+})
+
+var studentStorge = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/studentSurvey');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + req.session.studentID);
+  }
+})
+
+var uploadStudentSurv = multer({ storage: studentStorge })
+
+router.post('/uploadStuSurv', uploadStudentSurv.single('student'), (req, res, next) => {
+  console.log(req.session);
+  const file = req.file
+  if (!file) {
+    const error = new Error('Please upload a file')
+    error.httpStatusCode = 400
+    return next(error)
+  }
+  res.redirect('/');
+
+})
   module.exports = router

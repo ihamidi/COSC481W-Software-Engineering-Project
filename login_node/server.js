@@ -12,14 +12,20 @@ const modifyParent = require('./parentmodify.js');
 const csv = require ('./studentcsv.js');
 const fs = require('fs');
 const MemoryStore = require('memorystore')(session);
-var head ='<!DOCTYPE html>\n<html><head>\n<title>Bits And Bytes</title>'
+
+var head ='<!DOCTYPE html>\n<html><head>'
++'\n <script>'
++'function myFunction() {'
++'\ndocument.getElementById(\'hd\').style.visibility = \'hidden\';'
++'\nwindow.print();}</script>'
++'\n<title>Bits And Bytes</title>'
 +'\n<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">'
 +'\n<link rel="stylesheet" type="text/css" href="sitewide.css">'
 +'\n<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
 +'\n<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>'
 +'\n</head> <body class="bits-body">';
 +'\n<form class="form-login" action="saveSurvey " method="get">';
-var foot='\n<button type="submit" class="form-control"style=" width: 100px;" name="saveSurveyButton">Submit</button></form></body>\n</html>';
+var foot='\n<button type="submit" class="form-control"style=" width: 100px;"onclick="myFunction()" id="hd">Submit</button></form></body>\n</html>';
 var foot1='\n</body>\n</html>';
 var fileToRead="";
 
