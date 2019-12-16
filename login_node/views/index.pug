@@ -93,7 +93,7 @@ body.bits-body
 						form(action='/uploadStuSurv' enctype='multipart/form-data' method='POST')
 							input.inp.btn.btn-default(type='file' name='student' style='align: center')
 							button.btn.btn-default(type='submit') Upload a File
-							
+
 				#menu4.tab-pane.fade
 					h2.bits-text Timestamps
 					div
@@ -247,19 +247,6 @@ body.bits-body
 							form(action='modifyparent' method='GET' style="align: center")
 								button.btn.btn-default(type='submit') Modify
 
-				#menu4.tab-pane.fade
-					h2.bits-text Download CSV
-					div
-						p.bits-text Click here to download the registration form:
-						form(action='studentcsv' method='GET')
-							button.btn.btn-default(type='submit') CSV
-
-//								input.form-control(type='radio' name='file' value='1')
-//								| Form
-//								input.form-control(type='radio' name='file' value='2')
-//								| Waiver
-
-
 				#menu3.tab-pane.fade
 					h2.bits-text Configure Email message
 					div
@@ -269,6 +256,16 @@ body.bits-body
 								input#name.form-control(type='text', placeholder='Enter a subject' name='subject')
 								textarea#name.form-control(rows='20' cols='50' placeholder='Enter Email contents' name='emailcontent')
 								button.btn.btn-default(type='submit') Select Recipients
+
+				#menu4.tab-pane.fade
+					h2.bits-text Download CSV
+					div
+						p.bits-text Click here to download the CSV form:
+						form(action='studentcsv' method='GET')
+							button.btn.btn-default(type='submit') CSV
+
+
+
 
 
 		else
