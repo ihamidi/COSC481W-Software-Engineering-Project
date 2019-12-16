@@ -828,7 +828,7 @@ app.get('/checkout', function(request, response) {
      checkedOut: request.session.checkedOut,
      sessionD: request.session,
      times: request.session.times,
-     announcements: load_announcements();
+     announcements: load_announcements()
    });
 
   }
