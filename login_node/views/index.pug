@@ -80,6 +80,8 @@ body.bits-body
 				#menu2.tab-pane.fade
 					h2.bits-text Take Survey
 					div
+						p After taking the survey, please make sure to upload it
+						br
 						p.bits-text Click here to take the presurvey
 						form(action='PresurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Presurvey') Pre-survey
@@ -87,6 +89,11 @@ body.bits-body
 						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
+						br
+						form(action='/uploadStuSurv' enctype='multipart/form-data' method='POST')
+							input.inp.btn.btn-default(type='file' name='student' style='align: center')
+							button.btn.btn-default(type='submit') Upload a File
+							
 				#menu4.tab-pane.fade
 					h2.bits-text Timestamps
 					div
@@ -137,12 +144,12 @@ body.bits-body
 								div
 								p.bits-text Upload Permission Slip:
 								form(action='/uploadpermission' enctype='multipart/form-data' method='POST')
-									input(type='file' name='permission' style='align: center')
+									input.inp.btn.btn-default(type='file' name='permission' style='align: center')
 									button.btn.btn-default(type='submit') Upload a File
 							if !hasWaiver
 								p.bits-text Upload Waiver:
 								form(action='/uploadwaiver' enctype='multipart/form-data' method='POST')
-									input(type='file' name='waiver' style='align: center')
+									input.inp.btn.btn-default(type='file' name='waiver' style='align: center')
 									button.btn.btn-default(type='submit') Upload a File
 				#menu1.tab-pane.fade
 					h2.bits-text Sign up a student
@@ -170,6 +177,8 @@ body.bits-body
 
 				#menu3.tab-pane.fade
 					div
+						p After taking the survey, please make sure to upload it
+						br
 						p Click here to take the presurvey
 						form(action='PresurveyParent' method='GET')
 							input(type='submit' value='Presurvey')
@@ -178,7 +187,10 @@ body.bits-body
 						p Click here to take the postsurvey
 						form(action='PostsurveyParent' method='GET')
 							input(type='submit' value='Postsurvey')
-
+						br
+						form(action='/uploadParSurv' enctype='multipart/form-data' method='POST')
+							input.inp.btn.btn-default(type='file' name='parent' style='align: center')
+							button.btn.btn-default(type='submit') Upload a File
 						div
 
 		else if acctype === 'Admin'
