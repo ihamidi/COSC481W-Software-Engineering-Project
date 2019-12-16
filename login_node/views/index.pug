@@ -24,8 +24,8 @@ body.bits-body
 					if acctype === 'Admin'
 						li
 							a.bits-text(href="createsurvey") Create Survey
-						li
-							a.bits-text(href="photos") Photos
+					li
+						a.bits-text(href="photos") Photos
 				ul.nav.navbar-nav.navbar-right
 					li
 						a.bits-text(href='/logout')
@@ -48,6 +48,13 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu4') Timestamps
 
 			.tab-content
+				#menu3.tab-pane.fade.in.active
+					h2.bits-text View the Latest Announcements
+					div
+						div.text-left.bits-announcements
+							each announcement in announcements
+								hr
+								div !{announcement}
 				#home.tab-pane.fade
 					h2.bits-text Check In
 					div
@@ -80,15 +87,6 @@ body.bits-body
 						p.bits-text Click here to take the postsurvey
 						form(action='PostsurveyStudent' method='GET')
 							button.btn.btn-default(type='submit' value='Postsurvey') Post-survey
-
-				#menu3.tab-pane.fade.in.active
-					h2.bits-text View the Latest Announcements
-					div
-						div.text-left.bits-announcements
-							each announcement in announcements
-								hr
-								div !{announcement}
-
 				#menu4.tab-pane.fade
 					h2.bits-text Timestamps
 					div
@@ -111,6 +109,13 @@ body.bits-body
 					a.bits-tabs-item(data-toggle='tab' href='#menu3') Take Survey
 
 			.tab-content
+				#menu4.tab-pane.fade.in.active
+					h2.bits-text View the Latest Announcements
+					div
+						div.text-left.bits-announcements
+							each announcement in announcements
+								hr
+								div !{announcement}
 				#home.tab-pane.fade
 					h2.bits-text Registration
 					div
@@ -163,8 +168,7 @@ body.bits-body
 							button.btn.btn-default(type='submit') Test
 						div
 
-				#menu3.tab-pane.fade.in.active
-
+				#menu3.tab-pane.fade
 					div
 						p Click here to take the presurvey
 						form(action='PresurveyParent' method='GET')
@@ -176,13 +180,6 @@ body.bits-body
 							input(type='submit' value='Postsurvey')
 
 						div
-				#menu4.tab-pane.fade
-					h2.bits-text View the Latest Announcements
-					div
-						div.text-left.bits-announcements
-							each announcement in announcements
-								hr
-								div !{announcement}
 
 		else if acctype === 'Admin'
 			ul.nav.nav-tabs
@@ -199,12 +196,6 @@ body.bits-body
 				li
 					a.bits-tabs-item(data-toggle='tab' href='#menu4') Download CSV
 			.tab-content
-				#home.tab-pane.fade
-					h2.bits-text Registration
-					div
-						p.bits-text Create a survey using the survey creator
-						form(action='createsurvey' method='GET')
-							button.btn.btn-default(type='submit') Create Survey
 				#menu1.tab-pane.fade.in.active
 					h2.bits-text View the Latest Announcements
 					div
@@ -214,6 +205,12 @@ body.bits-body
 							each announcement in announcements
 								hr
 								div !{announcement}
+				#home.tab-pane.fade
+					h2.bits-text Registration
+					div
+						p.bits-text Create a survey using the survey creator
+						form(action='createsurvey' method='GET')
+							button.btn.btn-default(type='submit') Create Survey
 
 				#menu2.tab-pane.fade
 					h2.bits-text Modify Student
