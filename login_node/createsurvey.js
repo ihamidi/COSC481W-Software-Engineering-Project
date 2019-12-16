@@ -9,7 +9,7 @@ var formdownload = require('./registration.js');
 
 //giving clousql credentials
 var connection = mysql.createConnection({
-    host     : '34.66.160.101',
+  host     : '35.226.93.206',
 	user     : 'root',
 	password : 'fiveguys',
 	database : 'BitsAndBytes'
@@ -127,7 +127,7 @@ app.post('/auth', function(request, response) {
                 });
 			} else {
 				response.send('Incorrect Username and/or Password!');
-			}			
+			}
 			response.end();
 		});
 	} else {

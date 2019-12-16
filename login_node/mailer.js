@@ -35,7 +35,7 @@ class Database {
   }
 }
 var config = {
-  host     : '34.66.160.101',
+  host     : '35.226.93.206',
 	user     : 'root',
 	password : 'fiveguys',
 	database : 'swing_demo'
