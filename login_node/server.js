@@ -151,7 +151,9 @@ app.post('/createannouncement', function(request, response) { // needs lots of w
 //sending sign up oapge
 app.get('/studentsignup', function (request, response) {
   if (request.session.loggedin && request.session.acctype=="Parent") {
-  response.render(path.join(__dirname + '/views/studentsignup'));
+  response.render(path.join(__dirname + '/views/studentsignup'), {
+    announcements: load_announcements()
+  });
 }
 });
 
@@ -242,7 +244,8 @@ app.post('/studentreg', function (request, response) {
          checkedIn: request.session.checkedIn,
          checkedOut: request.session.checkedOut,
          sessionD: request.session,
-         times: request.session.times
+         times: request.session.times,
+         announcement: load_announcements()
        });
      return connection.close();
     })
@@ -740,7 +743,8 @@ app.get('/checkin', function(request, response) {
    checkedIn: true,
    checkedOut: request.session.checkedOut,
    sessionD: request.session,
-   times: request.session.times
+   times: request.session.times,
+   announcements: load_announcements()
  });
 
   }
@@ -823,7 +827,8 @@ app.get('/checkout', function(request, response) {
      checkedIn: true,
      checkedOut: request.session.checkedOut,
      sessionD: request.session,
-     times: request.session.times
+     times: request.session.times,
+     announcements: load_announcements();
    });
 
   }
